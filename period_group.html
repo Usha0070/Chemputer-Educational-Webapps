@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ইলেকট্রন বিন্যাস ক্যালকুলেটর | পর্যায় সারণী | ৯ম শ্রেণি</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d14;
+    --surface: #16161f;
+    --card: #1e1e2a;
+    --border: #2e2e3e;
+    --accent: #7c5cfc;
+    --accent2: #e05cfc;
+    --gold: #f5c842;
+    --green: #3dffa0;
+    --red: #ff5c5c;
+    --text: #f0eeff;
+    --muted: #8882aa;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Hind Siliguri', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* bg grid */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(124,92,252,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,92,252,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none; z-index: 0;
+  }
+
+  .page { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* header */
+  .header { text-align: center; margin-bottom: 2.5rem; }
+  .badge-top {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+    padding: 4px 14px; border-radius: 99px; margin-bottom: 1rem; text-transform: uppercase;
+  }
+  h1 { font-size: clamp(22px, 5vw, 32px); font-weight: 700; line-height: 1.3; }
+  h1 span { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .header-sub { font-size: 14px; color: var(--muted); margin-top: 8px; }
+
+  /* teacher tag */
+  .teacher-tag {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 10px 16px;
+    max-width: 320px; margin: 1.2rem auto 0;
+  }
+  .teacher-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .teacher-info { text-align: left; }
+  .teacher-name { font-size: 13px; font-weight: 600; }
+  .teacher-role { font-size: 11px; color: var(--muted); }
+
+  /* tabs */
+  .tabs { display: flex; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 5px; margin-bottom: 1.5rem; }
+  .tab {
+    flex: 1; padding: 9px; text-align: center; font-size: 13px; font-weight: 500;
+    border-radius: 8px; cursor: pointer; transition: all 0.2s; color: var(--muted); border: none;
+    background: transparent;
+  }
+  .tab.active { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* calculator */
+  .calc-row { display: flex; gap: 10px; margin-bottom: 1rem; }
+  .num-input {
+    flex: 1; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 13px 16px; font-size: 16px; color: var(--text);
+    font-family: var(--sans); outline: none; transition: border-color 0.2s;
+  }
+  .num-input:focus { border-color: var(--accent); }
+  .num-input::placeholder { color: var(--muted); font-size: 14px; }
+  .calc-btn {
+    padding: 13px 24px; background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; border-radius: 10px; color: #fff; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: var(--sans); transition: opacity 0.2s; white-space: nowrap;
+  }
+  .calc-btn:hover { opacity: 0.88; }
+  .calc-btn:active { transform: scale(0.97); }
+
+  /* quick buttons */
+  .quick-label { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .quick-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 1.5rem; }
+  .qbtn {
+    padding: 6px 14px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 99px; color: var(--muted); font-size: 13px; cursor: pointer;
+    font-family: var(--sans); transition: all 0.15s;
+  }
+  .qbtn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* result */
+  .result-wrap { animation: fadeUp 0.3s ease; }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  .element-hero {
+    background: linear-gradient(135deg, rgba(124,92,252,0.15), rgba(224,92,252,0.10));
+    border: 1px solid rgba(124,92,252,0.3);
+    border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  }
+  .element-symbol {
+    width: 90px; height: 90px; background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 14px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .el-sym { font-size: 36px; font-weight: 700; color: #fff; line-height: 1; }
+  .el-z { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 3px; }
+  .el-name { font-size: 15px; color: rgba(255,255,255,0.85); margin-top: 2px; }
+  .gp-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .gp-card { background: rgba(255,255,255,0.06); border-radius: 10px; padding: 10px 18px; text-align: center; }
+  .gp-val { font-size: 28px; font-weight: 700; }
+  .gp-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .gp-card.period .gp-val { color: var(--gold); }
+  .gp-card.group .gp-val { color: var(--green); }
+
+  .config-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 1rem;
+  }
+  .config-label { font-size: 11px; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .config-text { font-family: var(--mono); font-size: 14px; color: var(--text); line-height: 1.9; word-break: break-all; }
+  .hl { color: var(--gold); font-weight: 600; }
+  .rule-pill {
+    display: inline-block; background: rgba(61,255,160,0.12); color: var(--green);
+    font-size: 12px; border-radius: 99px; padding: 4px 12px; margin-top: 8px;
+    border: 1px solid rgba(61,255,160,0.25);
+  }
+  .exc-pill {
+    display: inline-block; background: rgba(255,92,92,0.12); color: var(--red);
+    font-size: 12px; border-radius: 99px; padding: 4px 12px; margin-top: 8px;
+    border: 1px solid rgba(255,92,92,0.25);
+  }
+
+  /* orbital boxes */
+  .orb-section { margin-bottom: 1rem; }
+  .orb-section-label { font-size: 11px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .orb-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+  .orb-box {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 10px; text-align: center; min-width: 52px;
+  }
+  .orb-box.outer { border-color: var(--gold); background: rgba(245,200,66,0.08); }
+  .orb-box.key { border-color: var(--accent); background: rgba(124,92,252,0.12); }
+  .orb-n { font-size: 12px; font-family: var(--mono); color: var(--muted); }
+  .orb-e { font-size: 14px; font-weight: 600; }
+  .orb-box.outer .orb-n { color: rgba(245,200,66,0.8); }
+  .orb-box.outer .orb-e { color: var(--gold); }
+  .orb-box.key .orb-n { color: rgba(124,92,252,0.8); }
+  .orb-box.key .orb-e { color: var(--accent); }
+
+  /* steps */
+  .steps { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .steps-header { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .step { display: flex; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .step:last-child { border-bottom: none; }
+  .step-n { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .step-text { font-size: 14px; line-height: 1.6; color: var(--muted); }
+  .step-text strong { color: var(--text); font-weight: 600; }
+  .step-text .math { font-family: var(--mono); font-size: 13px; background: var(--card); padding: 2px 8px; border-radius: 5px; display: inline-block; margin-top: 4px; }
+
+  /* error */
+  .error-box { background: rgba(255,92,92,0.1); border: 1px solid rgba(255,92,92,0.3); color: var(--red); border-radius: 10px; padding: 12px 16px; font-size: 14px; margin-bottom: 1rem; }
+
+  /* MCQ quiz tab */
+  .quiz-intro { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; margin-bottom: 1rem; }
+  .quiz-intro h3 { font-size: 15px; margin-bottom: 6px; }
+  .quiz-intro p { font-size: 13px; color: var(--muted); }
+  .q-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.3rem; margin-bottom: 1rem; }
+  .q-num { font-size: 11px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .q-text { font-size: 15px; font-weight: 500; margin-bottom: 1rem; line-height: 1.6; }
+  .q-text .mono { font-family: var(--mono); font-size: 13px; background: var(--surface); padding: 2px 8px; border-radius: 5px; }
+  .opt-grid { display: flex; flex-direction: column; gap: 8px; }
+  .opt {
+    padding: 10px 14px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; cursor: pointer; font-size: 14px; transition: all 0.15s;
+    text-align: left; font-family: var(--sans); color: var(--text);
+  }
+  .opt:hover:not(.answered) { border-color: var(--accent); color: var(--accent); }
+  .opt.correct { background: rgba(61,255,160,0.1); border-color: var(--green); color: var(--green); }
+  .opt.wrong { background: rgba(255,92,92,0.1); border-color: var(--red); color: var(--red); }
+  .opt.show-correct { background: rgba(61,255,160,0.07); border-color: rgba(61,255,160,0.3); color: var(--green); }
+  .explanation { margin-top: 10px; padding: 10px 14px; background: rgba(124,92,252,0.08); border: 1px solid rgba(124,92,252,0.2); border-radius: 8px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .explanation strong { color: var(--accent); }
+  .score-bar { display: flex; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 1rem; }
+  .sc { text-align: center; flex: 1; }
+  .sc-val { font-size: 22px; font-weight: 700; }
+  .sc-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* rules tab */
+  .rule-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.3rem; margin-bottom: 1rem; }
+  .rule-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 99px; margin-bottom: 10px; }
+  .rb-s { background: rgba(124,92,252,0.15); color: var(--accent); border: 1px solid rgba(124,92,252,0.3); }
+  .rb-p { background: rgba(61,255,160,0.12); color: var(--green); border: 1px solid rgba(61,255,160,0.25); }
+  .rb-d { background: rgba(245,200,66,0.12); color: var(--gold); border: 1px solid rgba(245,200,66,0.25); }
+  .rule-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .rule-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .rule-formula { font-family: var(--mono); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; margin: 10px 0; font-size: 13px; }
+  .rule-eg { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  .rule-eg strong { color: var(--text); }
+
+  /* cta */
+  .cta-section { margin-top: 3rem; border-radius: 20px; padding: 2rem 1.5rem; text-align: center; background: linear-gradient(135deg, rgba(124,92,252,0.15), rgba(224,92,252,0.10)); border: 1px solid rgba(124,92,252,0.3); position: relative; overflow: hidden; }
+  .cta-section::before { content:''; position:absolute; inset:0; background-image: linear-gradient(rgba(124,92,252,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(124,92,252,0.06) 1px,transparent 1px); background-size:24px 24px; pointer-events:none; }
+  .cta-inner { position: relative; z-index: 1; }
+  .cta-icon { font-size: 40px; margin-bottom: 0.75rem; }
+  .cta-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .cta-title span { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .cta-sub { font-size: 14px; color: var(--muted); margin-bottom: 1.2rem; line-height: 1.7; }
+  .cta-perks { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 1.4rem; }
+  .cta-perk { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 99px; padding: 5px 14px; font-size: 13px; color: var(--muted); }
+  .cta-btn { display: inline-flex; align-items: center; gap: 10px; background: #1877F2; color: #fff; font-size: 15px; font-weight: 700; padding: 14px 28px; border-radius: 12px; text-decoration: none; font-family: var(--sans); transition: opacity 0.2s, transform 0.15s; }
+  .cta-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+  .cta-btn:active { transform: scale(0.97); }
+  .cta-btn svg { width: 22px; height: 22px; fill: #fff; flex-shrink: 0; }
+  .cta-note { font-size: 12px; color: var(--muted); margin-top: 10px; }
+  /* footer */
+  .footer { text-align: center; margin-top: 2rem; font-size: 12px; color: var(--muted); line-height: 1.8; }
+  .footer strong { color: var(--accent); }
+
+  @media (max-width: 500px) {
+    .element-hero { flex-direction: column; }
+    .tabs .tab { font-size: 11px; padding: 8px 4px; }
+    h1 { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="badge-top">অনলাইন ব্যাচ ২০২৬ · ৯ম শ্রেণি রসায়ন</div>
+    <h1>ইলেকট্রন বিন্যাস<br><span>গ্রুপ ও পর্যায় ক্যালকুলেটর</span></h1>
+    <p class="header-sub">অধ্যায় ৪ · পর্যায় সারণী</p>
+    <div class="teacher-tag">
+      <div class="teacher-avatar">ইউ</div>
+      <div class="teacher-info">
+        <div class="teacher-name">Md. Usha Khan (ইউশা)</div>
+        <div class="teacher-role">10 Minute School · রসায়ন</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('calc')">🧮 ক্যালকুলেটর</button>
+    <button class="tab" onclick="switchTab('rules')">📋 নিয়মাবলী</button>
+    <button class="tab" onclick="switchTab('quiz')">🎯 MCQ অনুশীলন</button>
+  </div>
+
+  <!-- CALCULATOR TAB -->
+  <div class="tab-content active" id="tab-calc">
+    <div class="calc-row">
+      <input type="number" class="num-input" id="atomicNum" placeholder="পারমাণবিক সংখ্যা লেখো (১–৩৬)" min="1" max="36" />
+      <button class="calc-btn" onclick="calculate()">হিসাব করো →</button>
+    </div>
+    <p class="quick-label">দ্রুত চেষ্টা করো:</p>
+    <div class="quick-grid">
+      <button class="qbtn" onclick="setCalc(6)">C · ৬</button>
+      <button class="qbtn" onclick="setCalc(7)">N · ৭</button>
+      <button class="qbtn" onclick="setCalc(11)">Na · ১১</button>
+      <button class="qbtn" onclick="setCalc(17)">Cl · ১৭</button>
+      <button class="qbtn" onclick="setCalc(19)">K · ১৯</button>
+      <button class="qbtn" onclick="setCalc(20)">Ca · ২০</button>
+      <button class="qbtn" onclick="setCalc(23)">V · ২৩</button>
+      <button class="qbtn" onclick="setCalc(24)">Cr · ২৪ ⚠️</button>
+      <button class="qbtn" onclick="setCalc(25)">Mn · ২৫</button>
+      <button class="qbtn" onclick="setCalc(26)">Fe · ২৬</button>
+      <button class="qbtn" onclick="setCalc(28)">Ni · ২৮</button>
+      <button class="qbtn" onclick="setCalc(29)">Cu · ২৯ ⚠️</button>
+      <button class="qbtn" onclick="setCalc(33)">As · ৩৩</button>
+    </div>
+    <div id="calc-error" style="display:none" class="error-box"></div>
+    <div id="calc-result" style="display:none"></div>
+  </div>
+
+  <!-- RULES TAB -->
+  <div class="tab-content" id="tab-rules">
+    <div class="rule-card">
+      <div class="rule-badge rb-s">নিয়ম ১ · s-block মৌল</div>
+      <div class="rule-title">শুধু s অরবিটাল থাকলে</div>
+      <div class="rule-desc">বাইরের প্রধান শক্তিস্তরে শুধু s অরবিটাল থাকলে, সেই s অরবিটালের ইলেকট্রন সংখ্যাই গ্রুপ নম্বর।</div>
+      <div class="rule-formula">গ্রুপ = ns অরবিটালের ইলেকট্রন সংখ্যা</div>
+      <div class="rule-eg"><strong>H (1):</strong> 1s¹ → গ্রুপ = 1</div>
+      <div class="rule-eg"><strong>Li (3):</strong> 1s² 2s¹ → গ্রুপ = 1</div>
+      <div class="rule-eg"><strong>Ca (20):</strong> ...3p⁶ 4s² → গ্রুপ = 2</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-badge rb-p">নিয়ম ২ · p-block মৌল</div>
+      <div class="rule-title">বাইরে s ও p অরবিটাল থাকলে</div>
+      <div class="rule-desc">বাইরের প্রধান শক্তিস্তরে s ও p অরবিটাল থাকলে, তাদের মোট ইলেকট্রনের সাথে ১০ যোগ করলে গ্রুপ নম্বর পাওয়া যায়।</div>
+      <div class="rule-formula">গ্রুপ = ১০ + (ns + np) ইলেকট্রন সংখ্যা</div>
+      <div class="rule-eg"><strong>B (5):</strong> 2s² 2p¹ → গ্রুপ = 10+2+1 = 13</div>
+      <div class="rule-eg"><strong>Cl (17):</strong> 3s² 3p⁵ → গ্রুপ = 10+2+5 = 17</div>
+      <div class="rule-eg"><strong>As (33):</strong> 4s² 4p³ → গ্রুপ = 10+2+3 = 15</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-badge rb-d">নিয়ম ৩ · d-block মৌল</div>
+      <div class="rule-title">বাইরে s এবং আগে d অরবিটাল থাকলে</div>
+      <div class="rule-desc">বাইরের শক্তিস্তরে s এবং আগের শক্তিস্তরে d অরবিটাল থাকলে, এই দুই অরবিটালের ইলেকট্রন সংখ্যা যোগ করলেই গ্রুপ পাওয়া যায়।</div>
+      <div class="rule-formula">গ্রুপ = ns ইলেকট্রন + (n-1)d ইলেকট্রন সংখ্যা</div>
+      <div class="rule-eg"><strong>Fe (26):</strong> 3d⁶ 4s² → গ্রুপ = 2+6 = 8</div>
+      <div class="rule-eg"><strong>Mn (25):</strong> 3d⁵ 4s² → গ্রুপ = 2+5 = 7</div>
+      <div class="rule-eg"><strong>Zn (30):</strong> 3d¹⁰ 4s² → গ্রুপ = 2+10 = 12</div>
+    </div>
+    <div class="rule-card" style="border-color: rgba(255,92,92,0.3); background: rgba(255,92,92,0.05);">
+      <div class="rule-badge" style="background:rgba(255,92,92,0.12);color:var(--red);border:1px solid rgba(255,92,92,0.25);">⚠️ ব্যতিক্রম</div>
+      <div class="rule-title">Cr (24) ও Cu (29)</div>
+      <div class="rule-desc">এই দুটি মৌল সাধারণ নিয়ম মানে না। 3d অরবিটালের half-fill ও full-fill স্থিতিশীলতার কারণে 4s থেকে 3d-তে ইলেকট্রন ট্রান্সফার হয়।</div>
+      <div class="rule-formula">Cr: ...3d⁵ 4s¹ (half-fill) → গ্রুপ 6<br>Cu: ...3d¹⁰ 4s¹ (full-fill) → গ্রুপ 11</div>
+    </div>
+  </div>
+
+  <!-- QUIZ TAB -->
+  <div class="tab-content" id="tab-quiz">
+    <div class="score-bar" id="scoreBar">
+      <div class="sc"><div class="sc-val" id="sc-total">10</div><div class="sc-label">মোট প্রশ্ন</div></div>
+      <div class="sc"><div class="sc-val" id="sc-done" style="color:var(--gold)">0</div><div class="sc-label">উত্তর দিয়েছ</div></div>
+      <div class="sc"><div class="sc-val" id="sc-correct" style="color:var(--green)">0</div><div class="sc-label">সঠিক</div></div>
+      <div class="sc"><div class="sc-val" id="sc-pct" style="color:var(--accent)">০%</div><div class="sc-label">স্কোর</div></div>
+    </div>
+    <div id="quiz-container"></div>
+  </div>
+
+</div><!-- page -->
+
+<div class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-icon">👥</div>
+    <div class="cta-title">আমাদের <span>প্রাইভেট গ্রুপে</span> যোগ দাও!</div>
+    <p class="cta-sub">ক্লাসের আপডেট, নোট, MCQ প্র্যাকটিস, আর ইউশা ভাইয়ার সাথে সরাসরি প্রশ্ন করার সুযোগ — সব এক জায়গায়।</p>
+    <div class="cta-perks">
+      <span class="cta-perk">📚 ক্লাস নোট ও স্লাইড</span>
+      <span class="cta-perk">🎯 MCQ প্র্যাকটিস</span>
+      <span class="cta-perk">💬 ডাউট সলভ</span>
+      <span class="cta-perk">🔔 ক্লাস রিমাইন্ডার</span>
+      <span class="cta-perk">🏆 রেজাল্ট আপডেট</span>
+    </div>
+    <a class="cta-btn" href="https://www.facebook.com/groups/chemputer007" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;fill:#fff;flex-shrink:0"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      Facebook গ্রুপে যোগ দাও
+    </a>
+    <p class="cta-note">🔒 ক্লাস ৯ থেকে ১২ এর স্টুডেন্টদের জন্য এডুকেশনাল গ্রুপ!</p>
+  </div>
+</div>
+
+<div class="footer">
+  তৈরি করেছেন <strong>Md. Usha Khan (ইউশা)</strong> · 10 Minute School · অনলাইন ব্যাচ ২০২৬<br>
+  অধ্যায় ৪: পর্যায় সারণী · ৯ম শ্রেণি রসায়ন
+</div>
+
+<script>
+const FILL_ORDER = [
+  {n:'1s',max:2,l:'s',nv:1},
+  {n:'2s',max:2,l:'s',nv:2},
+  {n:'2p',max:6,l:'p',nv:2},
+  {n:'3s',max:2,l:'s',nv:3},
+  {n:'3p',max:6,l:'p',nv:3},
+  {n:'4s',max:2,l:'s',nv:4},
+  {n:'3d',max:10,l:'d',nv:3},
+  {n:'4p',max:6,l:'p',nv:4},
+  {n:'5s',max:2,l:'s',nv:5},
+  {n:'4d',max:10,l:'d',nv:4},
+  {n:'5p',max:6,l:'p',nv:5},
+];
+
+const NAMES = {1:'হাইড্রোজেন',2:'হিলিয়াম',3:'লিথিয়াম',4:'বেরিলিয়াম',5:'বোরন',6:'কার্বন',7:'নাইট্রোজেন',8:'অক্সিজেন',9:'ফ্লোরিন',10:'নিয়ন',11:'সোডিয়াম',12:'ম্যাগনেসিয়াম',13:'অ্যালুমিনিয়াম',14:'সিলিকন',15:'ফসফরাস',16:'সালফার',17:'ক্লোরিন',18:'আর্গন',19:'পটাসিয়াম',20:'ক্যালসিয়াম',21:'স্ক্যান্ডিয়াম',22:'টাইটানিয়াম',23:'ভ্যানাডিয়াম',24:'ক্রোমিয়াম',25:'ম্যাঙ্গানিজ',26:'আয়রন',27:'কোবাল্ট',28:'নিকেল',29:'কপার',30:'জিঙ্ক',31:'গ্যালিয়াম',32:'জার্মেনিয়াম',33:'আর্সেনিক',34:'সেলেনিয়াম',35:'ব্রোমিন',36:'ক্রিপ্টন'};
+const SYM = {1:'H',2:'He',3:'Li',4:'Be',5:'B',6:'C',7:'N',8:'O',9:'F',10:'Ne',11:'Na',12:'Mg',13:'Al',14:'Si',15:'P',16:'S',17:'Cl',18:'Ar',19:'K',20:'Ca',21:'Sc',22:'Ti',23:'V',24:'Cr',25:'Mn',26:'Fe',27:'Co',28:'Ni',29:'Cu',30:'Zn',31:'Ga',32:'Ge',33:'As',34:'Se',35:'Br',36:'Kr'};
+
+const EXCEPTIONS = {
+  24:{config:'1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁵ 4s¹',period:4,group:6,rule:'ব্যতিক্রম',note:'3d half-fill (3d⁵) স্থিতিশীলতার জন্য 4s থেকে 3d-তে ১টি ইলেকট্রন যায়',key:['3d','4s']},
+  29:{config:'1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s¹',period:4,group:11,rule:'ব্যতিক্রম',note:'3d full-fill (3d¹⁰) স্থিতিশীলতার জন্য 4s থেকে 3d-তে ১টি ইলেকট্রন যায়',key:['3d','4s']}
+};
+
+function sup(n){return String(n).replace(/\d/g,d=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[d]);}
+
+function buildOrbs(z){
+  let rem=z, orbs=[];
+  for(let o of FILL_ORDER){
+    if(rem<=0)break;
+    let fill=Math.min(rem,o.max);
+    orbs.push({...o,fill});
+    rem-=fill;
+  }
+  return orbs;
+}
+
+function analyse(z){
+  if(EXCEPTIONS[z]){
+    let e=EXCEPTIONS[z];
+    return {...e,isException:true};
+  }
+  let orbs=buildOrbs(z);
+  let maxN=0;
+  for(let o of orbs) if(o.nv>maxN) maxN=o.nv;
+  let period=maxN;
+  let outer=orbs.filter(o=>o.nv===maxN);
+  let sOnly=outer.every(o=>o.l==='s');
+  let hasPrevD=orbs.some(o=>o.l==='d'&&o.nv===maxN-1&&o.fill>0);
+  let group,rule,key=[];
+  if(z===2){group=18;rule='ব্যতিক্রম (He)';key=['1s'];}
+  else if(sOnly&&!hasPrevD){
+    let s=outer.find(o=>o.l==='s');
+    group=s?s.fill:1;
+    rule='নিয়ম ১ (s-block)';
+    key=[s?s.n:''];
+  } else if(sOnly&&hasPrevD){
+    let s=outer.find(o=>o.l==='s');
+    let d=orbs.find(o=>o.l==='d'&&o.nv===maxN-1);
+    group=(s?s.fill:0)+(d?d.fill:0);
+    rule='নিয়ম ৩ (d-block)';
+    key=[s?s.n:'',d?d.n:''];
+  } else {
+    let s=outer.find(o=>o.l==='s');
+    let p=outer.find(o=>o.l==='p');
+    group=10+(s?s.fill:0)+(p?p.fill:0);
+    rule='নিয়ম ২ (p-block)';
+    key=[s?s.n:'',p?p.n:''];
+  }
+  let config=EXCEPTIONS[z]?EXCEPTIONS[z].config:orbs.map(o=>o.n+sup(o.fill)).join(' ');
+  return{period,group,rule,config,orbs,key,isException:false,maxN};
+}
+
+function makeSteps(z,res){
+  if(res.isException){
+    return `<div class="step"><div class="step-n">১</div><div class="step-text">ইলেকট্রন বিন্যাস: <span class="math">${res.config}</span></div></div>
+    <div class="step"><div class="step-n">⚠</div><div class="step-text"><strong>ব্যতিক্রম মৌল!</strong> ${res.note}</div></div>
+    <div class="step"><div class="step-n">৩</div><div class="step-text">সর্বশেষ শক্তিস্তর = ৪ → <strong>পর্যায় = ${res.period}</strong> | গ্রুপ = <strong>${res.group}</strong></div></div>`;
+  }
+  let maxN=res.maxN;
+  let s1=`<div class="step"><div class="step-n">১</div><div class="step-text">ইলেকট্রন বিন্যাস: <span class="math">${res.config}</span></div></div>`;
+  let s2=`<div class="step"><div class="step-n">২</div><div class="step-text">সর্বশেষ শক্তিস্তর = <strong>${maxN}</strong> → <strong>পর্যায় = ${res.period}</strong></div></div>`;
+  let s3='';
+  if(res.rule.includes('নিয়ম ১')){
+    let sOrb=res.orbs.find(o=>o.nv===maxN&&o.l==='s');
+    s3=`<div class="step"><div class="step-n">৩</div><div class="step-text">${res.rule}: বাইরে শুধু <strong>s</strong> অরবিটাল → <strong>গ্রুপ = ${res.group}</strong></div></div>`;
+  } else if(res.rule.includes('নিয়ম ২')){
+    let sO=res.orbs.find(o=>o.nv===maxN&&o.l==='s');
+    let pO=res.orbs.find(o=>o.nv===maxN&&o.l==='p');
+    let sf=sO?sO.fill:0, pf=pO?pO.fill:0;
+    s3=`<div class="step"><div class="step-n">৩</div><div class="step-text">${res.rule}<br><span class="math">গ্রুপ = ১০ + s(${sf}) + p(${pf}) = ${res.group}</span></div></div>`;
+  } else if(res.rule.includes('নিয়ম ৩')){
+    let sO=res.orbs.find(o=>o.nv===maxN&&o.l==='s');
+    let dO=res.orbs.find(o=>o.l==='d'&&o.nv===maxN-1);
+    let sf=sO?sO.fill:0, df=dO?dO.fill:0;
+    s3=`<div class="step"><div class="step-n">৩</div><div class="step-text">${res.rule}<br><span class="math">গ্রুপ = s(${sf}) + d(${df}) = ${res.group}</span></div></div>`;
+  } else {
+    s3=`<div class="step"><div class="step-n">৩</div><div class="step-text"><strong>গ্রুপ = ${res.group}</strong> (${res.rule})</div></div>`;
+  }
+  return s1+s2+s3;
+}
+
+function calculate(){
+  let z=parseInt(document.getElementById('atomicNum').value);
+  let errEl=document.getElementById('calc-error');
+  let resEl=document.getElementById('calc-result');
+  errEl.style.display='none'; resEl.style.display='none';
+  if(!z||z<1||z>36){errEl.textContent='অনুগ্রহ করে ১ থেকে ৩৬ এর মধ্যে সংখ্যা দাও।';errEl.style.display='block';return;}
+  let res=analyse(z);
+  let sym=SYM[z]||'?'; let name=NAMES[z]||'';
+  let orbs=res.orbs||(res.isException?buildOrbs(z):[]);
+  if(res.isException) orbs=buildOrbs(z);
+  let keySet=new Set(res.key||[]);
+
+  let orbHTML=orbs.map(o=>{
+    let cls='';
+    let maxN=res.maxN||4;
+    if(keySet.has(o.n)) cls='key';
+    else if(o.nv===maxN) cls='outer';
+    return `<div class="orb-box ${cls}"><div class="orb-n">${o.n}</div><div class="orb-e">${o.fill}e⁻</div></div>`;
+  }).join('');
+
+  let rulePill=res.isException?`<span class="exc-pill">⚠️ ব্যতিক্রম মৌল</span>`:`<span class="rule-pill">${res.rule}</span>`;
+
+  resEl.innerHTML=`<div class="result-wrap">
+    <div class="element-hero">
+      <div class="element-symbol"><div class="el-sym">${sym}</div><div class="el-z">Z = ${z}</div><div class="el-name">${name}</div></div>
+      <div class="gp-row">
+        <div class="gp-card period"><div class="gp-val">${res.period}</div><div class="gp-label">পর্যায়</div></div>
+        <div class="gp-card group"><div class="gp-val">${res.group}</div><div class="gp-label">গ্রুপ</div></div>
+      </div>
+    </div>
+    <div class="config-block">
+      <div class="config-label">ইলেকট্রন বিন্যাস</div>
+      <div class="config-text">${res.config}</div>
+      ${rulePill}
+    </div>
+    <div class="orb-section">
+      <div class="orb-section-label">অরবিটাল চিত্র <span style="font-size:11px;color:var(--gold)">■ বাইরের স্তর</span> <span style="font-size:11px;color:var(--accent);margin-left:8px">■ মূল অরবিটাল</span></div>
+      <div class="orb-grid">${orbHTML}</div>
+    </div>
+    <div class="steps">
+      <div class="steps-header">ধাপে ধাপে সমাধান</div>
+      ${makeSteps(z,res)}
+    </div>
+  </div>`;
+  resEl.style.display='block';
+}
+
+function setCalc(n){document.getElementById('atomicNum').value=n; calculate();}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('atomicNum').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
+});
+
+function switchTab(t){
+  document.querySelectorAll('.tab').forEach((b,i)=>{b.classList.toggle('active',['calc','rules','quiz'][i]===t);});
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+}
+
+/* QUIZ */
+const QUESTIONS=[
+  {q:'Z = ⋯ns²(n−1)d³ হলে পর্যায় সারণীতে Z এর অবস্থান কোন গ্রুপে?',opts:['গ্রুপ-15','গ্রুপ-5','গ্রুপ-3','গ্রুপ-2'],ans:1,exp:'বাইরে s(2) এবং আগের স্তরে d(3) আছে → নিয়ম ৩: গ্রুপ = 2 + 3 = <strong>5</strong>'},
+  {q:'আয়রন (Fe) পর্যায় সারণীর কোন পর্যায়ে অবস্থিত? (Z = 26)',opts:['২য়','৩য়','৪র্থ','৫ম'],ans:2,exp:'Fe(26): 1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁶ 4s² → সর্বশেষ শক্তিস্তর 4 → <strong>৪র্থ পর্যায়</strong>'},
+  {q:'M → 1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹ 4s² মৌলটির অবস্থান কোন গ্রুপে?',opts:['গ্রুপ-2','গ্রুপ-3','গ্রুপ-4','গ্রুপ-9'],ans:1,exp:'বাইরে 4s²(2) এবং আগে 3d¹(1) → নিয়ম ৩: গ্রুপ = 2 + 1 = <strong>3</strong>'},
+  {q:'পর্যায় সারণীর মূল ভিত্তি কী?',opts:['ইলেকট্রন বিন্যাস','পারমাণবিক ভর','ইলেকট্রন সংখ্যা','নিউট্রন সংখ্যা'],ans:0,exp:'ইলেকট্রন বিন্যাসের মাধ্যমে মৌলের পর্যায় ও গ্রুপ নির্ণয় করা যায় → <strong>ইলেকট্রন বিন্যাসই মূল ভিত্তি</strong>'},
+  {q:"24 পারমাণবিক সংখ্যাবিশিষ্ট মৌলটির অবস্থান পর্যায় সারণীর কোন গ্রুপে?",opts:['গ্রুপ-6','গ্রুপ-8','গ্রুপ-10','গ্রুপ-12'],ans:0,exp:'Cr(24) ব্যতিক্রম মৌল: 3d⁵ 4s¹ → 3d half-fill স্থিতিশীলতা → গ্রুপ = 1+5 = <strong>6</strong>'},
+  {q:"'A' মৌলের সর্বশেষ কক্ষপথের ইলেকট্রন বিন্যাস ns² np⁵ (n=3) হলে পর্যায় সারণীতে A মৌলের অবস্থান?",opts:['৩য় পর্যায়ের ৭ম গ্রুপে','৩য় পর্যায়ের ৫ম গ্রুপে','৩য় পর্যায়ের ১৭নং গ্রুপে','৩য় পর্যায়ের ১৫নং গ্রুপে'],ans:2,exp:'n=3 → ৩য় পর্যায়; s(2)+p(5)=7 → নিয়ম ২: গ্রুপ = 10+7 = <strong>17</strong>'},
+  {q:'নিচের কোন মৌলের ধর্ম নাইট্রোজেনের সাথে মিল রয়েছে?',opts:['Si','P','S','O'],ans:1,exp:'N(7): গ্রুপ 15; P(15) 3s² 3p³ → একই গ্রুপে (15) → একই রাসায়নিক ধর্ম → <strong>P</strong>'},
+  {q:'সালফারের সাথে নিচের কোন মৌলের ধর্মের মিল বিদ্যমান?',opts:['N','C','Si','O'],ans:3,exp:'S(16): গ্রুপ 16; O(8) 1s² 2s² 2p⁴ → একই গ্রুপে (16) → একই রাসায়নিক ধর্ম → <strong>O</strong>'},
+  {q:'K, A, Sc, Ti, V — এই পর্যায়ের A মৌলটি সারণীর কোন পর্যায়ে?',opts:['৬ষ্ঠ','৪র্থ','৩য়','২য়'],ans:1,exp:'K(19) চতুর্থ পর্যায়ে। এই সারিতে K এর পরের মৌল Ca (Z=20) → সর্বশেষ শক্তিস্তর 4 → <strong>৪র্থ পর্যায়</strong>'},
+  {q:'একটি মৌলের প্রোটন সংখ্যা 28 হলে, মৌলটি পর্যায় সারণীর কত নং গ্রুপে অবস্থিত?',opts:['গ্রুপ-8','গ্রুপ-10','গ্রুপ-12','গ্রুপ-14'],ans:1,exp:'Ni(28): 1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁸ 4s² → নিয়ম ৩: 2+8 = <strong>10</strong>'},
+];
+
+let scores={done:0,correct:0};
+function initQuiz(){
+  let html='';
+  QUESTIONS.forEach((q,i)=>{
+    let opts=q.opts.map((o,j)=>`<button class="opt" id="q${i}o${j}" onclick="answer(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('');
+    html+=`<div class="q-card" id="qcard${i}">
+      <div class="q-num">প্রশ্ন ${i+1} / ${QUESTIONS.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="opt-grid" id="qopts${i}">${opts}</div>
+      <div class="explanation" id="qexp${i}" style="display:none">${q.exp}</div>
+    </div>`;
+  });
+  document.getElementById('quiz-container').innerHTML=html;
+}
+
+function answer(qi,oi){
+  let q=QUESTIONS[qi];
+  let opts=document.querySelectorAll(`#qopts${qi} .opt`);
+  opts.forEach(o=>o.classList.add('answered'));
+  opts.forEach((o,j)=>{
+    if(j===q.ans) o.classList.add('correct');
+    else if(j===oi&&oi!==q.ans) o.classList.add('wrong');
+  });
+  document.getElementById(`qexp${qi}`).style.display='block';
+  scores.done++;
+  if(oi===q.ans) scores.correct++;
+  document.getElementById('sc-done').textContent=scores.done;
+  document.getElementById('sc-correct').textContent=scores.correct;
+  document.getElementById('sc-pct').textContent=Math.round(scores.correct/scores.done*100)+'%';
+}
+
+initQuiz();
+</script>
+</body>
+</html>
