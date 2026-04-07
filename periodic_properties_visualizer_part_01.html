@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>মৌলের পর্যায়বৃত্ত ধর্ম ভিজ্যুয়ালাইজার | ইউশা</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #0d0d14; color: #f0eeff; margin: 0; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .bg-pattern {
+            background-image: linear-gradient(rgba(124,92,252,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,92,252,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .text-gradient {
+            background: linear-gradient(90deg, #7c5cfc, #e05cfc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .bg-gradient-accent { background: linear-gradient(135deg, #7c5cfc, #e05cfc); }
+        
+        /* Custom Scrollbar for better UI */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #2e2e3e; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7c5cfc; }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern fixed inset-0 pointer-events-none z-0"></div>
+    <div id="root" class="relative z-10"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // --- Icons (Converted to inline SVGs for standalone HTML) ---
+        const IconMaximize = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>;
+        const IconZap = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
+        const IconWind = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>;
+        const IconArrowRight = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>;
+        const IconArrowDown = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>;
+        const IconBookOpen = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>;
+        const IconUsers = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+        const IconBookMarked = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><polyline points="10 2 10 10 13 7 16 10 16 2"/></svg>;
+        const IconGraduationCap = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>;
+        const IconCheckCircle2 = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>;
+        const IconFacebook = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>;
+
+        // --- Data ---
+        const elementsData = [
+          { p: 1, g: 1, sym: 'H', z: 1, r: 53, m: 10, nm: 80, col: 1 },
+          { p: 1, g: 18, sym: 'He', z: 2, r: 31, m: 0, nm: 0, col: 8 },
+          { p: 2, g: 1, sym: 'Li', z: 3, r: 152, m: 80, nm: 10, col: 1 },
+          { p: 2, g: 2, sym: 'Be', z: 4, r: 112, m: 60, nm: 20, col: 2 },
+          { p: 2, g: 13, sym: 'B', z: 5, r: 85, m: 40, nm: 40, col: 3 },
+          { p: 2, g: 14, sym: 'C', z: 6, r: 77, m: 20, nm: 60, col: 4 },
+          { p: 2, g: 15, sym: 'N', z: 7, r: 70, m: 10, nm: 70, col: 5 },
+          { p: 2, g: 16, sym: 'O', z: 8, r: 66, m: 5, nm: 80, col: 6 },
+          { p: 2, g: 17, sym: 'F', z: 9, r: 64, m: 0, nm: 90, col: 7 },
+          { p: 2, g: 18, sym: 'Ne', z: 10, r: 58, m: 0, nm: 0, col: 8 },
+          { p: 3, g: 1, sym: 'Na', z: 11, r: 186, m: 90, nm: 5, col: 1 },
+          { p: 3, g: 2, sym: 'Mg', z: 12, r: 160, m: 70, nm: 15, col: 2 },
+          { p: 3, g: 13, sym: 'Al', z: 13, r: 143, m: 50, nm: 30, col: 3 },
+          { p: 3, g: 14, sym: 'Si', z: 14, r: 118, m: 40, nm: 40, col: 4 },
+          { p: 3, g: 15, sym: 'P', z: 15, r: 110, m: 20, nm: 60, col: 5 },
+          { p: 3, g: 16, sym: 'S', z: 16, r: 103, m: 10, nm: 70, col: 6 },
+          { p: 3, g: 17, sym: 'Cl', z: 17, r: 99, m: 0, nm: 80, col: 7 },
+          { p: 3, g: 18, sym: 'Ar', z: 18, r: 94, m: 0, nm: 0, col: 8 },
+          { p: 4, g: 1, sym: 'K', z: 19, r: 227, m: 100, nm: 0, col: 1 },
+          { p: 4, g: 2, sym: 'Ca', z: 20, r: 197, m: 80, nm: 10, col: 2 },
+          { p: 4, g: 13, sym: 'Ga', z: 31, r: 135, m: 60, nm: 20, col: 3 },
+          { p: 4, g: 14, sym: 'Ge', z: 32, r: 122, m: 40, nm: 40, col: 4 },
+          { p: 4, g: 15, sym: 'As', z: 33, r: 114, m: 30, nm: 50, col: 5 },
+          { p: 4, g: 16, sym: 'Se', z: 34, r: 103, m: 20, nm: 60, col: 6 },
+          { p: 4, g: 17, sym: 'Br', z: 35, r: 99, m: 5, nm: 70, col: 7 },
+          { p: 4, g: 18, sym: 'Kr', z: 36, r: 88, m: 0, nm: 0, col: 8 },
+        ];
+
+        const MAX_RADIUS = 227;
+
+        const trendsInfo = {
+          size: {
+            id: 'size',
+            icon: IconMaximize,
+            title: "পরমাণুর আকার",
+            subtitle: "(Atomic Radius)",
+            horizontal: "হ্রাস পায় (কমে)",
+            vertical: "বৃদ্ধি পায় (বাড়ে)",
+            horizontalGrad: "from-[#7c5cfc] via-[#7c5cfc]/50 to-transparent",
+            verticalGrad: "from-transparent via-[#e05cfc]/50 to-[#e05cfc]",
+            arrowColor: "text-[#e05cfc]",
+            explanation: "একই পর্যায়ে বাম থেকে ডানে গেলে নতুন কোনো শক্তিস্তর যুক্ত হয় না, কিন্তু নিউক্লিয়াসে প্রোটন ও বাইরে ইলেকট্রন বাড়ে। ফলে আকর্ষণ বাড়ে এবং আকার সংকুচিত হয়ে ছোট হয়। অন্যদিকে একই গ্রুপে ওপর থেকে নিচে নামলে প্রতি ধাপে নতুন শক্তিস্তর যুক্ত হয়, যা আকর্ষণ বৃদ্ধির প্রভাবকে ছাপিয়ে আকার বড় করে দেয়।"
+          },
+          metallic: {
+            id: 'metallic',
+            icon: IconZap,
+            title: "ধাতব ধর্ম",
+            subtitle: "(Metallic Property)",
+            horizontal: "হ্রাস পায় (কমে)",
+            vertical: "বৃদ্ধি পায় (বাড়ে)",
+            horizontalGrad: "from-[#f5c842] via-[#f5c842]/40 to-transparent",
+            verticalGrad: "from-transparent via-[#f5c842]/40 to-[#f5c842]",
+            arrowColor: "text-[#f5c842]",
+            explanation: "ধাতব ধর্ম হলো ইলেকট্রন ত্যাগের প্রবণতা। একই পর্যায়ে বাম থেকে ডানে গেলে আকর্ষণ বাড়ে এবং আকার ছোট হয়, তাই ইলেকট্রন ত্যাগ করা কঠিন হয়ে পড়ে (ধাতব ধর্ম কমে)। কিন্তু গ্রুপে ওপর থেকে নিচে নামলে আকার বাড়ে, বাইরের ইলেকট্রন নিউক্লিয়াস থেকে দূরে সরে যায়, ফলে সহজেই ইলেকট্রন ত্যাগ করতে পারে (ধাতব ধর্ম বাড়ে)।"
+          },
+          nonMetallic: {
+            id: 'nonMetallic',
+            icon: IconWind,
+            title: "অধাতব ধর্ম",
+            subtitle: "(Non-Metallic Property)",
+            horizontal: "বৃদ্ধি পায় (বাড়ে)",
+            vertical: "হ্রাস পায় (কমে)",
+            horizontalGrad: "from-transparent via-[#3dffa0]/40 to-[#3dffa0]",
+            verticalGrad: "from-[#3dffa0] via-[#3dffa0]/40 to-transparent",
+            arrowColor: "text-[#3dffa0]",
+            explanation: "অধাতব ধর্ম হলো ইলেকট্রন গ্রহণের প্রবণতা। একই পর্যায়ে বাম থেকে ডানে গেলে পরমাণুর আকার ছোট হয় এবং নিউক্লিয়াসের আকর্ষণ বাড়ে, তাই সহজেই নতুন ইলেকট্রন গ্রহণ করতে পারে (অধাতব ধর্ম বাড়ে)। কিন্তু ওপর থেকে নিচে নামলে আকার বড় হওয়ার কারণে নতুন ইলেকট্রনের প্রতি নিউক্লিয়াসের আকর্ষণ কমে যায় (অধাতব ধর্ম কমে)।"
+          }
+        };
+
+        // --- Main App Component ---
+        const App = () => {
+          const [activeTrendId, setActiveTrendId] = useState('size');
+          const activeTrend = trendsInfo[activeTrendId];
+
+          const renderCellVisual = (el) => {
+            if (activeTrendId === 'size') {
+              const sizePercent = (el.r / MAX_RADIUS) * 100;
+              return (
+                <div 
+                  className="absolute rounded-full bg-gradient-to-br from-[#7c5cfc] to-[#e05cfc] shadow-[0_0_15px_rgba(124,92,252,0.5)] transition-all duration-700 ease-in-out"
+                  style={{ width: `${sizePercent}%`, height: `${sizePercent}%` }}
+                />
+              );
+            }
+            if (activeTrendId === 'metallic') {
+              const opacity = el.m / 100;
+              return (
+                <div 
+                  className="absolute inset-0 bg-[#f5c842] transition-all duration-700 ease-in-out"
+                  style={{ opacity: opacity * 0.85 }} 
+                />
+              );
+            }
+            if (activeTrendId === 'nonMetallic') {
+              const opacity = el.nm / 100;
+              return (
+                <div 
+                  className="absolute inset-0 bg-[#3dffa0] transition-all duration-700 ease-in-out"
+                  style={{ opacity: opacity * 0.85 }}
+                />
+              );
+            }
+          };
+
+          return (
+            <div className="max-w-5xl mx-auto p-4 md:p-8 pt-8 overflow-x-hidden">
+              <div className="text-center mb-10">
+                <div className="inline-block bg-gradient-accent text-white text-[11px] font-semibold tracking-wider px-4 py-1.5 rounded-full mb-4 uppercase">
+                  অনলাইন ব্যাচ ২০২৬ · ৯ম শ্রেণি রসায়ন
+                </div>
+                <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-2">
+                  মৌলের <span className="text-gradient">পর্যায়বৃত্ত ধর্ম</span> ভিজ্যুয়ালাইজার
+                </h1>
+                <p className="text-[#8882aa] text-sm">অধ্যায় ৪ · পর্যায় সারণী (পার্ট ০১)</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+                {Object.values(trendsInfo).map((trend) => {
+                  const Icon = trend.icon;
+                  const isActive = activeTrendId === trend.id;
+                  return (
+                    <button
+                      key={trend.id}
+                      onClick={() => setActiveTrendId(trend.id)}
+                      className={`relative flex flex-col items-center p-4 rounded-2xl border transition-all duration-300 transform ${
+                        isActive 
+                          ? 'bg-[#1e1e2a] border-[#7c5cfc] shadow-[0_0_20px_rgba(124,92,252,0.2)] scale-[1.02]' 
+                          : 'bg-[#16161f] border-[#2e2e3e] hover:border-[#7c5cfc]/50'
+                      }`}
+                    >
+                      <div className={`p-3 rounded-full mb-3 ${isActive ? 'bg-gradient-accent text-white' : 'bg-[#2e2e3e] text-[#8882aa]'}`}>
+                        <Icon size={24} />
+                      </div>
+                      <h3 className={`text-lg font-bold ${isActive ? 'text-[#f0eeff]' : 'text-[#8882aa]'}`}>
+                        {trend.title}
+                      </h3>
+                      <span className="text-xs text-[#8882aa] mt-1">{trend.subtitle}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="bg-[#16161f] border border-[#2e2e3e] rounded-3xl p-6 md:p-8 shadow-2xl mb-8">
+                <div className="flex flex-col gap-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-8 md:w-16 shrink-0" />
+                    <div className="flex-1 flex flex-col items-center">
+                      <span className="text-sm font-semibold mb-2 text-[#8882aa]">পর্যায় বরাবর (বাম থেকে ডানে)</span>
+                      <div className={`w-full h-4 rounded-full bg-gradient-to-r ${activeTrend.horizontalGrad} flex items-center justify-end pr-2 border border-white/5`}>
+                        <IconArrowRight size={18} className="text-white drop-shadow-md" />
+                      </div>
+                      <span className={`text-sm font-bold mt-2 ${activeTrend.arrowColor}`}>{activeTrend.title} {activeTrend.horizontal}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 md:gap-6">
+                    <div className="w-8 md:w-16 shrink-0 flex flex-col items-center">
+                      <span className="text-sm font-semibold text-[#8882aa] whitespace-nowrap -rotate-90 mb-16 md:mb-20">গ্রুপ বরাবর (ওপর থেকে নিচে)</span>
+                      <div className={`w-4 flex-1 rounded-full bg-gradient-to-b ${activeTrend.verticalGrad} flex items-end justify-center pb-2 border border-white/5`}>
+                        <IconArrowDown size={18} className="text-white drop-shadow-md" />
+                      </div>
+                      <span className={`text-sm font-bold mt-3 text-center ${activeTrend.arrowColor}`}>{activeTrend.vertical}</span>
+                    </div>
+
+                    <div className="flex-1">
+                      <div className="grid grid-cols-8 gap-1.5 md:gap-3 auto-rows-fr">
+                        {elementsData.map((el) => (
+                          <div 
+                            key={el.sym} 
+                            style={{ gridColumn: el.col, gridRow: el.p }}
+                            className="relative aspect-square bg-[#1e1e2a] border border-[#2e2e3e] rounded-lg md:rounded-xl flex flex-col items-center justify-center overflow-hidden group"
+                          >
+                            {renderCellVisual(el)}
+                            <span className="relative z-10 text-lg md:text-2xl font-bold text-white drop-shadow-md">
+                              {el.sym}
+                            </span>
+                            <span className="relative z-10 text-[9px] md:text-xs text-white/80 font-medium">
+                              {el.z}
+                            </span>
+
+                            <div className="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20 flex flex-col items-center justify-center text-[10px] md:text-xs font-bold text-white p-1 text-center backdrop-blur-sm">
+                              {activeTrendId === 'size' && <span>{el.r} pm</span>}
+                              {activeTrendId === 'metallic' && <span>ধাতব ধর্ম<br/>{el.m}%</span>}
+                              {activeTrendId === 'nonMetallic' && <span>অধাতব ধর্ম<br/>{el.nm}%</span>}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <p className="text-right text-[11px] text-[#8882aa] mt-3">
+                        * d-ব্লক (অবস্থান্তর ধাতু) মৌলসমূহকে সরলতার জন্য এই ভিজ্যুয়ালাইজেশন থেকে বাদ দেওয়া হয়েছে।
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-[#1e1e2a] border-l-4 border-l-[#7c5cfc] rounded-r-2xl p-6 md:p-8 shadow-lg mb-12">
+                <h3 className="text-xl font-bold mb-3 text-[#f0eeff] flex items-center gap-2">
+                  <IconBookOpen size={24} className="text-[#7c5cfc]" />
+                  কেন এমনটি ঘটে?
+                </h3>
+                <p className="text-[#8882aa] text-[15px] leading-relaxed">
+                  {activeTrend.explanation}
+                </p>
+              </div>
+
+              <div className="flex justify-center mb-8">
+                <div className="flex items-center gap-3 bg-[#16161f] border border-[#2e2e3e] rounded-xl py-2.5 px-6 shadow-lg">
+                  <div className="w-10 h-10 rounded-full bg-gradient-accent flex items-center justify-center text-sm font-bold text-white shrink-0">
+                    ইউ
+                  </div>
+                  <div className="text-left">
+                    <a href="https://www.facebook.com/usha.khan.50596" target="_blank" rel="noreferrer" className="text-[14px] font-semibold text-[#f0eeff] hover:text-[#7c5cfc] transition-colors">
+                      Md. Usha Khan (ইউশা)
+                    </a>
+                    <div className="text-[11px] text-[#8882aa]">Chemistry Instructor, 10MS · CSE, BUET</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-[20px] p-8 text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(124,92,252,0.15), rgba(224,92,252,0.10))', border: '1px solid rgba(124,92,252,0.3)' }}>
+                <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(124,92,252,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(124,92,252,0.06) 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
+                <div className="relative z-10">
+                  <div className="text-4xl mb-3 flex justify-center text-[#7c5cfc]">
+                    <IconUsers size={40} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">
+                    আমার <span className="text-gradient">এক্সক্লুসিভ ফেসবুক গ্রুপে</span> যোগ দাও!
+                  </h3>
+                  <p className="text-[14px] text-[#8882aa] mb-5 max-w-lg mx-auto leading-relaxed">
+                    ক্লাসের আপডেট, নোট, MCQ প্র্যাকটিস, আর ইউশা ভাইয়ার সাথে সরাসরি প্রশ্ন করার সুযোগ — সব এক জায়গায়।
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-2 mb-6">
+                    <span className="bg-white/5 border border-white/10 rounded-full px-3.5 py-1 text-[13px] text-[#8882aa] flex items-center gap-1.5"><IconBookMarked size={14} /> ক্লাস নোট</span>
+                    <span className="bg-white/5 border border-white/10 rounded-full px-3.5 py-1 text-[13px] text-[#8882aa] flex items-center gap-1.5"><IconGraduationCap size={14} /> MCQ প্র্যাকটিস</span>
+                    <span className="bg-white/5 border border-white/10 rounded-full px-3.5 py-1 text-[13px] text-[#8882aa] flex items-center gap-1.5"><IconCheckCircle2 size={14} /> ডাউট সলভ</span>
+                  </div>
+                  <a 
+                    href="https://www.facebook.com/groups/chemputer007" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-bold text-[15px] px-7 py-3.5 rounded-xl transition-all transform hover:-translate-y-0.5 active:scale-95 shadow-lg"
+                  >
+                    <IconFacebook size={20} className="text-white border-none" />
+                    Facebook গ্রুপে যোগ দাও
+                  </a>
+                  <p className="text-[12px] text-[#8882aa] mt-3">🔒 ক্লাস ৯ থেকে ১২ এর স্টুডেন্টদের জন্য এডুকেশনাল গ্রুপ!</p>
+                </div>
+              </div>
+
+              <div className="text-center mt-12 text-[12px] text-[#8882aa] leading-relaxed">
+                তৈরি করেছেন{' '}
+                <strong>
+                  <a href="https://www.facebook.com/usha.khan.50596" target="_blank" rel="noreferrer" className="text-[#7c5cfc] hover:underline">
+                    Md. Usha Khan (ইউশা)
+                  </a>
+                </strong>{' '}
+                <br/>
+                Chemistry Instructor, 10 Minute School · CSE, BUET
+              </div>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>রসায়ন ইন্টারেক্টিভ টুলস | ইউশা</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #0d0d14; color: #f0eeff; margin: 0; min-height: 100vh; }
+        .bg-pattern {
+            background-image: linear-gradient(rgba(124,92,252,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,92,252,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .text-gradient {
+            background: linear-gradient(90deg, #7c5cfc, #e05cfc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(124, 92, 252, 0.3); border-color: #7c5cfc; }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern fixed inset-0 pointer-events-none z-0"></div>
+    
+    <div class="relative z-10 max-w-4xl mx-auto p-6 md:p-12 pt-12">
+        <div class="text-center mb-12">
+            <div class="inline-block bg-gradient-to-r from-[#7c5cfc] to-[#e05cfc] text-white text-xs font-bold tracking-widest px-5 py-2 rounded-full mb-5 uppercase">
+                Chemputer Educational Webapps
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-4">
+                রসায়ন <span class="text-gradient">ইন্টারেক্টিভ টুলস</span>
+            </h1>
+            <p class="text-[#8882aa] text-lg max-w-xl mx-auto">
+                নবম-দশম শ্রেণির রসায়ন পড়াকে আরও সহজ ও ভিজ্যুয়াল করতে ইউশা ভাইয়ার তৈরি করা স্পেশাল টুলস কালেকশন।
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            
+            <a href="electron_configue_calculator.html" class="block bg-[#16161f] border border-[#2e2e3e] rounded-2xl p-6 card-hover no-underline group relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-[#7c5cfc]/10 rounded-bl-full -z-10 group-hover:bg-[#7c5cfc]/20 transition-colors"></div>
+                <div class="text-3xl mb-4">🧮</div>
+                <h2 class="text-xl font-bold text-white mb-2 group-hover:text-[#7c5cfc] transition-colors">ইলেকট্রন বিন্যাস ক্যালকুলেটর</h2>
+                <p class="text-[#8882aa] text-sm">১ থেকে ৩৬ পারমাণবিক সংখ্যার যেকোনো মৌলের ইলেকট্রন বিন্যাস, অরবিটাল ডায়াগ্রাম এবং পর্যায়-গ্রুপ নির্ণয়।</p>
+            </a>
+
+            <a href="electron_configue_by_blocks.html" class="block bg-[#16161f] border border-[#2e2e3e] rounded-2xl p-6 card-hover no-underline group relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-[#3dffa0]/10 rounded-bl-full -z-10 group-hover:bg-[#3dffa0]/20 transition-colors"></div>
+                <div class="text-3xl mb-4">📚</div>
+                <h2 class="text-xl font-bold text-white mb-2 group-hover:text-[#3dffa0] transition-colors">গ্রুপ নির্ণয়ের নিয়মাবলি</h2>
+                <p class="text-[#8882aa] text-sm">s, p, d এবং f ব্লক অনুযায়ী ধাপে ধাপে সূত্র প্রয়োগ করে মৌলের গ্রুপ বের করার দারুণ ভিজ্যুয়াল লার্নিং টুল।</p>
+            </a>
+
+            <a href="periodic_properties_visualizer_part_01.html" class="block bg-[#16161f] border border-[#2e2e3e] rounded-2xl p-6 card-hover no-underline group relative overflow-hidden md:col-span-2">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-[#f5c842]/10 rounded-bl-full -z-10 group-hover:bg-[#f5c842]/20 transition-colors"></div>
+                <div class="text-3xl mb-4">✨</div>
+                <h2 class="text-2xl font-bold text-white mb-2 group-hover:text-[#f5c842] transition-colors">পর্যায়বৃত্ত ধর্ম ভিজ্যুয়ালাইজার (পার্ট ০১)</h2>
+                <p class="text-[#8882aa] text-sm md:text-base max-w-2xl">খালি চোখে দেখো কীভাবে পর্যায় সারণিতে বাম থেকে ডানে এবং ওপর থেকে নিচে গেলে পরমাণুর আকার, ধাতব ধর্ম এবং অধাতব ধর্ম পরিবর্তিত হয়!</p>
+            </a>
+
+        </div>
+
+        <div class="text-center mt-16 pt-8 border-t border-[#2e2e3e]">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-[#7c5cfc] to-[#e05cfc] flex items-center justify-center text-sm font-bold text-white">
+                    ইউ
+                </div>
+                <div class="text-left">
+                    <a href="https://www.facebook.com/usha.khan.50596" target="_blank" class="text-[15px] font-semibold text-white hover:text-[#7c5cfc] transition-colors">
+                        Md. Usha Khan (ইউশা)
+                    </a>
+                    <div class="text-[12px] text-[#8882aa]">Chemistry Instructor, 10MS · CSE, BUET</div>
+                </div>
+            </div>
+            <p class="text-xs text-[#8882aa]">© 2026 Chemputer. All interactive tools designed for students.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ইলেকট্রন বিন্যাস থেকে গ্রুপ নির্ণয় | ইউশা</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #0B1120; color: #e2e8f0; margin: 0; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="selection:bg-cyan-900 selection:text-cyan-50">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // --- Icons (Inline SVGs) ---
+        const IconAtom = ({className=""}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 9.87 6.54 11.9 4.5Z"/><path d="M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z"/></svg>;
+        const IconBeaker = ({className=""}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 3h15"/><path d="M6 3v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3"/><path d="M6 14h12"/></svg>;
+        const IconBookOpen = ({className=""}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>;
+        const IconCalculator = ({className=""}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>;
+        const IconCheckCircle2 = ({className=""}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>;
+        const IconChevronRight = ({className=""}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>;
+
+        // --- Data ---
+        const elementsData = [
+          // s-block
+          { id: 'H', name: 'হাইড্রোজেন', symbol: 'H', z: 1, block: 's', config: '1s¹', valenceHighlight: '1s¹', blockReason: 'শেষ ইলেকট্রনটি s-অরবিটালে প্রবেশ করেছে। তাই এটি s-ব্লক মৌল।', ruleTitle: 's-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = যোজ্যতা স্তরের s-অরবিটালে উপস্থিত ইলেকট্রন সংখ্যা।', calc: '1s অরবিটাল-এ ইলেকট্রন আছে ১টি।', group: '১', color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/30', ring: 'ring-blue-500/50' },
+          { id: 'Na', name: 'সোডিয়াম', symbol: 'Na', z: 11, block: 's', config: '1s² 2s² 2p⁶ 3s¹', valenceHighlight: '3s¹', blockReason: 'শেষ ইলেকট্রনটি s-অরবিটালে প্রবেশ করেছে। তাই এটি s-ব্লক মৌল।', ruleTitle: 's-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = যোজ্যতা স্তরের s-অরবিটালে উপস্থিত ইলেকট্রন সংখ্যা।', calc: '3s অরবিটালে ইলেকট্রন আছে ১টি।', group: '১', color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/30', ring: 'ring-blue-500/50' },
+          { id: 'Mg', name: 'ম্যাগনেসিয়াম', symbol: 'Mg', z: 12, block: 's', config: '1s² 2s² 2p⁶ 3s²', valenceHighlight: '3s²', blockReason: 'শেষ ইলেকট্রনটি s-অরবিটালে প্রবেশ করেছে। তাই এটি s-ব্লক মৌল।', ruleTitle: 's-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = যোজ্যতা স্তরের s-অরবিটালে উপস্থিত ইলেকট্রন সংখ্যা।', calc: '3s অরবিটালে ইলেকট্রন আছে ২টি।', group: '২', color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/30', ring: 'ring-blue-500/50' },
+          
+          // d-block
+          { id: 'Sc', name: 'স্ক্যান্ডিয়াম', symbol: 'Sc', z: 21, block: 'd', config: '1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹ 4s²', valenceHighlight: '3d¹ 4s²', blockReason: 'শেষ ইলেকট্রনটি d-অরবিটালে প্রবেশ করেছে। তাই এটি d-ব্লক মৌল।', ruleTitle: 'd-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = (n-1)d এবং ns অরবিটালের ইলেকট্রন সংখ্যার যোগফল।', calc: 'd-অরবিটালে ১টি + s-অরবিটালে ২টি = ৩', group: '৩', color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/30', ring: 'ring-yellow-500/50' },
+          { id: 'Ti', name: 'টাইটানিয়াম', symbol: 'Ti', z: 22, block: 'd', config: '1s² 2s² 2p⁶ 3s² 3p⁶ 3d² 4s²', valenceHighlight: '3d² 4s²', blockReason: 'শেষ ইলেকট্রনটি d-অরবিটালে প্রবেশ করেছে। তাই এটি d-ব্লক মৌল।', ruleTitle: 'd-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = (n-1)d এবং ns অরবিটালের ইলেকট্রন সংখ্যার যোগফল।', calc: 'd-অরবিটালে ২টি + s-অরবিটালে ২টি = ৪', group: '৪', color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/30', ring: 'ring-yellow-500/50' },
+          { id: 'V', name: 'ভ্যানাডিয়াম', symbol: 'V', z: 23, block: 'd', config: '1s² 2s² 2p⁶ 3s² 3p⁶ 3d³ 4s²', valenceHighlight: '3d³ 4s²', blockReason: 'শেষ ইলেকট্রনটি d-অরবিটালে প্রবেশ করেছে। তাই এটি d-ব্লক মৌল।', ruleTitle: 'd-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = (n-1)d এবং ns অরবিটালের ইলেকট্রন সংখ্যার যোগফল।', calc: 'd-অরবিটালে ৩টি + s-অরবিটালে ২টি = ৫', group: '৫', color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/30', ring: 'ring-yellow-500/50' },
+          { id: 'Cr', name: 'ক্রোমিয়াম', symbol: 'Cr', z: 24, block: 'd', config: '1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁵ 4s¹', valenceHighlight: '3d⁵ 4s¹', blockReason: 'শেষ ইলেকট্রনটি d-অরবিটালে প্রবেশ করেছে। এটি একটি বিশেষ বিন্যাস।', ruleTitle: 'd-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = (n-1)d এবং ns অরবিটালের ইলেকট্রন সংখ্যার যোগফল।', calc: 'd-অরবিটালে ৫টি + s-অরবিটালে ১টি = ৬', group: '৬', color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/30', ring: 'ring-yellow-500/50' },
+          { id: 'Mn', name: 'ম্যাঙ্গানিজ', symbol: 'Mn', z: 25, block: 'd', config: '1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁵ 4s²', valenceHighlight: '3d⁵ 4s²', blockReason: 'শেষ ইলেকট্রনটি d-অরবিটালে প্রবেশ করেছে। তাই এটি d-ব্লক মৌল।', ruleTitle: 'd-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = (n-1)d এবং ns অরবিটালের ইলেকট্রন সংখ্যার যোগফল।', calc: 'd-অরবিটালে ৫টি + s-অরবিটালে ২টি = ৭', group: '৭', color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/30', ring: 'ring-yellow-500/50' },
+          { id: 'Fe', name: 'আয়রন', symbol: 'Fe', z: 26, block: 'd', config: '1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁶ 4s²', valenceHighlight: '3d⁶ 4s²', blockReason: 'শেষ ইলেকট্রনটি d-অরবিটালে প্রবেশ করেছে। তাই এটি d-ব্লক মৌল।', ruleTitle: 'd-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = (n-1)d এবং ns অরবিটালের ইলেকট্রন সংখ্যার যোগফল।', calc: 'd-অরবিটালে ৬টি + s-অরবিটালে ২টি = ৮', group: '৮', color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/30', ring: 'ring-yellow-500/50' },
+          { id: 'Co', name: 'কোবাল্ট', symbol: 'Co', z: 27, block: 'd', config: '1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁷ 4s²', valenceHighlight: '3d⁷ 4s²', blockReason: 'শেষ ইলেকট্রনটি d-অরবিটালে প্রবেশ করেছে। তাই এটি d-ব্লক মৌল।', ruleTitle: 'd-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = (n-1)d এবং ns অরবিটালের ইলেকট্রন সংখ্যার যোগফল।', calc: 'd-অরবিটালে ৭টি + s-অরবিটালে ২টি = ৯', group: '৯', color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/30', ring: 'ring-yellow-500/50' },
+          { id: 'Ni', name: 'নিকেল', symbol: 'Ni', z: 28, block: 'd', config: '1s² 2s² 2p⁶ 3s² 3p⁶ 3d⁸ 4s²', valenceHighlight: '3d⁸ 4s²', blockReason: 'শেষ ইলেকট্রনটি d-অরবিটালে প্রবেশ করেছে। তাই এটি d-ব্লক মৌল।', ruleTitle: 'd-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = (n-1)d এবং ns অরবিটালের ইলেকট্রন সংখ্যার যোগফল।', calc: 'd-অরবিটালে ৮টি + s-অরবিটালে ২টি = ১০', group: '১০', color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/30', ring: 'ring-yellow-500/50' },
+          { id: 'Cu', name: 'কপার', symbol: 'Cu', z: 29, block: 'd', config: '1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s¹', valenceHighlight: '3d¹⁰ 4s¹', blockReason: 'শেষ ইলেকট্রনটি d-অরবিটালে প্রবেশ করেছে। এটি একটি বিশেষ বিন্যাস।', ruleTitle: 'd-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = (n-1)d এবং ns অরবিটালের ইলেকট্রন সংখ্যার যোগফল।', calc: 'd-অরবিটালে ১০টি + s-অরবিটালে ১টি = ১১', group: '১১', color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/30', ring: 'ring-yellow-500/50' },
+          { id: 'Zn', name: 'জিংক', symbol: 'Zn', z: 30, block: 'd', config: '1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s²', valenceHighlight: '3d¹⁰ 4s²', blockReason: 'শেষ ইলেকট্রনটি d-অরবিটালে প্রবেশ করেছে। তাই এটি d-ব্লক মৌল।', ruleTitle: 'd-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = (n-1)d এবং ns অরবিটালের ইলেকট্রন সংখ্যার যোগফল।', calc: 'd-অরবিটালে ১০টি + s-অরবিটালে ২টি = ১২', group: '১২', color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/30', ring: 'ring-yellow-500/50' },
+
+          // p-block
+          { id: 'Al', name: 'অ্যালুমিনিয়াম', symbol: 'Al', z: 13, block: 'p', config: '1s² 2s² 2p⁶ 3s² 3p¹', valenceHighlight: '3s² 3p¹', blockReason: 'শেষ ইলেকট্রনটি p-অরবিটালে প্রবেশ করেছে। তাই এটি p-ব্লক মৌল।', ruleTitle: 'p-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = ১০ + যোজ্যতা স্তরের (s ও p) মোট ইলেকট্রন সংখ্যা।', calc: '১০ + (২ + ১) = ১৩', group: '১৩', color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/30', ring: 'ring-green-500/50' },
+          { id: 'C', name: 'কার্বন', symbol: 'C', z: 6, block: 'p', config: '1s² 2s² 2p²', valenceHighlight: '2s² 2p²', blockReason: 'শেষ ইলেকট্রনটি p-অরবিটালে প্রবেশ করেছে। তাই এটি p-ব্লক মৌল।', ruleTitle: 'p-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = ১০ + যোজ্যতা স্তরের (s ও p) মোট ইলেকট্রন সংখ্যা।', calc: '১০ + (২ + ২) = ১৪', group: '১৪', color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/30', ring: 'ring-green-500/50' },
+          { id: 'N', name: 'নাইট্রোজেন', symbol: 'N', z: 7, block: 'p', config: '1s² 2s² 2p³', valenceHighlight: '2s² 2p³', blockReason: 'শেষ ইলেকট্রনটি p-অরবিটালে প্রবেশ করেছে। তাই এটি p-ব্লক মৌল।', ruleTitle: 'p-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = ১০ + যোজ্যতা স্তরের (s ও p) মোট ইলেকট্রন সংখ্যা।', calc: '১০ + (২ + ৩) = ১৫', group: '১৫', color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/30', ring: 'ring-green-500/50' },
+          { id: 'O', name: 'অক্সিজেন', symbol: 'O', z: 8, block: 'p', config: '1s² 2s² 2p⁴', valenceHighlight: '2s² 2p⁴', blockReason: 'শেষ ইলেকট্রনটি p-অরবিটালে প্রবেশ করেছে। তাই এটি p-ব্লক মৌল।', ruleTitle: 'p-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = ১০ + যোজ্যতা স্তরের (s ও p) মোট ইলেকট্রন সংখ্যা।', calc: '১০ + (২ + ৪) = ১৬', group: '১৬', color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/30', ring: 'ring-green-500/50' },
+          { id: 'Cl', name: 'ক্লোরিন', symbol: 'Cl', z: 17, block: 'p', config: '1s² 2s² 2p⁶ 3s² 3p⁵', valenceHighlight: '3s² 3p⁵', blockReason: 'শেষ ইলেকট্রনটি p-অরবিটালে প্রবেশ করেছে। তাই এটি p-ব্লক মৌল।', ruleTitle: 'p-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = ১০ + যোজ্যতা স্তরের (s ও p) মোট ইলেকট্রন সংখ্যা।', calc: '১০ + (২ + ৫) = ১৭', group: '১৭', color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/30', ring: 'ring-green-500/50' },
+          { id: 'Ne', name: 'নিয়ন', symbol: 'Ne', z: 10, block: 'p', config: '1s² 2s² 2p⁶', valenceHighlight: '2s² 2p⁶', blockReason: 'শেষ ইলেকট্রনটি p-অরবিটালে প্রবেশ করেছে। তাই এটি p-ব্লক মৌল।', ruleTitle: 'p-ব্লকের নিয়ম:', ruleText: 'গ্রুপ নম্বর = ১০ + যোজ্যতা স্তরের (s ও p) মোট ইলেকট্রন সংখ্যা।', calc: '১০ + (২ + ৬) = ১৮', group: '১৮', color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/30', ring: 'ring-green-500/50' },
+
+          // f-block
+          { id: 'Ce', name: 'সিরিয়াম', symbol: 'Ce', z: 58, block: 'f', config: '1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 5s² 5p⁶ 4f¹ 5d¹ 6s²', valenceHighlight: '4f¹', blockReason: 'শেষ ইলেকট্রনটি f-অরবিটালে প্রবেশ করেছে। তাই এটি f-ব্লক মৌল।', ruleTitle: 'f-ব্লকের নিয়ম:', ruleText: 'পর্যায় সারণির নিচে অবস্থিত ল্যান্থানাইড ও অ্যাক্টিনাইড সিরিজের সকল f-ব্লক মৌলের গ্রুপ সর্বদা ৩।', calc: 'f-ব্লক মৌল হওয়ায় হিসাব ছাড়াই বলা যায় এর গ্রুপ ৩।', group: '৩', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/30', ring: 'ring-purple-500/50' },
+          { id: 'U', name: 'ইউরেনিয়াম', symbol: 'U', z: 92, block: 'f', config: '1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹⁰ 4s² 4p⁶ 4d¹⁰ 4f¹⁴ 5s² 5p⁶ 5d¹⁰ 6s² 6p⁶ 5f³ 6d¹ 7s²', valenceHighlight: '5f³', blockReason: 'শেষ ইলেকট্রনটি f-অরবিটালে প্রবেশ করেছে। তাই এটি f-ব্লক মৌল (অ্যাক্টিনাইড)।', ruleTitle: 'f-ব্লকের নিয়ম:', ruleText: 'ল্যান্থানাইড ও অ্যাক্টিনাইড সিরিজের সকল f-ব্লক মৌলের গ্রুপ সর্বদা ৩।', calc: 'f-ব্লক মৌল হওয়ায় সরাসরি গ্রুপ ৩।', group: '৩', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/30', ring: 'ring-purple-500/50' }
+        ];
+
+        const App = () => {
+          const [selectedElement, setSelectedElement] = useState(elementsData[0]);
+          const [filterBlock, setFilterBlock] = useState('all');
+
+          const filteredElements = filterBlock === 'all'
+            ? elementsData
+            : elementsData.filter(el => el.block === filterBlock);
+
+          return (
+            <div className="min-h-screen p-4 md:p-8 font-sans">
+              <div className="max-w-6xl mx-auto mb-8 text-center space-y-4">
+                <div className="inline-flex items-center justify-center p-3 bg-slate-800/50 rounded-2xl border border-slate-700/50 mb-2">
+                  <IconAtom className="w-8 h-8 text-cyan-400 mr-3 animate-[spin_8s_linear_infinite]" />
+                  <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                    ইলেকট্রন বিন্যাস থেকে গ্রুপ নির্ণয়
+                  </h1>
+                </div>
+                <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+                  যেকোনো একটি মৌল নির্বাচন করো এবং ধাপে ধাপে দেখো কীভাবে ইলেকট্রন বিন্যাস থেকে এর গ্রুপ বের করা যায়।
+                </p>
+              </div>
+
+              <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                {/* Left Panel */}
+                <div className="lg:col-span-4 space-y-6">
+                  <div className="bg-slate-900/80 rounded-2xl p-6 border border-slate-800 shadow-xl">
+                    <h2 className="text-xl font-semibold mb-4 flex items-center text-slate-100">
+                      <IconBeaker className="w-5 h-5 mr-2 text-slate-400" />
+                      মৌল নির্বাচন করো
+                    </h2>
+                    
+                    <div className="flex flex-wrap gap-2 mb-5">
+                      <button onClick={() => setFilterBlock('all')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 'all' ? 'bg-slate-700 text-white border-slate-600' : 'bg-slate-800/50 text-slate-400 border-slate-700/50 hover:bg-slate-800'}`}>সব</button>
+                      <button onClick={() => setFilterBlock('s')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 's' ? 'bg-blue-900/50 text-blue-300 border-blue-500/50' : 'bg-slate-800/50 text-slate-400 border-slate-700/50 hover:bg-slate-800'}`}>s-ব্লক</button>
+                      <button onClick={() => setFilterBlock('p')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 'p' ? 'bg-green-900/50 text-green-300 border-green-500/50' : 'bg-slate-800/50 text-slate-400 border-slate-700/50 hover:bg-slate-800'}`}>p-ব্লক</button>
+                      <button onClick={() => setFilterBlock('d')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 'd' ? 'bg-yellow-900/50 text-yellow-300 border-yellow-500/50' : 'bg-slate-800/50 text-slate-400 border-slate-700/50 hover:bg-slate-800'}`}>d-ব্লক</button>
+                      <button onClick={() => setFilterBlock('f')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 'f' ? 'bg-purple-900/50 text-purple-300 border-purple-500/50' : 'bg-slate-800/50 text-slate-400 border-slate-700/50 hover:bg-slate-800'}`}>f-ব্লক</button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 max-h-[500px] overflow-y-auto pr-2 pb-2">
+                      {filteredElements.map((el) => (
+                        <button
+                          key={el.id}
+                          onClick={() => setSelectedElement(el)}
+                          className={`relative p-3 rounded-xl border text-left transition-all duration-300 flex flex-col items-center justify-center gap-1 group
+                            ${selectedElement.id === el.id 
+                              ? `${el.bg} ${el.border} ring-1 ring-inset ${el.ring} scale-105 shadow-lg` 
+                              : 'bg-slate-800/40 border-slate-700 hover:bg-slate-800 hover:border-slate-600'
+                            }`}
+                        >
+                          <span className={`text-2xl font-bold ${selectedElement.id === el.id ? el.color : 'text-slate-300 group-hover:text-slate-100'}`}>
+                            {el.symbol}
+                          </span>
+                          <span className="text-xs text-slate-400 font-medium text-center">{el.name}</span>
+                          <span className={`absolute top-1 right-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase
+                            ${el.block === 's' ? 'bg-blue-900/50 text-blue-300' : 
+                              el.block === 'p' ? 'bg-green-900/50 text-green-300' : 
+                              el.block === 'd' ? 'bg-yellow-900/50 text-yellow-300' : 
+                              'bg-purple-900/50 text-purple-300'}`}>
+                            {el.block}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Panel */}
+                <div className="lg:col-span-8">
+                  <div className="bg-slate-900/80 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden relative">
+                    <div className={`p-6 border-b border-slate-800 flex items-center justify-between ${selectedElement.bg}`}>
+                      <div>
+                        <p className="text-sm font-medium text-slate-400 mb-1">পারমাণবিক সংখ্যা: {selectedElement.z}</p>
+                        <h2 className="text-3xl font-bold text-white flex items-center gap-3">
+                          {selectedElement.name} ({selectedElement.symbol})
+                        </h2>
+                      </div>
+                      <div className="text-right">
+                        <span className={`text-6xl font-black opacity-20 ${selectedElement.color}`}>
+                          {selectedElement.block}
+                        </span>
+                        <p className={`text-sm font-bold uppercase tracking-widest ${selectedElement.color}`}>
+                          Block Element
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="p-6 md:p-8 space-y-8">
+                      <div className="space-y-3">
+                        <div className="flex items-center text-slate-400 text-sm font-semibold uppercase tracking-wider">
+                          <IconBookOpen className="w-4 h-4 mr-2" /> ইলেকট্রন বিন্যাস
+                        </div>
+                        <div className="bg-slate-950 rounded-xl p-5 border border-slate-800/60 font-mono text-xl md:text-2xl tracking-wide flex flex-wrap gap-2 items-center leading-loose">
+                          {selectedElement.config.split(selectedElement.valenceHighlight).map((part, i, arr) => (
+                            <React.Fragment key={i}>
+                              <span className="text-slate-300">{part}</span>
+                              {i !== arr.length - 1 && (
+                                <span className={`font-bold px-2 py-1 rounded-md ${selectedElement.bg} ${selectedElement.color}`}>
+                                  {selectedElement.valenceHighlight}
+                                </span>
+                              )}
+                            </React.Fragment>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-6">
+                        <div className="flex items-center text-slate-400 text-sm font-semibold uppercase tracking-wider">
+                          <IconCalculator className="w-4 h-4 mr-2" /> ধাপে ধাপে নির্ণয়
+                        </div>
+                        
+                        <div className="flex items-start gap-4">
+                          <div className={`mt-1 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-800 ${selectedElement.color}`}>১</div>
+                          <div>
+                            <h3 className="text-lg font-medium text-slate-200 mb-1">ব্লক চিহ্নিতকরণ:</h3>
+                            <p className="text-slate-400 leading-relaxed">{selectedElement.blockReason}</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-start gap-4">
+                          <div className={`mt-1 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-800 ${selectedElement.color}`}>২</div>
+                          <div>
+                            <h3 className="text-lg font-medium text-slate-200 mb-1">{selectedElement.ruleTitle}</h3>
+                            <div className="bg-slate-800/50 border-l-4 border-slate-600 p-4 rounded-r-lg mt-2 text-slate-300">
+                              <p>{selectedElement.ruleText}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-start gap-4">
+                          <div className={`mt-1 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-800 ${selectedElement.color}`}>৩</div>
+                          <div className="w-full">
+                            <h3 className="text-lg font-medium text-slate-200 mb-1">গণনা:</h3>
+                            <div className={`mt-2 p-4 rounded-xl border flex flex-col md:flex-row items-start md:items-center justify-between gap-3 ${selectedElement.bg} ${selectedElement.border}`}>
+                              <p className="text-lg text-slate-200">{selectedElement.calc}</p>
+                              <IconChevronRight className={`hidden md:block w-6 h-6 ${selectedElement.color}`} />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="pt-6 border-t border-slate-800">
+                        <div className="flex flex-col md:flex-row items-center justify-between bg-gradient-to-r from-slate-800/80 to-slate-900/80 p-6 rounded-2xl border border-slate-700/50 shadow-inner">
+                          <div className="flex items-center gap-4 mb-4 md:mb-0">
+                            <div className={`p-3 rounded-full bg-slate-800 ${selectedElement.color}`}>
+                              <IconCheckCircle2 className="w-8 h-8" />
+                            </div>
+                            <div>
+                              <p className="text-slate-400 text-sm mb-1">চূড়ান্ত ফলাফল</p>
+                              <p className="text-xl text-slate-200 font-medium">
+                                তাই, {selectedElement.name} হলো <strong className={selectedElement.color}>{selectedElement.group} নং</strong> গ্রুপের মৌল।
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex flex-col items-center">
+                            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">গ্রুপ নম্বর</p>
+                            <div className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">
+                              {selectedElement.group}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer Signature */}
+              <div className="max-w-6xl mx-auto mt-12 mb-4 text-center">
+                <div className="inline-flex flex-col items-center justify-center p-6 bg-slate-800/30 rounded-2xl border border-slate-700/50 shadow-lg relative overflow-hidden group min-w-[300px]">
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <p className="text-slate-400 text-xs mb-2 uppercase tracking-[0.2em] font-semibold">ডেভেলপড বাই</p>
+                  <a href="https://www.facebook.com/usha.khan.50596" target="_blank" rel="noreferrer" className="text-xl md:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-1 hover:opacity-80 transition-opacity">
+                    Md. Usha Khan (ইউশা)
+                  </a>
+                  <p className="text-slate-500 text-sm font-medium mt-1">
+                    Chemistry Instructor, 10 Minute School <br/>
+                    CSE, BUET
+                  </p>
+                </div>
+              </div>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
