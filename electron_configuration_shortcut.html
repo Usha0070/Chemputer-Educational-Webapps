@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ইলেকট্রন বিন্যাসের শর্টকাট | ইউশা</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #0d0d14; color: #f0eeff; margin: 0; min-height: 100vh; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .bg-pattern {
+            background-image: linear-gradient(rgba(124,92,252,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,92,252,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .text-gradient {
+            background: linear-gradient(90deg, #7c5cfc, #e05cfc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #2e2e3e; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7c5cfc; }
+
+        /* Orbital Box Animations */
+        .orb-box {
+            display: flex; align-items: center; justify-content: center;
+            width: 54px; height: 54px;
+            background: #1e1e2a; border: 1px solid #2e2e3e; border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace; font-size: 18px; color: #f0eeff;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .orb-box.dimmed {
+            opacity: 0.25; filter: grayscale(0.8); transform: scale(0.95);
+        }
+        .orb-box.highlight {
+            border-color: #7c5cfc; background: rgba(124, 92, 252, 0.15);
+            transform: scale(1.15); box-shadow: 0 0 20px rgba(124, 92, 252, 0.3);
+            z-index: 10;
+        }
+        .orb-box.exception {
+            border-color: #f5c842; background: rgba(245, 200, 66, 0.15); color: #f5c842;
+            transform: scale(1.15); box-shadow: 0 0 20px rgba(245, 200, 66, 0.3);
+            z-index: 10;
+        }
+        .orb-box .e-count {
+            position: absolute; top: -6px; right: -6px;
+            background: linear-gradient(135deg, #7c5cfc, #e05cfc);
+            color: white; font-size: 11px; font-weight: 700;
+            padding: 2px 7px; border-radius: 99px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            font-family: 'Hind Siliguri', sans-serif;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .orb-box.exception .e-count {
+            background: #f5c842; color: #0d0d14;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern fixed inset-0 pointer-events-none z-0"></div>
+    <div id="root" class="relative z-10"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- Icons ---
+        const IconRotateCcw = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>;
+        const IconChevronLeft = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>;
+        const IconChevronRight = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>;
+        const IconLightning = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
+        const IconBookOpen = ({size=24, className=""}) => <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>;
+
+        // --- Core Data & Logic ---
+        const shortcutGridData = [
+          [ {n:1, l:'s'}, {n:2, l:'s'} ],
+          [ {n:2, l:'p'}, {n:3, l:'s'}, {n:3, l:'p'}, {n:4, l:'s'} ],
+          [ {n:3, l:'d'}, {n:4, l:'p'}, {n:5, l:'s'}, {n:4, l:'d'}, {n:5, l:'p'}, {n:6, l:'s'} ],
+          [ {n:4, l:'f'}, {n:5, l:'d'}, {n:6, l:'p'}, {n:7, l:'s'}, {n:5, l:'f'}, {n:6, l:'d'}, {n:7, l:'p'}, {n:8, l:'s'} ]
+        ];
+
+        // Flat array perfectly matching Aufbau principle
+        const seq1D = shortcutGridData.flat();
+
+        const exceptions = {
+          24: { fromIdx: 5, toIdx: 6, amt: 1, text: '3d অরবিটাল অর্ধপূর্ণ (3d⁵) হলে বেশি স্থিতিশীল হয়, তাই 4s থেকে ১টি ইলেকট্রন 3d তে স্থানান্তরিত হয়।' },
+          29: { fromIdx: 5, toIdx: 6, amt: 1, text: '3d অরবিটাল পূর্ণ (3d¹⁰) হলে বেশি স্থিতিশীল হয়, তাই 4s থেকে ১টি ইলেকট্রন 3d তে স্থানান্তরিত হয়।' },
+          41: { fromIdx: 8, toIdx: 9, amt: 1, text: 'অরবিটালের শক্তিমাত্রার সূক্ষ্ম পার্থক্যের কারণে 5s থেকে ১টি ইলেকট্রন 4d তে স্থানান্তরিত হয়।' },
+          42: { fromIdx: 8, toIdx: 9, amt: 1, text: '4d অরবিটাল অর্ধপূর্ণ (4d⁵) হওয়ার প্রবণতার কারণে 5s থেকে ১টি ইলেকট্রন 4d তে স্থানান্তরিত হয়।' },
+          44: { fromIdx: 8, toIdx: 9, amt: 1, text: 'অরবিটালের শক্তিমাত্রার সূক্ষ্ম পার্থক্যের কারণে 5s থেকে ১টি ইলেকট্রন 4d তে স্থানান্তরিত হয়।' },
+          45: { fromIdx: 8, toIdx: 9, amt: 1, text: 'অরবিটালের শক্তিমাত্রার সূক্ষ্ম পার্থক্যের কারণে 5s থেকে ১টি ইলেকট্রন 4d তে স্থানান্তরিত হয়।' },
+          46: { fromIdx: 8, toIdx: 9, amt: 2, text: '4d অরবিটাল পূর্ণ (4d¹⁰) হওয়ার প্রবল প্রবণতার কারণে 5s এর ২টি ইলেকট্রনই 4d তে স্থানান্তরিত হয়।' },
+          47: { fromIdx: 8, toIdx: 9, amt: 1, text: '4d অরবিটাল পূর্ণ (4d¹⁰) হলে বেশি স্থিতিশীল হয়, তাই 5s থেকে ১টি ইলেকট্রন 4d তে স্থানান্তরিত হয়।' },
+          57: { fromIdx: 12, toIdx: 13, amt: 1, text: '4f এর চেয়ে 5d এর শক্তি সাময়িকভাবে কম অনুভূত হওয়ায় ইলেকট্রন 4f এ না গিয়ে 5d তে প্রবেশ করে।' },
+          58: { fromIdx: 12, toIdx: 13, amt: 1, text: 'f-ব্লকের শুরুর দিকে 5d ও 4f এর শক্তির পার্থক্য কম থাকায় ১টি ইলেকট্রন 5d তে থাকে।' },
+          64: { fromIdx: 12, toIdx: 13, amt: 1, text: '4f অরবিটাল অর্ধপূর্ণ (4f⁷) অবস্থায় স্থিতিশীল হওয়ার কারণে ১টি ইলেকট্রন 5d তে স্থানান্তরিত হয়।' },
+          78: { fromIdx: 11, toIdx: 13, amt: 1, text: 'অরবিটালের শক্তিমাত্রার সূক্ষ্ম পার্থক্যের কারণে 6s থেকে ১টি ইলেকট্রন 5d তে স্থানান্তরিত হয়।' },
+          79: { fromIdx: 11, toIdx: 13, amt: 1, text: '5d অরবিটাল পূর্ণ (5d¹⁰) হলে বেশি স্থিতিশীল হয়, তাই 6s থেকে ১টি ইলেকট্রন 5d তে স্থানান্তরিত হয়।' },
+          89: { fromIdx: 16, toIdx: 17, amt: 1, text: '5f এর চেয়ে 6d এর শক্তি সাময়িকভাবে কম অনুভূত হওয়ায় ইলেকট্রন 5f এ না গিয়ে 6d তে প্রবেশ করে।' },
+          90: { fromIdx: 16, toIdx: 17, amt: 2, text: '5f এর চেয়ে 6d অরবিটালে ইলেকট্রন থাকা স্থিতিশীল হওয়ায় 5f এর ২টি ইলেকট্রন 6d তে স্থানান্তরিত হয়।' },
+          91: { fromIdx: 16, toIdx: 17, amt: 1, text: 'অ্যাক্টিনাইড সিরিজের শক্তির জটিলতার কারণে ১টি ইলেকট্রন 6d তে স্থানান্তরিত হয়।' },
+          92: { fromIdx: 16, toIdx: 17, amt: 1, text: 'অ্যাক্টিনাইড সিরিজের শক্তির জটিলতার কারণে ১টি ইলেকট্রন 6d তে স্থানান্তরিত হয়।' },
+          93: { fromIdx: 16, toIdx: 17, amt: 1, text: 'অ্যাক্টিনাইড সিরিজের শক্তির জটিলতার কারণে ১টি ইলেকট্রন 6d তে স্থানান্তরিত হয়।' },
+          96: { fromIdx: 16, toIdx: 17, amt: 1, text: '5f অরবিটাল অর্ধপূর্ণ (5f⁷) অবস্থায় স্থিতিশীল হওয়ার কারণে ১টি ইলেকট্রন 6d তে স্থানান্তরিত হয়।' },
+          103: { fromIdx: 17, toIdx: 18, amt: 1, text: 'আপেক্ষিকতার প্রভাবে 6d এর চেয়ে 7p এর শক্তিস্তর স্থিতিশীল হওয়ায় ইলেকট্রন 7p তে স্থানান্তরিত হয়।' }
+        };
+
+        const getFillSequence = (z) => {
+            let rem = z;
+            let filled = seq1D.map(o => ({...o, e: 0}));
+            let lastFilledIdx = -1;
+            for(let i=0; i<filled.length; i++) {
+                if(rem <= 0) break;
+                let cap = filled[i].l === 's' ? 2 : filled[i].l === 'p' ? 6 : filled[i].l === 'd' ? 10 : 14;
+                let e = Math.min(rem, cap);
+                filled[i].e = e;
+                rem -= e;
+                lastFilledIdx = i;
+            }
+            return { filled, lastFilledIdx };
+        };
+
+        const sup = (n) => {
+            const superscripts = {'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+            return String(n).split('').map(c => superscripts[c]).join('');
+        };
+
+        // --- Main Component ---
+        const App = () => {
+            const [mode, setMode] = useState('shortcut'); // 'shortcut' or 'normal'
+            const [inputZ, setInputZ] = useState('');
+            const [z, setZ] = useState(0);
+            const [step, setStep] = useState(0);
+            const [isVisualizing, setIsVisualizing] = useState(false);
+            const [errorMsg, setErrorMsg] = useState('');
+
+            const { filled: normalFilled, lastFilledIdx } = getFillSequence(z);
+            const numFilled = z > 0 ? lastFilledIdx + 1 : 0;
+            const hasException = !!exceptions[z];
+            
+            // Calculate max steps
+            const maxStep = z === 0 ? 0 : (mode === 'shortcut' 
+                ? 2 + numFilled + (hasException ? 1 : 0)
+                : 0 + numFilled + (hasException ? 1 : 0));
+
+            const handleModeChange = (newMode) => {
+                setMode(newMode);
+                setIsVisualizing(false);
+                setStep(0);
+                setInputZ('');
+                setErrorMsg('');
+            };
+
+            const startVisualization = () => {
+                const parsedZ = parseInt(inputZ);
+                if (parsedZ >= 1 && parsedZ <= 118) {
+                    setZ(parsedZ);
+                    setStep(0);
+                    setIsVisualizing(true);
+                    setErrorMsg('');
+                } else {
+                    setErrorMsg("দয়া করে ১ থেকে ১১৮ এর মধ্যে একটি বৈধ পারমাণবিক সংখ্যা দিন।");
+                }
+            };
+
+            const hasExceptionStep = (currentStep) => {
+                return hasException && currentStep === maxStep;
+            };
+
+            const getStepText = () => {
+                if (!isVisualizing) return "পারমাণবিক সংখ্যা লিখে 'শুরু করি' বাটনে ক্লিক করো।";
+                
+                if (mode === 'shortcut') {
+                    if (step === 0) return 'ধাপ ১: প্রথমে s, p, d, f এর ক্রমগুলো জোড়ায় জোড়ায় লিখি। (যেমন: s s, ps ps, dps dps, fdps fdps)';
+                    if (step === 1) return 'ধাপ ২: এবার শুধুমাত্র s অরবিটালগুলোর আগে ১ থেকে ৮ পর্যন্ত সংখ্যা বসাই।';
+                    if (step === 2) return 'ধাপ ৩: অন্যান্য অরবিটালে সংখ্যা বসাই (p=s-1, d=s-2, f=s-3)। তৈরি হয়ে গেল আমাদের শক্তির ক্রম বা স্কেলেটন!';
+                    
+                    let fillIdx = step - 3;
+                    if (hasExceptionStep(step)) {
+                        return `ব্যতিক্রম নিয়ম: ${exceptions[z].text}`;
+                    }
+                    if (fillIdx === numFilled - 1) {
+                        return `ধাপ ${step - 1}: সর্বশেষ ${seq1D[fillIdx].n}${seq1D[fillIdx].l} অরবিটালে ইলেকট্রন প্রবেশ করছে। (বিন্যাস সম্পন্ন!)`;
+                    }
+                    return `ধাপ ${step - 1}: শক্তির ক্রমানুসারে ${seq1D[fillIdx].n}${seq1D[fillIdx].l} অরবিটালে ইলেকট্রন প্রবেশ করছে।`;
+                } else {
+                    if (step === 0) return 'ধাপ ১: আউফবাউ (Aufbau) নীতি অনুসারে অরবিটালগুলোকে শক্তির উচ্চক্রম অনুযায়ী (n+l এর মান) সাজাই।';
+                    
+                    let fillIdx = step - 1;
+                    if (hasExceptionStep(step)) {
+                        return `ব্যতিক্রম নিয়ম: ${exceptions[z].text}`;
+                    }
+                    if (fillIdx === numFilled - 1) {
+                         return `ধাপ ${step + 1}: সর্বশেষ ${seq1D[fillIdx].n}${seq1D[fillIdx].l} অরবিটালে ইলেকট্রন প্রবেশ করছে। (বিন্যাস সম্পন্ন!)`;
+                    }
+                    return `ধাপ ${step + 1}: সবচেয়ে কম শক্তির অরবিটাল থেকে শুরু করে ${seq1D[fillIdx].n}${seq1D[fillIdx].l} অরবিটালে ইলেকট্রন প্রবেশ করছে।`;
+                }
+            };
+
+            const getConfigString = () => {
+                if (!isVisualizing) return "";
+                let str = "";
+                for(let i=0; i<seq1D.length; i++) {
+                    let e = 0;
+                    let fillIdx = mode === 'shortcut' ? step - 3 : step - 1;
+                    if (hasExceptionStep(step)) fillIdx = numFilled - 1;
+                    
+                    if (i <= fillIdx) {
+                        e = normalFilled[i].e;
+                    }
+                    if (hasExceptionStep(step)) {
+                        let exc = exceptions[z];
+                        let amt = exc.amt || 1;
+                        if (i === exc.fromIdx) e -= amt;
+                        if (i === exc.toIdx) e += amt;
+                    }
+                    
+                    if (e > 0) {
+                        str += `${seq1D[i].n}${seq1D[i].l}${sup(e)} `;
+                    }
+                }
+                return str.trim();
+            };
+
+            const OrbitalBox = ({ orb, index }) => {
+                let displayN = orb.n;
+                let displayE = 0;
+                let isHighlighted = false;
+                let isExceptionHighlighted = false;
+                let isDimmed = false;
+
+                if (mode === 'shortcut') {
+                    if (step === 0) {
+                        displayN = '';
+                    } else if (step === 1) {
+                        displayN = orb.l === 's' ? orb.n : '';
+                    }
+
+                    if (step >= 3) {
+                        let fillIdx = step - 3;
+                        if (hasExceptionStep(step)) fillIdx = numFilled - 1;
+                        
+                        if (index <= fillIdx) displayE = normalFilled[index].e;
+                        if (index > fillIdx) isDimmed = true;
+                        if (index === fillIdx && !hasExceptionStep(step)) isHighlighted = true;
+                    } else if (isVisualizing) {
+                        // Keep bright while building skeleton
+                        isDimmed = false;
+                    } else {
+                        // Initial state before start
+                        isDimmed = true;
+                    }
+                } else {
+                    if (step >= 1) {
+                        let fillIdx = step - 1;
+                        if (hasExceptionStep(step)) fillIdx = numFilled - 1;
+                        
+                        if (index <= fillIdx) displayE = normalFilled[index].e;
+                        if (index > fillIdx) isDimmed = true;
+                        if (index === fillIdx && !hasExceptionStep(step)) isHighlighted = true;
+                    } else {
+                        isDimmed = !isVisualizing;
+                    }
+                }
+
+                // Apply Exception overrides
+                if (hasExceptionStep(step)) {
+                    let exc = exceptions[z];
+                    let amt = exc.amt || 1;
+                    if (index === exc.fromIdx) {
+                        displayE = normalFilled[index].e - amt;
+                        isExceptionHighlighted = true;
+                        isDimmed = false;
+                    } else if (index === exc.toIdx) {
+                        displayE = (normalFilled[index]?.e || 0) + amt;
+                        isExceptionHighlighted = true;
+                        isDimmed = false;
+                    }
+                }
+
+                return (
+                    <div className={`orb-box ${isHighlighted ? 'highlight' : ''} ${isExceptionHighlighted ? 'exception' : ''} ${isDimmed ? 'dimmed' : ''}`}>
+                        {displayN && <span className={`font-semibold mr-0.5 ${isExceptionHighlighted ? 'text-[#f5c842]' : 'text-white/70'}`}>{displayN}</span>}
+                        <span className="font-bold">{orb.l}</span>
+                        {displayE > 0 && <div className="e-count">{displayE}</div>}
+                    </div>
+                );
+            };
+
+            return (
+                <div className="max-w-5xl mx-auto p-4 md:p-8 pt-8 overflow-x-hidden">
+                    
+                    {/* Header */}
+                    <div className="text-center mb-8">
+                        <div className="inline-block bg-gradient-accent text-white text-[11px] font-semibold tracking-wider px-4 py-1.5 rounded-full mb-4 uppercase shadow-lg">
+                            অনলাইন ব্যাচ ২০২৬ · ৯ম শ্রেণি রসায়ন
+                        </div>
+                        <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-2">
+                            ইলেকট্রন বিন্যাসের <span className="text-gradient">ম্যাজিক শর্টকাট</span>
+                        </h1>
+                        <p className="text-[#8882aa] text-sm">সহজেই মনে রাখো কোন অরবিটালের পর কোন অরবিটালে ইলেকট্রন যাবে!</p>
+                    </div>
+
+                    {/* Mode Toggle */}
+                    <div className="flex bg-[#16161f] border border-[#2e2e3e] p-1.5 rounded-2xl max-w-md mx-auto mb-10 shadow-lg">
+                        <button 
+                            onClick={() => handleModeChange('normal')}
+                            className={`flex-1 py-3 text-sm md:text-base font-bold rounded-xl transition-all duration-300 ${mode === 'normal' ? 'bg-[#2e2e3e] text-white shadow-md' : 'text-[#8882aa] hover:text-[#f0eeff]'}`}
+                        >
+                            সাধারণ নিয়ম
+                        </button>
+                        <button 
+                            onClick={() => handleModeChange('shortcut')}
+                            className={`flex-1 py-3 text-sm md:text-base font-bold rounded-xl transition-all duration-300 ${mode === 'shortcut' ? 'bg-gradient-to-r from-[#7c5cfc] to-[#e05cfc] text-white shadow-lg shadow-[#7c5cfc]/20' : 'text-[#8882aa] hover:text-[#f0eeff]'}`}
+                        >
+                            শর্টকাট নিয়ম <IconLightning className="inline w-4 h-4 ml-1 mb-0.5"/>
+                        </button>
+                    </div>
+
+                    {/* Main Workspace */}
+                    <div className="bg-[#16161f] border border-[#2e2e3e] rounded-3xl p-6 md:p-8 shadow-2xl mb-12 relative overflow-hidden">
+                        
+                        {/* Input Area */}
+                        <div className="flex flex-col md:flex-row gap-4 items-center justify-center mb-10">
+                            <input 
+                                type="number" 
+                                min="1" max="118"
+                                value={inputZ}
+                                onChange={e => {
+                                    setInputZ(e.target.value);
+                                    if(isVisualizing) setIsVisualizing(false);
+                                }}
+                                placeholder="পারমাণবিক সংখ্যা (Z)"
+                                className="bg-[#1e1e2a] border border-[#2e2e3e] text-white px-6 py-3.5 rounded-xl focus:outline-none focus:border-[#7c5cfc] w-full md:w-64 text-center font-mono text-lg shadow-inner transition-colors"
+                                disabled={isVisualizing}
+                                onKeyDown={e => e.key === 'Enter' && startVisualization()}
+                            />
+                            {!isVisualizing ? (
+                                <button 
+                                    onClick={startVisualization}
+                                    className="w-full md:w-auto bg-gradient-to-r from-[#7c5cfc] to-[#e05cfc] text-white px-8 py-3.5 rounded-xl font-bold hover:opacity-90 transition-opacity shadow-lg flex items-center justify-center gap-2"
+                                >
+                                    শুরু করি <IconChevronRight size={18} />
+                                </button>
+                            ) : (
+                                <button 
+                                    onClick={() => { setIsVisualizing(false); setStep(0); setInputZ(''); }}
+                                    className="w-full md:w-auto bg-[#2e2e3e] text-white px-8 py-3.5 rounded-xl font-bold hover:bg-[#3f3f5a] transition-colors flex items-center justify-center gap-2 shadow-lg"
+                                >
+                                    <IconRotateCcw size={18} /> নতুন সংখ্যা
+                                </button>
+                            )}
+                        </div>
+                        
+                        {errorMsg && <p className="text-[#ff5c5c] text-center text-sm mb-6 -mt-6 font-medium">{errorMsg}</p>}
+
+                        {/* Visualization Area */}
+                        <div className="bg-[#0d0d14]/60 border border-[#2e2e3e] rounded-2xl p-6 md:p-8 min-h-[300px] flex items-center justify-center overflow-x-auto relative shadow-inner">
+                            {mode === 'shortcut' ? (
+                                <div className="flex flex-col gap-3 min-w-[500px] items-center">
+                                    {shortcutGridData.map((row, rIdx) => (
+                                        <div key={rIdx} className="flex gap-2.5 justify-center">
+                                            {row.map((orb, cIdx) => {
+                                                const globalIdx = seq1D.findIndex(o => o.n === orb.n && o.l === orb.l);
+                                                return <OrbitalBox key={globalIdx} index={globalIdx} orb={orb} />;
+                                            })}
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="flex flex-wrap gap-2.5 justify-center max-w-3xl">
+                                    {seq1D.map((orb, idx) => (
+                                        <OrbitalBox key={idx} index={idx} orb={orb} />
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Watermark overlay when not visualizing */}
+                            {!isVisualizing && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-[#0d0d14]/40 backdrop-blur-[2px] rounded-2xl">
+                                    <div className="bg-[#1e1e2a] px-6 py-3 rounded-full border border-[#2e2e3e] shadow-xl text-[#8882aa] font-medium text-sm flex items-center gap-2">
+                                        <IconBookOpen size={16} /> পারমাণবিক সংখ্যা ইনপুট দিয়ে শুরু করো
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Controls & Steps (Visible only during visualization) */}
+                        <div className={`transition-all duration-500 overflow-hidden ${isVisualizing ? 'max-h-[500px] opacity-100 mt-8' : 'max-h-0 opacity-0 mt-0'}`}>
+                            <div className={`p-4 md:p-5 rounded-2xl border flex flex-col md:flex-row items-center gap-4 transition-colors duration-300 shadow-lg ${hasExceptionStep(step) ? 'bg-[#f5c842]/10 border-[#f5c842]/30' : 'bg-[#1e1e2a] border-[#7c5cfc]/30'}`}>
+                                <button 
+                                    onClick={() => setStep(Math.max(0, step - 1))}
+                                    disabled={step === 0}
+                                    className="w-full md:w-auto px-5 py-2.5 bg-[#16161f] border border-[#2e2e3e] text-[#f0eeff] rounded-xl disabled:opacity-30 hover:bg-[#2e2e3e] transition-colors font-medium flex items-center justify-center gap-2"
+                                >
+                                    <IconChevronLeft size={18} /> আগের ধাপ
+                                </button>
+                                
+                                <div className="flex-1 text-center py-2 md:py-0">
+                                    <p className={`text-[15px] md:text-base font-semibold leading-relaxed ${hasExceptionStep(step) ? 'text-[#f5c842]' : 'text-[#f0eeff]'}`}>
+                                        {getStepText()}
+                                    </p>
+                                </div>
+
+                                <button 
+                                    onClick={() => setStep(Math.min(maxStep, step + 1))}
+                                    disabled={step === maxStep}
+                                    className="w-full md:w-auto px-5 py-2.5 bg-gradient-to-r from-[#7c5cfc] to-[#e05cfc] text-white rounded-xl disabled:opacity-30 hover:opacity-90 transition-opacity font-bold shadow-md flex items-center justify-center gap-2"
+                                >
+                                    পরের ধাপ <IconChevronRight size={18} />
+                                </button>
+                            </div>
+
+                            {/* Final Configuration Display */}
+                            {step >= (mode === 'shortcut' ? 3 : 1) && (
+                                <div className="mt-8 text-center animate-[popIn_0.5s_ease-out]">
+                                    <p className="text-[#8882aa] text-[11px] mb-2 uppercase tracking-[0.15em] font-bold">বর্তমান ইলেকট্রন বিন্যাস</p>
+                                    <p className="font-mono text-lg md:text-xl text-[#3dffa0] bg-[#0d0d14] inline-block px-8 py-3 rounded-xl border border-[#2e2e3e] shadow-inner leading-relaxed">
+                                        {getConfigString() || "..."}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Teacher / Footer */}
+                    <div className="flex justify-center mt-12 mb-8">
+                        <div className="flex items-center gap-3 bg-[#16161f] border border-[#2e2e3e] rounded-xl py-2.5 px-6 shadow-lg hover:border-[#7c5cfc]/50 transition-colors">
+                            <div className="w-10 h-10 rounded-full bg-gradient-accent flex items-center justify-center text-sm font-bold text-white shrink-0 shadow-md">
+                                ইউ
+                            </div>
+                            <div className="text-left">
+                                <a href="https://www.facebook.com/usha.khan.50596" target="_blank" rel="noreferrer" className="text-[14px] font-semibold text-[#f0eeff] hover:text-[#7c5cfc] transition-colors">
+                                    Md. Usha Khan (ইউশা)
+                                </a>
+                                <div className="text-[11px] text-[#8882aa] mt-0.5">Chemistry Instructor, 10MS · CSE, BUET</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
