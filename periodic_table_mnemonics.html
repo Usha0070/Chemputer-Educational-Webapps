@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ছন্দে ছন্দে পর্যায় সারণি | Chemputer</title>
+    <meta name="description" content="ছন্দে ছন্দে পর্যায় সারণির গ্রুপের মৌলগুলো সহজেই মনে রাখো। ইন্টারেক্টিভ ফ্লিপ কার্ডের মাধ্যমে শেখো।">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #0d0d14; color: #f0eeff; margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
+        .bg-pattern {
+            background-image: linear-gradient(rgba(124,92,252,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,92,252,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .text-gradient {
+            background: linear-gradient(90deg, #7c5cfc, #e05cfc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .btn-gradient {
+            background: linear-gradient(90deg, #7c5cfc, #e05cfc);
+        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #2e2e3e; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7c5cfc; }
+
+        /* Flip card */
+        .flip-card { perspective: 800px; cursor: pointer; }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.55s cubic-bezier(0.4,0.2,0.2,1);
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .flip-card-back { transform: rotateY(180deg); }
+
+        /* Active tab gradient border effect */
+        .tab-active {
+            background: linear-gradient(90deg, #7c5cfc, #e05cfc);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(124,92,252,0.35);
+        }
+        .tab-inactive {
+            background: #1e1e2a;
+            color: #8882aa;
+            border: 1px solid #2e2e3e;
+        }
+        .tab-inactive:hover {
+            border-color: #7c5cfc;
+            color: #f0eeff;
+        }
+
+        /* Mnemonic sentence highlight */
+        .mnemonic-card {
+            background: linear-gradient(135deg, #1e1e2a 0%, #16161f 100%);
+            border: 1px solid #2e2e3e;
+            position: relative;
+            overflow: hidden;
+        }
+        .mnemonic-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(124,92,252,0.08), rgba(224,92,252,0.04));
+            pointer-events: none;
+        }
+
+        /* Scrollable tabs */
+        .tabs-scroll {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            flex-wrap: wrap;
+        }
+
+        nav { backdrop-filter: blur(10px); border-bottom: 1px solid rgba(46,46,62,0.8); }
+    </style>
+</head>
+<body class="relative">
+    <div class="bg-pattern fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-50 bg-[#0d0d14]/80 px-6 py-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7c5cfc] to-[#e05cfc] flex items-center justify-center font-bold text-white shadow-lg group-hover:shadow-[#7c5cfc]/50 transition-all">C</div>
+                <span class="text-xl font-bold tracking-wide">Chem<span class="text-[#7c5cfc]">puter</span></span>
+            </a>
+            <a href="index.html" class="text-sm text-[#8882aa] hover:text-[#f0eeff] transition-colors flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                সব টুলস
+            </a>
+        </div>
+    </nav>
+
+    <div id="root" class="flex-grow relative z-10"></div>
+
+    <footer class="mt-auto border-t border-[#2e2e3e] bg-[#0d0d14]/80 backdrop-blur-md relative z-10">
+        <div class="max-w-6xl mx-auto p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="text-[#8882aa] text-sm text-center md:text-left">
+                © 2026 <span class="text-white font-semibold">Chemputer</span>. Developed by <a href="https://www.facebook.com/usha.khan.50596" class="text-[#7c5cfc] hover:underline">Usha Khan</a>.
+            </div>
+            <div class="text-xs text-[#8882aa] flex gap-4">
+                <span>Designed for Students</span>
+                <span class="text-[#2e2e3e]">|</span>
+                <span>SSC & HSC Chemistry</span>
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/babel">
+    const { useState, useCallback } = React;
+
+    const GROUPS_DATA = [
+        {
+            group: "গ্রুপ ১",
+            shortLabel: "Grp 1",
+            sentence: "হায় লি না কে রুবি ছেঁচে ফেলেছে",
+            elements: [
+                { word: "হায়",     symbol: "H",  atomicNum: 1,   name: "হাইড্রোজেন" },
+                { word: "লি",      symbol: "Li", atomicNum: 3,   name: "লিথিয়াম" },
+                { word: "না",      symbol: "Na", atomicNum: 11,  name: "সোডিয়াম" },
+                { word: "কে",      symbol: "K",  atomicNum: 19,  name: "পটাশিয়াম" },
+                { word: "রুবি",    symbol: "Rb", atomicNum: 37,  name: "রুবিডিয়াম" },
+                { word: "ছেঁচে",   symbol: "Cs", atomicNum: 55,  name: "সিজিয়াম" },
+                { word: "ফেলেছে", symbol: "Fr", atomicNum: 87,  name: "ফ্রান্সিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ২",
+            shortLabel: "Grp 2",
+            sentence: "বিরানী মোগলাই কাবাব সরিয়ে বটিতে রাখো",
+            elements: [
+                { word: "বিরানী",  symbol: "Be", atomicNum: 4,   name: "বেরিলিয়াম" },
+                { word: "মোগলাই", symbol: "Mg", atomicNum: 12,  name: "ম্যাগনেশিয়াম" },
+                { word: "কাবাব",  symbol: "Ca", atomicNum: 20,  name: "ক্যালসিয়াম" },
+                { word: "সরিয়ে", symbol: "Sr", atomicNum: 38,  name: "স্ট্রনশিয়াম" },
+                { word: "বটিতে",  symbol: "Ba", atomicNum: 56,  name: "বেরিয়াম" },
+                { word: "রাখো",   symbol: "Ra", atomicNum: 88,  name: "রেডিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ৩",
+            shortLabel: "Grp 3",
+            sentence: "সচিন ইউনুস লারা আক্রমনাত্মক",
+            elements: [
+                { word: "সচিন",        symbol: "Sc", atomicNum: 21,  name: "স্ক্যান্ডিয়াম" },
+                { word: "ইউনুস",       symbol: "Y",  atomicNum: 39,  name: "ইট্রিয়াম" },
+                { word: "লারা",        symbol: "La", atomicNum: 57,  name: "ল্যান্থানাম" },
+                { word: "আক্রমনাত্মক", symbol: "Ac", atomicNum: 89,  name: "অ্যাক্টিনিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ৪",
+            shortLabel: "Grp 4",
+            sentence: "টিনের জারে হাত রক্তাক্ত",
+            elements: [
+                { word: "টিনের",    symbol: "Ti", atomicNum: 22,  name: "টাইটানিয়াম" },
+                { word: "জারে",     symbol: "Zr", atomicNum: 40,  name: "জার্কোনিয়াম" },
+                { word: "হাত",      symbol: "Hf", atomicNum: 72,  name: "হাফনিয়াম" },
+                { word: "রক্তাক্ত", symbol: "Rf", atomicNum: 104, name: "রাদারফোর্ডিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ৫",
+            shortLabel: "Grp 5",
+            sentence: "ভন্ড নবাব টাকা দেবে",
+            elements: [
+                { word: "ভন্ড",  symbol: "V",  atomicNum: 23,  name: "ভ্যানাডিয়াম" },
+                { word: "নবাব",  symbol: "Nb", atomicNum: 41,  name: "নিওবিয়াম" },
+                { word: "টাকা",  symbol: "Ta", atomicNum: 73,  name: "ট্যান্টালাম" },
+                { word: "দেবে",  symbol: "Db", atomicNum: 105, name: "ডুবনিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ৬",
+            shortLabel: "Grp 6",
+            sentence: "ছেড়া মন তোমার সঙ্গী",
+            elements: [
+                { word: "ছেড়া",  symbol: "Cr", atomicNum: 24,  name: "ক্রোমিয়াম" },
+                { word: "মন",    symbol: "Mo", atomicNum: 42,  name: "মলিবডেনাম" },
+                { word: "তোমার", symbol: "W",  atomicNum: 74,  name: "টাংস্টেন" },
+                { word: "সঙ্গী",  symbol: "Sg", atomicNum: 106, name: "সিবোর্গিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ৭",
+            shortLabel: "Grp 7",
+            sentence: "মন টাকে রেখেছি বেধে",
+            elements: [
+                { word: "মন",      symbol: "Mn", atomicNum: 25,  name: "ম্যাঙ্গানিজ" },
+                { word: "টাকে",    symbol: "Tc", atomicNum: 43,  name: "টেকনেটিয়াম" },
+                { word: "রেখেছি", symbol: "Re", atomicNum: 75,  name: "রেনিয়াম" },
+                { word: "বেধে",    symbol: "Bh", atomicNum: 107, name: "বোহরিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ৮",
+            shortLabel: "Grp 8",
+            sentence: "ফের রুহান অসুস্থ হয়েছে",
+            elements: [
+                { word: "ফের",      symbol: "Fe", atomicNum: 26,  name: "আয়রন" },
+                { word: "রুহান",    symbol: "Ru", atomicNum: 44,  name: "রুথেনিয়াম" },
+                { word: "অসুস্থ",   symbol: "Os", atomicNum: 76,  name: "অসমিয়াম" },
+                { word: "হয়েছে",   symbol: "Hs", atomicNum: 108, name: "হাসিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ৯",
+            shortLabel: "Grp 9",
+            sentence: "কোদাল রাম ইরার মাথায়",
+            elements: [
+                { word: "কোদাল", symbol: "Co", atomicNum: 27,  name: "কোবাল্ট" },
+                { word: "রাম",   symbol: "Rh", atomicNum: 45,  name: "রোডিয়াম" },
+                { word: "ইরার",  symbol: "Ir", atomicNum: 77,  name: "ইরিডিয়াম" },
+                { word: "মাথায়", symbol: "Mt", atomicNum: 109, name: "মেইটনেরিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ১০",
+            shortLabel: "Grp 10",
+            sentence: "নীল পদ্ম পাথর দিছে",
+            elements: [
+                { word: "নীল",   symbol: "Ni", atomicNum: 28,  name: "নিকেল" },
+                { word: "পদ্ম",  symbol: "Pd", atomicNum: 46,  name: "প্যালাডিয়াম" },
+                { word: "পাথর", symbol: "Pt", atomicNum: 78,  name: "প্ল্যাটিনাম" },
+                { word: "দিছে",  symbol: "Ds", atomicNum: 110, name: "ডার্মস্টেডটিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ১১",
+            shortLabel: "Grp 11",
+            sentence: "কথা ছিল আসবে রাজা",
+            elements: [
+                { word: "কথা",  symbol: "Cu", atomicNum: 29,  name: "কপার" },
+                { word: "ছিল",  symbol: "Ag", atomicNum: 47,  name: "সিলভার" },
+                { word: "আসবে", symbol: "Au", atomicNum: 79,  name: "গোল্ড" },
+                { word: "রাজা", symbol: "Rg", atomicNum: 111, name: "রন্টজেনিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ১২",
+            shortLabel: "Grp 12",
+            sentence: "জীবনে ক্যাডার হতে চাই",
+            elements: [
+                { word: "জীবনে",  symbol: "Zn", atomicNum: 30,  name: "জিংক" },
+                { word: "ক্যাডার", symbol: "Cd", atomicNum: 48,  name: "ক্যাডমিয়াম" },
+                { word: "হতে",    symbol: "Hg", atomicNum: 80,  name: "মার্কারি" },
+                { word: "চাই",    symbol: "Cn", atomicNum: 112, name: "কোপারনিসিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ১৩",
+            shortLabel: "Grp 13",
+            sentence: "বাংলাদেশের অফতাব গেলো ইন্ডিয়ায় টিম নিতে",
+            elements: [
+                { word: "বাংলাদেশের", symbol: "B",  atomicNum: 5,   name: "বোরন" },
+                { word: "অফতাব",      symbol: "Al", atomicNum: 13,  name: "অ্যালুমিনিয়াম" },
+                { word: "গেলো",       symbol: "Ga", atomicNum: 31,  name: "গ্যালিয়াম" },
+                { word: "ইন্ডিয়ায়",   symbol: "In", atomicNum: 49,  name: "ইন্ডিয়াম" },
+                { word: "টিম",        symbol: "Tl", atomicNum: 81,  name: "থ্যালিয়াম" },
+                { word: "নিতে",       symbol: "Nh", atomicNum: 113, name: "নিহোনিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ১৪",
+            shortLabel: "Grp 14",
+            sentence: "কাল সিলেট গেলে সোনা পাবে ফারিহা",
+            elements: [
+                { word: "কাল",    symbol: "C",  atomicNum: 6,   name: "কার্বন" },
+                { word: "সিলেট", symbol: "Si", atomicNum: 14,  name: "সিলিকন" },
+                { word: "গেলে",   symbol: "Ge", atomicNum: 32,  name: "জার্মেনিয়াম" },
+                { word: "সোনা",   symbol: "Sn", atomicNum: 50,  name: "টিন" },
+                { word: "পাবে",   symbol: "Pb", atomicNum: 82,  name: "লেড" },
+                { word: "ফারিহা", symbol: "Fl", atomicNum: 114, name: "ফ্লেরোভিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ১৫",
+            shortLabel: "Grp 15",
+            sentence: "নি পা আছে আন্টির বাসার মধ্য",
+            elements: [
+                { word: "নি",    symbol: "N",  atomicNum: 7,   name: "নাইট্রোজেন" },
+                { word: "পা",    symbol: "P",  atomicNum: 15,  name: "ফসফরাস" },
+                { word: "আছে",   symbol: "As", atomicNum: 33,  name: "আর্সেনিক" },
+                { word: "আন্টির", symbol: "Sb", atomicNum: 51,  name: "অ্যান্টিমনি" },
+                { word: "বাসার", symbol: "Bi", atomicNum: 83,  name: "বিসমাথ" },
+                { word: "মধ্য",   symbol: "Mc", atomicNum: 115, name: "মস্কোভিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ১৬",
+            shortLabel: "Grp 16",
+            sentence: "ও এস এসসি তে পড়ে লোভে",
+            elements: [
+                { word: "ও",     symbol: "O",  atomicNum: 8,   name: "অক্সিজেন" },
+                { word: "এস",    symbol: "S",  atomicNum: 16,  name: "সালফার" },
+                { word: "এসসি", symbol: "Se", atomicNum: 34,  name: "সেলেনিয়াম" },
+                { word: "তে",    symbol: "Te", atomicNum: 52,  name: "টেলুরিয়াম" },
+                { word: "পড়ে",   symbol: "Po", atomicNum: 84,  name: "পোলোনিয়াম" },
+                { word: "লোভে",  symbol: "Lv", atomicNum: 116, name: "লিভারমোরিয়াম" },
+            ]
+        },
+        {
+            group: "গ্রুপ ১৭",
+            shortLabel: "Grp 17",
+            sentence: "ফ্লোরা কাল বাড়িতে এসেছে আটটার ট্রেনে",
+            elements: [
+                { word: "ফ্লোরা",   symbol: "F",  atomicNum: 9,   name: "ফ্লোরিন" },
+                { word: "কাল",      symbol: "Cl", atomicNum: 17,  name: "ক্লোরিন" },
+                { word: "বাড়িতে",  symbol: "Br", atomicNum: 35,  name: "ব্রোমিন" },
+                { word: "এসেছে",   symbol: "I",  atomicNum: 53,  name: "আয়োডিন" },
+                { word: "আটটার",   symbol: "At", atomicNum: 85,  name: "অ্যাস্টাটিন" },
+                { word: "ট্রেনে",   symbol: "Ts", atomicNum: 117, name: "টেনেসিন" },
+            ]
+        },
+        {
+            group: "গ্রুপ ১৮",
+            shortLabel: "Grp 18",
+            sentence: "হে না আর কেয়া জিনিয়াস রাধুনি আগেথেকেই",
+            elements: [
+                { word: "হে",          symbol: "He", atomicNum: 2,   name: "হিলিয়াম" },
+                { word: "না",          symbol: "Ne", atomicNum: 10,  name: "নিয়ন" },
+                { word: "আর",          symbol: "Ar", atomicNum: 18,  name: "আর্গন" },
+                { word: "কেয়া",        symbol: "Kr", atomicNum: 36,  name: "ক্রিপ্টন" },
+                { word: "জিনিয়াস",    symbol: "Xe", atomicNum: 54,  name: "জেনন" },
+                { word: "রাধুনি",      symbol: "Rn", atomicNum: 86,  name: "রেডন" },
+                { word: "আগেথেকেই",   symbol: "Og", atomicNum: 118, name: "ওগানেসন" },
+            ]
+        },
+    ];
+
+    const CARD_COLORS = [
+        { bg: "#1e1e2a", border: "#7c5cfc", accent: "#7c5cfc" },
+        { bg: "#1a1e2a", border: "#5ca0fc", accent: "#5ca0fc" },
+        { bg: "#1e1a2a", border: "#e05cfc", accent: "#e05cfc" },
+        { bg: "#1a2a1e", border: "#3dffa0", accent: "#3dffa0" },
+        { bg: "#2a1e1a", border: "#fca05c", accent: "#fca05c" },
+        { bg: "#1a2a2a", border: "#5cfce0", accent: "#5cfce0" },
+        { bg: "#2a1e2a", border: "#fc5c8e", accent: "#fc5c8e" },
+    ];
+
+    function FlipCard({ element, index, groupIndex }) {
+        const [flipped, setFlipped] = useState(false);
+        const color = CARD_COLORS[(index + groupIndex) % CARD_COLORS.length];
+
+        return (
+            <div
+                className={`flip-card ${flipped ? 'flipped' : ''}`}
+                style={{ height: '120px' }}
+                onClick={() => setFlipped(f => !f)}
+                title="ক্লিক করো উল্টাতে"
+            >
+                <div className="flip-card-inner">
+                    {/* FRONT */}
+                    <div
+                        className="flip-card-front"
+                        style={{
+                            background: color.bg,
+                            border: `1px solid ${color.border}22`,
+                            boxShadow: `0 4px 20px ${color.accent}15`
+                        }}
+                    >
+                        <div
+                            style={{
+                                fontFamily: "'Hind Siliguri', sans-serif",
+                                fontSize: element.word.length > 6 ? '13px' : element.word.length > 4 ? '15px' : '18px',
+                                fontWeight: 700,
+                                color: color.accent,
+                                textAlign: 'center',
+                                lineHeight: 1.3,
+                            }}
+                        >
+                            {element.word}
+                        </div>
+                        <div style={{ color: '#8882aa', fontSize: '10px', marginTop: '6px', fontFamily: "'JetBrains Mono', monospace" }}>
+                            ট্যাপ করো
+                        </div>
+                    </div>
+
+                    {/* BACK */}
+                    <div
+                        className="flip-card-back"
+                        style={{
+                            background: `linear-gradient(135deg, ${color.bg}, #16161f)`,
+                            border: `1px solid ${color.border}55`,
+                            boxShadow: `0 4px 24px ${color.accent}25`
+                        }}
+                    >
+                        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '26px', fontWeight: 700, color: color.accent, lineHeight: 1 }}>
+                            {element.symbol}
+                        </div>
+                        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '11px', color: '#8882aa', marginTop: '3px' }}>
+                            #{element.atomicNum}
+                        </div>
+                        <div style={{ fontFamily: "'Hind Siliguri', sans-serif", fontSize: '11px', color: '#f0eeff', marginTop: '5px', textAlign: 'center', fontWeight: 600, lineHeight: 1.3 }}>
+                            {element.name}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    function App() {
+        const [activeGroup, setActiveGroup] = useState(0);
+        const groupData = GROUPS_DATA[activeGroup];
+
+        return (
+            <main className="max-w-6xl mx-auto p-4 md:p-10 pt-8 pb-16">
+
+                {/* Header */}
+                <header className="text-center mb-10">
+                    <div className="inline-flex items-center gap-2 bg-[#1e1e2a] border border-[#2e2e3e] text-[#f0eeff] text-xs font-semibold tracking-wide px-4 py-1.5 rounded-full mb-5">
+                        <span className="w-2 h-2 rounded-full bg-[#3dffa0] animate-pulse"></span>
+                        <span>অনলাইন ব্যাচ ২০২৬ · ৯ম শ্রেণি রসায়ন</span>
+                    </div>
+                    <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-4">
+                        ছন্দে ছন্দে <span className="text-gradient">পর্যায় সারণি</span>
+                    </h1>
+                    <p className="text-[#8882aa] text-base md:text-lg max-w-xl mx-auto leading-relaxed">
+                        সহজেই মনে রাখো গ্রুপের মৌলগুলো
+                    </p>
+                </header>
+
+                {/* Teacher Tag */}
+                <div className="flex justify-center mb-10">
+                    <div className="inline-flex items-center gap-3 bg-[#16161f] border border-[#2e2e3e] rounded-2xl px-5 py-3 shadow-lg">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#7c5cfc] to-[#e05cfc] flex items-center justify-center font-bold text-white text-lg flex-shrink-0 shadow-md">
+                            ইউ
+                        </div>
+                        <div>
+                            <div className="text-[#f0eeff] font-semibold text-sm leading-tight">Md. Usha Khan (ইউশা)</div>
+                            <div className="text-[#8882aa] text-xs mt-0.5 flex items-center gap-1">
+                                <svg className="w-3 h-3 text-[#7c5cfc]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+                                Chemistry Instructor, 10 Minute School · CSE, BUET
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Group Selector Tabs */}
+                <section className="mb-8">
+                    <div className="tabs-scroll">
+                        {GROUPS_DATA.map((g, i) => (
+                            <button
+                                key={i}
+                                onClick={() => setActiveGroup(i)}
+                                className={`rounded-xl px-4 py-2 text-sm font-semibold transition-all flex-shrink-0 ${
+                                    activeGroup === i ? 'tab-active' : 'tab-inactive'
+                                }`}
+                                style={{ fontFamily: "'Hind Siliguri', sans-serif" }}
+                            >
+                                {g.group}
+                            </button>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Mnemonic Sentence Card */}
+                <section className="mnemonic-card rounded-2xl p-6 md:p-8 mb-8 shadow-xl">
+                    <div className="flex items-center gap-2 mb-4">
+                        <div className="w-1.5 h-6 rounded-full btn-gradient"></div>
+                        <span className="text-[#8882aa] text-sm font-semibold">{groupData.group} · মনে রাখার ছন্দ</span>
+                    </div>
+                    <p className="text-xl md:text-3xl font-bold text-[#f0eeff] leading-relaxed" style={{ fontFamily: "'Hind Siliguri', sans-serif" }}>
+                        {groupData.sentence}
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                        {groupData.elements.map((el, i) => (
+                            <span
+                                key={i}
+                                className="text-xs font-bold px-2.5 py-1 rounded-full"
+                                style={{
+                                    fontFamily: "'JetBrains Mono', monospace",
+                                    background: '#2e2e3e',
+                                    color: CARD_COLORS[(i + activeGroup) % CARD_COLORS.length].accent,
+                                    border: `1px solid ${CARD_COLORS[(i + activeGroup) % CARD_COLORS.length].accent}44`
+                                }}
+                            >
+                                {el.symbol} — {el.atomicNum}
+                            </span>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Flip Cards Grid */}
+                <section className="mb-12">
+                    <div className="flex items-center gap-2 mb-5">
+                        <h2 className="text-lg font-bold border-l-4 border-[#7c5cfc] pl-3">ফ্লিপ কার্ড — ক্লিক করে উল্টাও</h2>
+                        <span className="text-xs text-[#8882aa] bg-[#1e1e2a] px-3 py-1 rounded-md">{groupData.elements.length}টি মৌল</span>
+                    </div>
+                    <div
+                        style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',
+                            gap: '14px',
+                        }}
+                    >
+                        {groupData.elements.map((el, i) => (
+                            <FlipCard key={`${activeGroup}-${i}`} element={el} index={i} groupIndex={activeGroup} />
+                        ))}
+                    </div>
+                    <p className="text-xs text-[#8882aa] mt-4 text-center">
+                        💡 প্রতিটি কার্ড ক্লিক করলে প্রতীক, পারমাণবিক সংখ্যা ও নাম দেখাবে
+                    </p>
+                </section>
+
+                {/* CTA Section */}
+                <section className="bg-gradient-to-br from-[#1e1e2a] to-[#16161f] border border-[#2e2e3e] rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#7c5cfc]/10 to-[#e05cfc]/5 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <div className="flex flex-col md:flex-row gap-8 items-center">
+                        <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-tr from-[#7c5cfc] to-[#e05cfc] p-1 flex-shrink-0 shadow-[0_0_30px_rgba(124,92,252,0.3)]">
+                            <div className="w-full h-full rounded-full bg-[#16161f] flex items-center justify-center border-4 border-[#16161f]">
+                                <span className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-[#7c5cfc] to-[#e05cfc]">ইউ</span>
+                            </div>
+                        </div>
+
+                        <div className="text-center md:text-left flex-1">
+                            <div className="inline-flex items-center gap-2 bg-[#7c5cfc]/10 border border-[#7c5cfc]/30 text-[#7c5cfc] text-xs font-bold px-3 py-1 rounded-full mb-3">
+                                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                এক্সক্লুসিভ গ্রুপ
+                            </div>
+                            <h2 className="text-2xl md:text-3xl font-bold mb-2">আমার এক্সক্লুসিভ ফেসবুক গ্রুপে যোগ দাও!</h2>
+                            <p className="text-[#8882aa] text-sm leading-relaxed mb-5 max-w-lg">
+                                এই গ্রুপে পাবে এক্সক্লুসিভ নোট, MCQ সেট, লাইভ ক্লাসের আপডেট এবং সরাসরি প্রশ্ন করার সুযোগ।
+                            </p>
+
+                            <div className="flex flex-wrap gap-2 mb-5 justify-center md:justify-start">
+                                {["📚 এক্সক্লুসিভ নোট", "❓ সরাসরি প্রশ্নোত্তর", "🔔 ক্লাস আপডেট", "📝 MCQ সেট"].map(perk => (
+                                    <span key={perk} className="text-xs bg-[#2e2e3e] text-[#f0eeff] px-3 py-1.5 rounded-full">{perk}</span>
+                                ))}
+                            </div>
+
+                            <div className="flex flex-wrap items-center gap-3 justify-center md:justify-start">
+                                <a
+                                    href="https://www.facebook.com/groups/chemputer007"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn-gradient text-white font-semibold px-6 py-2.5 rounded-xl transition-all shadow-lg hover:shadow-[#7c5cfc]/40 hover:scale-105 flex items-center gap-2 text-sm"
+                                >
+                                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                    গ্রুপে যোগ দাও
+                                </a>
+                                <a
+                                    href="https://www.facebook.com/usha.khan.50596"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-[#2e2e3e] hover:bg-[#3f3f5a] text-white font-semibold px-5 py-2.5 rounded-xl transition-all shadow-lg flex items-center gap-2 text-sm"
+                                >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                    Profile
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+    </script>
+</body>
+</html>
