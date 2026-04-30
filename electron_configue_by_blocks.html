@@ -15,17 +15,42 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Hind Siliguri', sans-serif; background-color: #0B1120; color: #e2e8f0; margin: 0; }
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #0d0d14; color: #f0eeff; margin: 0; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
+        body::before {
+          content: '';
+          position: fixed;
+          inset: 0;
+          background-image: linear-gradient(rgba(124,92,252,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,92,252,0.04) 1px, transparent 1px);
+          background-size: 40px 40px;
+          pointer-events: none;
+          z-index: 0;
+        }
         
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 99px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        ::-webkit-scrollbar-thumb { background: #2e2e3e; border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7c5cfc; }
+        .chem-brand-nav { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgba(46,46,62,.82); background: rgba(13,13,20,.86); backdrop-filter: blur(14px); }
+        .chem-brand-link { border: 1px solid #2e2e3e; background: rgba(30,30,42,.72); border-radius: 999px; padding: 8px 12px; color: #8882aa; transition: .2s ease; }
+        .chem-brand-link:hover { color: #f0eeff; border-color: rgba(124,92,252,.55); background: rgba(124,92,252,.12); }
+        .chem-footer { border-top: 1px solid #2e2e3e; background: rgba(13,13,20,.78); color: #8882aa; }
     </style>
 </head>
-<body class="selection:bg-cyan-900 selection:text-cyan-50">
+<body class="selection:bg-[#7c5cfc] selection:text-white">
+    <nav class="chem-brand-nav">
+      <div class="max-w-6xl mx-auto px-4 md:px-6 py-3.5 flex items-center justify-between gap-4">
+        <a href="index.html" class="flex items-center gap-2.5 no-underline text-[#f0eeff]">
+          <span class="w-9 h-9 rounded-[10px] bg-gradient-to-br from-[#7c5cfc] to-[#e05cfc] grid place-items-center text-white font-bold shadow-lg shadow-[#7c5cfc]/20">C</span>
+          <span class="text-lg md:text-xl font-bold tracking-wide">Chem<span class="text-[#7c5cfc]">puter</span></span>
+        </a>
+        <div class="flex items-center gap-2 text-xs md:text-sm font-semibold">
+          <a href="index.html" class="chem-brand-link no-underline">All tools</a>
+          <a href="electron_configue_calculator.html" class="chem-brand-link no-underline">Calculator</a>
+        </div>
+      </div>
+    </nav>
     <div id="root"></div>
 
     <script type="text/babel">
@@ -80,15 +105,15 @@
             : elementsData.filter(el => el.block === filterBlock);
 
           return (
-            <div className="min-h-screen p-4 md:p-8 font-sans">
+            <div className="min-h-screen p-4 md:p-8 font-sans relative z-10">
               <div className="max-w-6xl mx-auto mb-8 text-center space-y-4">
-                <div className="inline-flex items-center justify-center p-3 bg-slate-800/50 rounded-2xl border border-slate-700/50 mb-2">
-                  <IconAtom className="w-8 h-8 text-cyan-400 mr-3 animate-[spin_8s_linear_infinite]" />
-                  <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                <div className="inline-flex items-center justify-center p-3 bg-[#1e1e2a] rounded-2xl border border-[#2e2e3e] mb-2 shadow-lg">
+                  <IconAtom className="w-8 h-8 text-[#7c5cfc] mr-3 animate-[spin_8s_linear_infinite]" />
+                  <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#7c5cfc] to-[#e05cfc] bg-clip-text text-transparent">
                     ইলেকট্রন বিন্যাস থেকে গ্রুপ নির্ণয়
                   </h1>
                 </div>
-                <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+                <p className="text-[#8882aa] text-lg max-w-2xl mx-auto">
                   যেকোনো একটি মৌল নির্বাচন করো এবং ধাপে ধাপে দেখো কীভাবে ইলেকট্রন বিন্যাস থেকে এর গ্রুপ বের করা যায়।
                 </p>
               </div>
@@ -97,18 +122,18 @@
                 
                 {/* Left Panel */}
                 <div className="lg:col-span-4 space-y-6">
-                  <div className="bg-slate-900/80 rounded-2xl p-6 border border-slate-800 shadow-xl">
-                    <h2 className="text-xl font-semibold mb-4 flex items-center text-slate-100">
-                      <IconBeaker className="w-5 h-5 mr-2 text-slate-400" />
+                  <div className="bg-[#16161f] rounded-2xl p-6 border border-[#2e2e3e] shadow-xl">
+                    <h2 className="text-xl font-semibold mb-4 flex items-center text-[#f0eeff]">
+                      <IconBeaker className="w-5 h-5 mr-2 text-[#7c5cfc]" />
                       মৌল নির্বাচন করো
                     </h2>
                     
                     <div className="flex flex-wrap gap-2 mb-5">
-                      <button onClick={() => setFilterBlock('all')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 'all' ? 'bg-slate-700 text-white border-slate-600' : 'bg-slate-800/50 text-slate-400 border-slate-700/50 hover:bg-slate-800'}`}>সব</button>
-                      <button onClick={() => setFilterBlock('s')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 's' ? 'bg-blue-900/50 text-blue-300 border-blue-500/50' : 'bg-slate-800/50 text-slate-400 border-slate-700/50 hover:bg-slate-800'}`}>s-ব্লক</button>
-                      <button onClick={() => setFilterBlock('p')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 'p' ? 'bg-green-900/50 text-green-300 border-green-500/50' : 'bg-slate-800/50 text-slate-400 border-slate-700/50 hover:bg-slate-800'}`}>p-ব্লক</button>
-                      <button onClick={() => setFilterBlock('d')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 'd' ? 'bg-yellow-900/50 text-yellow-300 border-yellow-500/50' : 'bg-slate-800/50 text-slate-400 border-slate-700/50 hover:bg-slate-800'}`}>d-ব্লক</button>
-                      <button onClick={() => setFilterBlock('f')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 'f' ? 'bg-purple-900/50 text-purple-300 border-purple-500/50' : 'bg-slate-800/50 text-slate-400 border-slate-700/50 hover:bg-slate-800'}`}>f-ব্লক</button>
+                      <button onClick={() => setFilterBlock('all')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 'all' ? 'bg-[#7c5cfc] text-white border-[#7c5cfc]' : 'bg-[#1e1e2a] text-[#8882aa] border-[#2e2e3e] hover:bg-[#2e2e3e]'}`}>সব</button>
+                      <button onClick={() => setFilterBlock('s')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 's' ? 'bg-blue-500/20 text-blue-300 border-blue-500/50' : 'bg-[#1e1e2a] text-[#8882aa] border-[#2e2e3e] hover:bg-[#2e2e3e]'}`}>s-ব্লক</button>
+                      <button onClick={() => setFilterBlock('p')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 'p' ? 'bg-green-500/20 text-green-300 border-green-500/50' : 'bg-[#1e1e2a] text-[#8882aa] border-[#2e2e3e] hover:bg-[#2e2e3e]'}`}>p-ব্লক</button>
+                      <button onClick={() => setFilterBlock('d')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 'd' ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/50' : 'bg-[#1e1e2a] text-[#8882aa] border-[#2e2e3e] hover:bg-[#2e2e3e]'}`}>d-ব্লক</button>
+                      <button onClick={() => setFilterBlock('f')} className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${filterBlock === 'f' ? 'bg-purple-500/20 text-purple-300 border-purple-500/50' : 'bg-[#1e1e2a] text-[#8882aa] border-[#2e2e3e] hover:bg-[#2e2e3e]'}`}>f-ব্লক</button>
                     </div>
 
                     <div className="grid grid-cols-2 gap-3 max-h-[500px] overflow-y-auto pr-2 pb-2">
@@ -119,13 +144,13 @@
                           className={`relative p-3 rounded-xl border text-left transition-all duration-300 flex flex-col items-center justify-center gap-1 group
                             ${selectedElement.id === el.id 
                               ? `${el.bg} ${el.border} ring-1 ring-inset ${el.ring} scale-105 shadow-lg` 
-                              : 'bg-slate-800/40 border-slate-700 hover:bg-slate-800 hover:border-slate-600'
+                              : 'bg-[#1e1e2a] border-[#2e2e3e] hover:bg-[#242436] hover:border-[#7c5cfc]/50'
                             }`}
                         >
-                          <span className={`text-2xl font-bold ${selectedElement.id === el.id ? el.color : 'text-slate-300 group-hover:text-slate-100'}`}>
+                          <span className={`text-2xl font-bold ${selectedElement.id === el.id ? el.color : 'text-[#f0eeff] group-hover:text-white'}`}>
                             {el.symbol}
                           </span>
-                          <span className="text-xs text-slate-400 font-medium text-center">{el.name}</span>
+                          <span className="text-xs text-[#8882aa] font-medium text-center">{el.name}</span>
                           <span className={`absolute top-1 right-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase
                             ${el.block === 's' ? 'bg-blue-900/50 text-blue-300' : 
                               el.block === 'p' ? 'bg-green-900/50 text-green-300' : 
@@ -141,10 +166,10 @@
 
                 {/* Right Panel */}
                 <div className="lg:col-span-8">
-                  <div className="bg-slate-900/80 rounded-3xl border border-slate-800 shadow-2xl overflow-hidden relative">
-                    <div className={`p-6 border-b border-slate-800 flex items-center justify-between ${selectedElement.bg}`}>
+                  <div className="bg-[#16161f] rounded-3xl border border-[#2e2e3e] shadow-2xl overflow-hidden relative">
+                    <div className={`p-6 border-b border-[#2e2e3e] flex items-center justify-between ${selectedElement.bg}`}>
                       <div>
-                        <p className="text-sm font-medium text-slate-400 mb-1">পারমাণবিক সংখ্যা: {selectedElement.z}</p>
+                        <p className="text-sm font-medium text-[#8882aa] mb-1">পারমাণবিক সংখ্যা: {selectedElement.z}</p>
                         <h2 className="text-3xl font-bold text-white flex items-center gap-3">
                           {selectedElement.name} ({selectedElement.symbol})
                         </h2>
@@ -161,13 +186,13 @@
 
                     <div className="p-6 md:p-8 space-y-8">
                       <div className="space-y-3">
-                        <div className="flex items-center text-slate-400 text-sm font-semibold uppercase tracking-wider">
+                        <div className="flex items-center text-[#8882aa] text-sm font-semibold uppercase tracking-wider">
                           <IconBookOpen className="w-4 h-4 mr-2" /> ইলেকট্রন বিন্যাস
                         </div>
-                        <div className="bg-slate-950 rounded-xl p-5 border border-slate-800/60 font-mono text-xl md:text-2xl tracking-wide flex flex-wrap gap-2 items-center leading-loose">
+                        <div className="bg-[#0d0d14] rounded-xl p-5 border border-[#2e2e3e] font-mono text-xl md:text-2xl tracking-wide flex flex-wrap gap-2 items-center leading-loose">
                           {selectedElement.config.split(selectedElement.valenceHighlight).map((part, i, arr) => (
                             <React.Fragment key={i}>
-                              <span className="text-slate-300">{part}</span>
+                              <span className="text-[#f0eeff]">{part}</span>
                               {i !== arr.length - 1 && (
                                 <span className={`font-bold px-2 py-1 rounded-md ${selectedElement.bg} ${selectedElement.color}`}>
                                   {selectedElement.valenceHighlight}
@@ -179,56 +204,56 @@
                       </div>
 
                       <div className="space-y-6">
-                        <div className="flex items-center text-slate-400 text-sm font-semibold uppercase tracking-wider">
+                        <div className="flex items-center text-[#8882aa] text-sm font-semibold uppercase tracking-wider">
                           <IconCalculator className="w-4 h-4 mr-2" /> ধাপে ধাপে নির্ণয়
                         </div>
                         
                         <div className="flex items-start gap-4">
-                          <div className={`mt-1 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-800 ${selectedElement.color}`}>১</div>
+                          <div className={`mt-1 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-[#1e1e2a] border border-[#2e2e3e] ${selectedElement.color}`}>১</div>
                           <div>
-                            <h3 className="text-lg font-medium text-slate-200 mb-1">ব্লক চিহ্নিতকরণ:</h3>
-                            <p className="text-slate-400 leading-relaxed">{selectedElement.blockReason}</p>
+                            <h3 className="text-lg font-medium text-[#f0eeff] mb-1">ব্লক চিহ্নিতকরণ:</h3>
+                            <p className="text-[#8882aa] leading-relaxed">{selectedElement.blockReason}</p>
                           </div>
                         </div>
 
                         <div className="flex items-start gap-4">
-                          <div className={`mt-1 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-800 ${selectedElement.color}`}>২</div>
+                          <div className={`mt-1 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-[#1e1e2a] border border-[#2e2e3e] ${selectedElement.color}`}>২</div>
                           <div>
-                            <h3 className="text-lg font-medium text-slate-200 mb-1">{selectedElement.ruleTitle}</h3>
-                            <div className="bg-slate-800/50 border-l-4 border-slate-600 p-4 rounded-r-lg mt-2 text-slate-300">
+                            <h3 className="text-lg font-medium text-[#f0eeff] mb-1">{selectedElement.ruleTitle}</h3>
+                            <div className="bg-[#1e1e2a] border-l-4 border-[#7c5cfc] p-4 rounded-r-lg mt-2 text-[#f0eeff]">
                               <p>{selectedElement.ruleText}</p>
                             </div>
                           </div>
                         </div>
 
                         <div className="flex items-start gap-4">
-                          <div className={`mt-1 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-800 ${selectedElement.color}`}>৩</div>
+                          <div className={`mt-1 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-[#1e1e2a] border border-[#2e2e3e] ${selectedElement.color}`}>৩</div>
                           <div className="w-full">
-                            <h3 className="text-lg font-medium text-slate-200 mb-1">গণনা:</h3>
+                            <h3 className="text-lg font-medium text-[#f0eeff] mb-1">গণনা:</h3>
                             <div className={`mt-2 p-4 rounded-xl border flex flex-col md:flex-row items-start md:items-center justify-between gap-3 ${selectedElement.bg} ${selectedElement.border}`}>
-                              <p className="text-lg text-slate-200">{selectedElement.calc}</p>
+                              <p className="text-lg text-[#f0eeff]">{selectedElement.calc}</p>
                               <IconChevronRight className={`hidden md:block w-6 h-6 ${selectedElement.color}`} />
                             </div>
                           </div>
                         </div>
                       </div>
 
-                      <div className="pt-6 border-t border-slate-800">
-                        <div className="flex flex-col md:flex-row items-center justify-between bg-gradient-to-r from-slate-800/80 to-slate-900/80 p-6 rounded-2xl border border-slate-700/50 shadow-inner">
+                      <div className="pt-6 border-t border-[#2e2e3e]">
+                        <div className="flex flex-col md:flex-row items-center justify-between bg-gradient-to-r from-[#1e1e2a] to-[#16161f] p-6 rounded-2xl border border-[#2e2e3e] shadow-inner">
                           <div className="flex items-center gap-4 mb-4 md:mb-0">
-                            <div className={`p-3 rounded-full bg-slate-800 ${selectedElement.color}`}>
+                            <div className={`p-3 rounded-full bg-[#0d0d14] border border-[#2e2e3e] ${selectedElement.color}`}>
                               <IconCheckCircle2 className="w-8 h-8" />
                             </div>
                             <div>
-                              <p className="text-slate-400 text-sm mb-1">চূড়ান্ত ফলাফল</p>
-                              <p className="text-xl text-slate-200 font-medium">
+                              <p className="text-[#8882aa] text-sm mb-1">চূড়ান্ত ফলাফল</p>
+                              <p className="text-xl text-[#f0eeff] font-medium">
                                 তাই, {selectedElement.name} হলো <strong className={selectedElement.color}>{selectedElement.group} নং</strong> গ্রুপের মৌল।
                               </p>
                             </div>
                           </div>
                           <div className="flex flex-col items-center">
-                            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">গ্রুপ নম্বর</p>
-                            <div className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">
+                            <p className="text-xs font-bold text-[#8882aa] uppercase tracking-widest mb-2">গ্রুপ নম্বর</p>
+                            <div className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-b from-white to-[#8882aa]">
                               {selectedElement.group}
                             </div>
                           </div>
@@ -239,20 +264,30 @@
                 </div>
               </div>
 
-              {/* Footer Signature */}
-              <div className="max-w-6xl mx-auto mt-12 mb-4 text-center">
-                <div className="inline-flex flex-col items-center justify-center p-6 bg-slate-800/30 rounded-2xl border border-slate-700/50 shadow-lg relative overflow-hidden group min-w-[300px]">
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <p className="text-slate-400 text-xs mb-2 uppercase tracking-[0.2em] font-semibold">ডেভেলপড বাই</p>
-                  <a href="https://www.facebook.com/usha.khan.50596" target="_blank" rel="noreferrer" className="text-xl md:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-1 hover:opacity-80 transition-opacity">
-                    Md. Usha Khan (ইউশা)
-                  </a>
-                  <p className="text-slate-500 text-sm font-medium mt-1">
-                    Chemistry Instructor, 10 Minute School <br/>
-                    CSE, BUET
-                  </p>
+              <section className="max-w-6xl mx-auto mt-12 mb-4 rounded-[20px] border border-[#7c5cfc]/30 bg-gradient-to-br from-[#1e1e2a] to-[#16161f] p-6 md:p-10 relative overflow-hidden">
+                <div className="absolute inset-0 pointer-events-none opacity-70" style={{ backgroundImage: 'linear-gradient(rgba(124,92,252,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(124,92,252,0.05) 1px, transparent 1px)', backgroundSize: '28px 28px' }}></div>
+                <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center">
+                  <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-tr from-[#7c5cfc] to-[#e05cfc] p-1 flex-shrink-0 shadow-[0_0_30px_rgba(124,92,252,0.3)]">
+                    <div className="w-full h-full rounded-full bg-[#16161f] flex items-center justify-center border-4 border-[#16161f]">
+                      <span className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-[#7c5cfc] to-[#e05cfc]">ইউ</span>
+                    </div>
+                  </div>
+                  <div className="text-center md:text-left flex-1">
+                    <div className="inline-flex items-center gap-2 bg-[#7c5cfc]/10 border border-[#7c5cfc]/30 text-[#7c5cfc] text-xs font-bold px-3 py-1 rounded-full mb-3">এক্সক্লুসিভ গ্রুপ</div>
+                    <h2 className="text-2xl md:text-3xl font-bold mb-2 text-[#f0eeff]">আমার এক্সক্লুসিভ ফেসবুক গ্রুপে যোগ দাও!</h2>
+                    <p className="text-[#8882aa] text-sm leading-relaxed mb-5 max-w-lg">এই গ্রুপে পাবে এক্সক্লুসিভ নোট, MCQ সেট, লাইভ ক্লাসের আপডেট এবং সরাসরি প্রশ্ন করার সুযোগ।</p>
+                    <div className="flex flex-wrap gap-2 mb-5 justify-center md:justify-start">
+                      {["📚 এক্সক্লুসিভ নোট", "❓ সরাসরি প্রশ্নোত্তর", "🔔 ক্লাস আপডেট", "📝 MCQ সেট"].map(perk => (
+                        <span key={perk} className="text-xs bg-[#2e2e3e] text-[#f0eeff] px-3 py-1.5 rounded-full">{perk}</span>
+                      ))}
+                    </div>
+                    <div className="flex flex-wrap items-center gap-3 justify-center md:justify-start">
+                      <a href="https://www.facebook.com/groups/chemputer007" target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-[#7c5cfc] to-[#e05cfc] text-white font-semibold px-6 py-2.5 rounded-xl transition-all shadow-lg hover:shadow-[#7c5cfc]/40 hover:scale-105 flex items-center gap-2 text-sm">গ্রুপে যোগ দাও</a>
+                      <a href="https://www.facebook.com/usha.khan.50596" target="_blank" rel="noopener noreferrer" className="bg-[#2e2e3e] hover:bg-[#3f3f5a] text-white font-semibold px-5 py-2.5 rounded-xl transition-all shadow-lg flex items-center gap-2 text-sm">Profile</a>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </section>
             </div>
           );
         };
@@ -260,5 +295,11 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
+    <footer class="chem-footer">
+      <div class="max-w-6xl mx-auto px-4 md:px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs md:text-sm">
+        <span>© 2026 <strong class="text-[#f0eeff]">Chemputer</strong>. Interactive chemistry learning tools.</span>
+        <span>Developed by <a href="https://www.facebook.com/usha.khan.50596" target="_blank" rel="noopener" class="text-[#7c5cfc] font-semibold no-underline">Usha Khan</a></span>
+      </div>
+    </footer>
 </body>
 </html>

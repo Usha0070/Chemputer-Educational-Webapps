@@ -21,8 +21,20 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(124, 92, 252, 0.3); border-color: #7c5cfc; }
+        .card-hover {
+            border-radius: 12px;
+            transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background-color 0.22s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 42px -24px rgba(124, 92, 252, 0.65);
+            border-color: rgba(124, 92, 252, 0.72);
+            background-color: #181824;
+        }
+        .card-hover:focus-visible {
+            outline: 2px solid #7c5cfc;
+            outline-offset: 4px;
+        }
         
         /* Navbar Styles */
         nav { backdrop-filter: blur(10px); border-bottom: 1px solid rgba(46, 46, 62, 0.8); }
@@ -38,7 +50,7 @@
     <div class="bg-pattern fixed inset-0 pointer-events-none z-0"></div>
 
     <!-- Navigation Bar -->
-    <nav class="sticky top-0 z-50 bg-[#0d0d14]/80 px-6 py-4">
+    <nav class="sticky top-0 z-50 bg-[#0d0d14]/85 px-6 py-4">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-2 group">
                 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7c5cfc] to-[#e05cfc] flex items-center justify-center font-bold text-white shadow-lg group-hover:shadow-[#7c5cfc]/50 transition-all">
@@ -57,7 +69,7 @@
         </div>
     </nav>
     
-    <main class="flex-grow relative z-10 max-w-6xl mx-auto p-6 md:p-12 pt-12">
+    <main class="flex-grow relative z-10 max-w-6xl mx-auto p-6 md:p-12 pt-10">
         
         <!-- Header Section -->
         <header class="text-center mb-16">
@@ -80,7 +92,7 @@
                 <span class="text-sm text-[#8882aa] bg-[#1e1e2a] px-3 py-1 rounded-md">মোট ৫টি টুলস</span>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 
                 <!-- Tool 1: Normal Config Calculator -->
                 <a href="electron_configue_calculator.html" class="flex flex-col bg-[#16161f] border border-[#2e2e3e] rounded-2xl p-6 md:p-8 card-hover no-underline group relative overflow-hidden">
@@ -136,9 +148,6 @@
                         টুলটি ব্যবহার করো <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                     </div>
                 </a>
-
-            </div>
-
             <!-- Tool 5: Periodic Table Mnemonics -->
                 <a href="periodic_table_mnemonics.html" class="flex flex-col bg-[#16161f] border border-[#2e2e3e] rounded-2xl p-6 md:p-8 card-hover no-underline group relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-[#e05cfc]/5 rounded-bl-full -z-10 group-hover:bg-[#e05cfc]/10 transition-colors"></div>
@@ -150,8 +159,9 @@
                     <p class="text-[#8882aa] text-sm leading-relaxed mb-6 flex-grow">ছড়ার ছন্দে মনে রাখো পর্যায় সারণির সব গ্রুপের মৌল! ইন্টারেক্টিভ ফ্লিপ কার্ডে দেখো প্রতীক, পারমাণবিক সংখ্যা ও বাংলা নাম।</p>
                     <div class="text-sm font-semibold text-[#e05cfc] flex items-center gap-2 group-hover:gap-3 transition-all mt-auto">টুলটি ব্যবহার করো</div>
                 </a>
+            </div>
 
-                <!-- Future Expansion Placeholder -->
+            <!-- Future Expansion Placeholder -->
             <div class="mt-8 p-6 rounded-2xl border border-dashed border-[#2e2e3e] flex flex-col items-center justify-center text-center bg-[#0d0d14]/50">
                 <div class="w-12 h-12 bg-[#1e1e2a] rounded-full flex items-center justify-center mb-3">
                     <svg class="w-6 h-6 text-[#8882aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
@@ -165,7 +175,30 @@
         <section id="about" class="bg-gradient-to-br from-[#1e1e2a] to-[#16161f] border border-[#2e2e3e] rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
             <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#7c5cfc]/10 to-[#e05cfc]/5 rounded-full blur-3xl -z-10"></div>
             
-            <div class="flex flex-col md:flex-row gap-10 items-center">
+            <div class="relative z-10 flex flex-col md:flex-row gap-8 items-center">
+                <div class="w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-tr from-[#7c5cfc] to-[#e05cfc] p-1 flex-shrink-0 shadow-[0_0_30px_rgba(124,92,252,0.3)]">
+                    <div class="w-full h-full rounded-full bg-[#16161f] flex items-center justify-center border-4 border-[#16161f]">
+                        <span class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-[#7c5cfc] to-[#e05cfc]">ইউ</span>
+                    </div>
+                </div>
+                <div class="text-center md:text-left flex-1">
+                    <div class="inline-flex items-center gap-2 bg-[#7c5cfc]/10 border border-[#7c5cfc]/30 text-[#7c5cfc] text-xs font-bold px-3 py-1 rounded-full mb-3">এক্সক্লুসিভ গ্রুপ</div>
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2">আমার এক্সক্লুসিভ ফেসবুক গ্রুপে যোগ দাও!</h2>
+                    <p class="text-[#8882aa] text-sm leading-relaxed mb-5 max-w-lg">এই গ্রুপে পাবে এক্সক্লুসিভ নোট, MCQ সেট, লাইভ ক্লাসের আপডেট এবং সরাসরি প্রশ্ন করার সুযোগ।</p>
+                    <div class="flex flex-wrap gap-2 mb-5 justify-center md:justify-start">
+                        <span class="text-xs bg-[#2e2e3e] text-[#f0eeff] px-3 py-1.5 rounded-full">📚 এক্সক্লুসিভ নোট</span>
+                        <span class="text-xs bg-[#2e2e3e] text-[#f0eeff] px-3 py-1.5 rounded-full">❓ সরাসরি প্রশ্নোত্তর</span>
+                        <span class="text-xs bg-[#2e2e3e] text-[#f0eeff] px-3 py-1.5 rounded-full">🔔 ক্লাস আপডেট</span>
+                        <span class="text-xs bg-[#2e2e3e] text-[#f0eeff] px-3 py-1.5 rounded-full">📝 MCQ সেট</span>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3 justify-center md:justify-start">
+                        <a href="https://www.facebook.com/groups/chemputer007" target="_blank" class="bg-gradient-to-r from-[#7c5cfc] to-[#e05cfc] text-white font-semibold px-6 py-2.5 rounded-xl transition-all shadow-lg hover:shadow-[#7c5cfc]/40 hover:scale-105 flex items-center gap-2 text-sm">গ্রুপে যোগ দাও</a>
+                        <a href="https://www.facebook.com/usha.khan.50596" target="_blank" class="bg-[#2e2e3e] hover:bg-[#3f3f5a] text-white font-semibold px-5 py-2.5 rounded-xl transition-all shadow-lg flex items-center gap-2 text-sm">Profile</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden">
                 <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-tr from-[#7c5cfc] to-[#e05cfc] p-1 flex-shrink-0 shadow-[0_0_30px_rgba(124,92,252,0.3)]">
                     <div class="w-full h-full rounded-full bg-[#16161f] flex items-center justify-center overflow-hidden border-4 border-[#16161f]">
                         <span class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-[#7c5cfc] to-[#e05cfc]">ইউ</span>

@@ -72,10 +72,26 @@
             0% { transform: scale(0); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
+        .chem-brand-nav { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid rgba(46,46,62,.82); background: rgba(13,13,20,.86); backdrop-filter: blur(14px); }
+        .chem-brand-link { border: 1px solid #2e2e3e; background: rgba(30,30,42,.72); border-radius: 999px; padding: 8px 12px; color: #8882aa; transition: .2s ease; }
+        .chem-brand-link:hover { color: #f0eeff; border-color: rgba(124,92,252,.55); background: rgba(124,92,252,.12); }
+        .chem-footer { border-top: 1px solid #2e2e3e; background: rgba(13,13,20,.78); color: #8882aa; }
     </style>
 </head>
 <body>
     <div class="bg-pattern fixed inset-0 pointer-events-none z-0"></div>
+    <nav class="chem-brand-nav">
+      <div class="max-w-6xl mx-auto px-4 md:px-6 py-3.5 flex items-center justify-between gap-4">
+        <a href="index.html" class="flex items-center gap-2.5 no-underline text-[#f0eeff]">
+          <span class="w-9 h-9 rounded-[10px] bg-gradient-to-br from-[#7c5cfc] to-[#e05cfc] grid place-items-center text-white font-bold shadow-lg shadow-[#7c5cfc]/20">C</span>
+          <span class="text-lg md:text-xl font-bold tracking-wide">Chem<span class="text-[#7c5cfc]">puter</span></span>
+        </a>
+        <div class="flex items-center gap-2 text-xs md:text-sm font-semibold">
+          <a href="index.html" class="chem-brand-link no-underline">All tools</a>
+          <a href="electron_configue_calculator.html" class="chem-brand-link no-underline">Calculator</a>
+        </div>
+      </div>
+    </nav>
     <div id="root" class="relative z-10"></div>
 
     <script type="text/babel">
@@ -309,9 +325,6 @@
                     
                     {/* Header */}
                     <div className="text-center mb-8">
-                        <div className="inline-block bg-gradient-accent text-white text-[11px] font-semibold tracking-wider px-4 py-1.5 rounded-full mb-4 uppercase shadow-lg">
-                            অনলাইন ব্যাচ ২০২৬ · ৯ম শ্রেণি রসায়ন
-                        </div>
                         <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-2">
                             ইলেকট্রন বিন্যাসের <span className="text-gradient">ম্যাজিক শর্টকাট</span>
                         </h1>
@@ -440,20 +453,30 @@
                         </div>
                     </div>
 
-                    {/* Teacher / Footer */}
-                    <div className="flex justify-center mt-12 mb-8">
-                        <div className="flex items-center gap-3 bg-[#16161f] border border-[#2e2e3e] rounded-xl py-2.5 px-6 shadow-lg hover:border-[#7c5cfc]/50 transition-colors">
-                            <div className="w-10 h-10 rounded-full bg-gradient-accent flex items-center justify-center text-sm font-bold text-white shrink-0 shadow-md">
-                                ইউ
+                    <section className="mt-12 mb-8 rounded-[20px] border border-[#7c5cfc]/30 bg-gradient-to-br from-[#1e1e2a] to-[#16161f] p-6 md:p-10 relative overflow-hidden">
+                        <div className="absolute inset-0 pointer-events-none opacity-70" style={{ backgroundImage: 'linear-gradient(rgba(124,92,252,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(124,92,252,0.05) 1px, transparent 1px)', backgroundSize: '28px 28px' }}></div>
+                        <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center">
+                            <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-tr from-[#7c5cfc] to-[#e05cfc] p-1 flex-shrink-0 shadow-[0_0_30px_rgba(124,92,252,0.3)]">
+                                <div className="w-full h-full rounded-full bg-[#16161f] flex items-center justify-center border-4 border-[#16161f]">
+                                    <span className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-[#7c5cfc] to-[#e05cfc]">ইউ</span>
+                                </div>
                             </div>
-                            <div className="text-left">
-                                <a href="https://www.facebook.com/usha.khan.50596" target="_blank" rel="noreferrer" className="text-[14px] font-semibold text-[#f0eeff] hover:text-[#7c5cfc] transition-colors">
-                                    Md. Usha Khan (ইউশা)
-                                </a>
-                                <div className="text-[11px] text-[#8882aa] mt-0.5">Chemistry Instructor, 10MS · CSE, BUET</div>
+                            <div className="text-center md:text-left flex-1">
+                                <div className="inline-flex items-center gap-2 bg-[#7c5cfc]/10 border border-[#7c5cfc]/30 text-[#7c5cfc] text-xs font-bold px-3 py-1 rounded-full mb-3">এক্সক্লুসিভ গ্রুপ</div>
+                                <h2 className="text-2xl md:text-3xl font-bold mb-2">আমার এক্সক্লুসিভ ফেসবুক গ্রুপে যোগ দাও!</h2>
+                                <p className="text-[#8882aa] text-sm leading-relaxed mb-5 max-w-lg">এই গ্রুপে পাবে এক্সক্লুসিভ নোট, MCQ সেট, লাইভ ক্লাসের আপডেট এবং সরাসরি প্রশ্ন করার সুযোগ।</p>
+                                <div className="flex flex-wrap gap-2 mb-5 justify-center md:justify-start">
+                                    {["📚 এক্সক্লুসিভ নোট", "❓ সরাসরি প্রশ্নোত্তর", "🔔 ক্লাস আপডেট", "📝 MCQ সেট"].map(perk => (
+                                        <span key={perk} className="text-xs bg-[#2e2e3e] text-[#f0eeff] px-3 py-1.5 rounded-full">{perk}</span>
+                                    ))}
+                                </div>
+                                <div className="flex flex-wrap items-center gap-3 justify-center md:justify-start">
+                                    <a href="https://www.facebook.com/groups/chemputer007" target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-[#7c5cfc] to-[#e05cfc] text-white font-semibold px-6 py-2.5 rounded-xl transition-all shadow-lg hover:shadow-[#7c5cfc]/40 hover:scale-105 flex items-center gap-2 text-sm">গ্রুপে যোগ দাও</a>
+                                    <a href="https://www.facebook.com/usha.khan.50596" target="_blank" rel="noopener noreferrer" className="bg-[#2e2e3e] hover:bg-[#3f3f5a] text-white font-semibold px-5 py-2.5 rounded-xl transition-all shadow-lg flex items-center gap-2 text-sm">Profile</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </section>
                 </div>
             );
         };
@@ -461,5 +484,11 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
+    <footer class="chem-footer relative z-10">
+      <div class="max-w-6xl mx-auto px-4 md:px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs md:text-sm">
+        <span>© 2026 <strong class="text-[#f0eeff]">Chemputer</strong>. Interactive chemistry learning tools.</span>
+        <span>Developed by <a href="https://www.facebook.com/usha.khan.50596" target="_blank" rel="noopener" class="text-[#7c5cfc] font-semibold no-underline">Usha Khan</a></span>
+      </div>
+    </footer>
 </body>
 </html>

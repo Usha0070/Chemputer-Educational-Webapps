@@ -221,22 +221,35 @@
   .rule-eg strong { color: var(--text); }
 
   /* cta */
-  .cta-section { margin-top: 3rem; border-radius: 20px; padding: 2rem 1.5rem; text-align: center; background: linear-gradient(135deg, rgba(124,92,252,0.15), rgba(224,92,252,0.10)); border: 1px solid rgba(124,92,252,0.3); position: relative; overflow: hidden; }
+  .cta-section { max-width: 1070px; margin: 3rem auto 0; border-radius: 20px; padding: 2.5rem; background: linear-gradient(135deg, rgba(30,30,42,0.96), rgba(22,22,31,0.96)); border: 1px solid rgba(124,92,252,0.3); position: relative; overflow: hidden; }
   .cta-section::before { content:''; position:absolute; inset:0; background-image: linear-gradient(rgba(124,92,252,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(124,92,252,0.06) 1px,transparent 1px); background-size:24px 24px; pointer-events:none; }
-  .cta-inner { position: relative; z-index: 1; }
-  .cta-icon { font-size: 40px; margin-bottom: 0.75rem; }
-  .cta-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .cta-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 32px; }
+  .cta-avatar { width: 132px; height: 132px; border-radius: 50%; padding: 4px; background: linear-gradient(135deg, var(--accent), var(--accent2)); flex: 0 0 auto; }
+  .cta-avatar span { width: 100%; height: 100%; border-radius: 50%; background: #16161f; display: grid; place-items: center; font-size: 42px; font-weight: 800; color: var(--accent); }
+  .cta-content { text-align: left; }
+  .cta-kicker { display: inline-flex; align-items: center; gap: 7px; background: rgba(124,92,252,.12); border: 1px solid rgba(124,92,252,.34); color: var(--accent); border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 700; margin-bottom: 12px; }
+  .cta-title { font-size: clamp(24px, 3vw, 34px); font-weight: 800; margin-bottom: 8px; line-height: 1.2; color: var(--text); }
   .cta-title span { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .cta-sub { font-size: 14px; color: var(--muted); margin-bottom: 1.2rem; line-height: 1.7; }
-  .cta-perks { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 1.4rem; }
-  .cta-perk { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 99px; padding: 5px 14px; font-size: 13px; color: var(--muted); }
-  .cta-btn { display: inline-flex; align-items: center; gap: 10px; background: #1877F2; color: #fff; font-size: 15px; font-weight: 700; padding: 14px 28px; border-radius: 12px; text-decoration: none; font-family: var(--sans); transition: opacity 0.2s, transform 0.15s; }
-  .cta-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+  .cta-sub { font-size: 14px; color: var(--muted); margin-bottom: 1rem; line-height: 1.7; max-width: 620px; }
+  .cta-perks { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.25rem; }
+  .cta-perk { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 99px; padding: 6px 13px; font-size: 13px; color: var(--text); }
+  .cta-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .cta-btn { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #fff; font-size: 15px; font-weight: 700; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-family: var(--sans); transition: opacity 0.2s, transform 0.15s; }
+  .cta-btn.secondary { background: #2e2e3e; color: #fff; }
+  .cta-btn:hover { opacity: 0.9; transform: translateY(-2px); }
   .cta-btn:active { transform: scale(0.97); }
-  .cta-btn svg { width: 22px; height: 22px; fill: #fff; flex-shrink: 0; }
-  .cta-note { font-size: 12px; color: var(--muted); margin-top: 10px; }
+  .cta-btn svg { width: 18px; height: 18px; fill: #fff; flex-shrink: 0; }
+  .cta-inner { display: block; }
+  .cta-inner > :not(.cta-standard) { display: none !important; }
+  .cta-standard { display: flex; align-items: center; gap: 32px; }
+  @media (max-width: 720px) {
+    .cta-section { padding: 1.5rem; }
+    .cta-standard { flex-direction: column; text-align: center; }
+    .cta-content { text-align: center; }
+    .cta-perks, .cta-actions { justify-content: center; }
+  }
   /* footer */
-  .footer { text-align: center; margin-top: 2rem; font-size: 12px; color: var(--muted); line-height: 1.8; }
+  .footer { display: none; text-align: center; margin-top: 2rem; font-size: 12px; color: var(--muted); line-height: 1.8; }
   .footer strong { color: var(--accent); }
 
   @media (max-width: 500px) {
@@ -244,13 +257,69 @@
     .tabs .tab { font-size: 11px; padding: 8px 4px; }
     h1 { font-size: 20px; }
   }
+
+  .brand-nav {
+    position: sticky; top: 0; z-index: 50;
+    border-bottom: 1px solid rgba(46,46,62,0.82);
+    background: rgba(13,13,20,0.86);
+    backdrop-filter: blur(14px);
+  }
+  .brand-nav-inner {
+    max-width: 1120px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 18px;
+  }
+  .brand-mark { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; }
+  .brand-logo {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: grid; place-items: center; color: #fff; font-weight: 700;
+    box-shadow: 0 12px 30px rgba(124,92,252,0.22);
+  }
+  .brand-word { font-size: 19px; font-weight: 700; letter-spacing: .2px; }
+  .brand-word span { color: var(--accent); }
+  .brand-links { display: flex; align-items: center; gap: 10px; }
+  .brand-link {
+    color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 600;
+    border: 1px solid var(--border); background: rgba(30,30,42,0.72);
+    border-radius: 999px; padding: 8px 12px; transition: .2s ease;
+  }
+  .brand-link:hover { color: var(--text); border-color: rgba(124,92,252,.55); background: rgba(124,92,252,.12); }
+  .brand-shell { max-width: 980px; margin: 0 auto; padding: 24px 18px 48px; }
+  .page { max-width: 920px; padding-top: 1.5rem; }
+  .brand-footer {
+    border-top: 1px solid var(--border); background: rgba(13,13,20,.72);
+    color: var(--muted); font-size: 13px;
+  }
+  .brand-footer-inner {
+    max-width: 1120px; margin: 0 auto; padding: 20px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+  .brand-footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  @media (max-width: 640px) {
+    .brand-nav-inner { padding: 12px 16px; }
+    .brand-word { font-size: 17px; }
+    .brand-links { gap: 8px; }
+    .brand-link { padding: 7px 10px; font-size: 12px; }
+    .brand-shell { padding-inline: 14px; }
+  }
 </style>
 </head>
 <body>
+<nav class="brand-nav" aria-label="Chemputer navigation">
+  <div class="brand-nav-inner">
+    <a class="brand-mark" href="index.html">
+      <span class="brand-logo">C</span>
+      <span class="brand-word">Chem<span>puter</span></span>
+    </a>
+    <div class="brand-links">
+      <a class="brand-link" href="index.html">All tools</a>
+      <a class="brand-link" href="periodic_table_mnemonics.html">Next study tool</a>
+    </div>
+  </div>
+</nav>
 <div class="page">
 
   <div class="header">
-    <div class="badge-top">অনলাইন ব্যাচ ২০২৬ · ৯ম শ্রেণি রসায়ন</div>
     <h1>ইলেকট্রন বিন্যাস<br><span>গ্রুপ ও পর্যায় ক্যালকুলেটর</span></h1>
     <p class="header-sub">অধ্যায় ৪ · পর্যায় সারণী</p>
 
@@ -350,6 +419,30 @@
 
 <div class="cta-section">
   <div class="cta-inner">
+    <div class="cta-standard">
+      <div class="cta-avatar"><span>ইউ</span></div>
+      <div class="cta-content">
+        <div class="cta-kicker">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          এক্সক্লুসিভ গ্রুপ
+        </div>
+        <div class="cta-title">আমার এক্সক্লুসিভ ফেসবুক গ্রুপে যোগ দাও!</div>
+        <p class="cta-sub">এই গ্রুপে পাবে এক্সক্লুসিভ নোট, MCQ সেট, লাইভ ক্লাসের আপডেট এবং সরাসরি প্রশ্ন করার সুযোগ।</p>
+        <div class="cta-perks">
+          <span class="cta-perk">📚 এক্সক্লুসিভ নোট</span>
+          <span class="cta-perk">❓ সরাসরি প্রশ্নোত্তর</span>
+          <span class="cta-perk">🔔 ক্লাস আপডেট</span>
+          <span class="cta-perk">📝 MCQ সেট</span>
+        </div>
+        <div class="cta-actions">
+          <a class="cta-btn" href="https://www.facebook.com/groups/chemputer007" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            গ্রুপে যোগ দাও
+          </a>
+          <a class="cta-btn secondary" href="https://www.facebook.com/usha.khan.50596" target="_blank" rel="noopener">Profile</a>
+        </div>
+      </div>
+    </div>
     <div class="cta-icon">👥</div>
     <div class="cta-title">আমার <span>এক্সক্লুসিভ ফেসবুক গ্রুপে</span> যোগ দাও!</div>
     <p class="cta-sub">ক্লাসের আপডেট, নোট, MCQ প্র্যাকটিস, আর ইউশা ভাইয়ার সাথে সরাসরি প্রশ্ন করার সুযোগ — সব এক জায়গায়।</p>
@@ -375,8 +468,8 @@
       Md. Usha Khan (ইউশা)
     </a>
   </strong> 
-  · 10 Minute School · অনলাইন ব্যাচ ২০২৬<br>
-  অধ্যায় ৪: পর্যায় সারণী · ৯ম শ্রেণি রসায়ন
+  · 10 Minute School<br>
+  অধ্যায় ৪: পর্যায় সারণী
 </div>
 
 <script>
@@ -585,5 +678,11 @@ function answer(qi,oi){
 
 initQuiz();
 </script>
+<footer class="brand-footer">
+  <div class="brand-footer-inner">
+    <span>© 2026 <strong>Chemputer</strong>. Built for structured chemistry practice.</span>
+    <span>Developed by <a href="https://www.facebook.com/usha.khan.50596" target="_blank" rel="noopener">Usha Khan</a></span>
+  </div>
+</footer>
 </body>
 </html>

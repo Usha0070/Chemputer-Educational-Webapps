@@ -26,6 +26,14 @@
         .btn-gradient {
             background: linear-gradient(90deg, #7c5cfc, #e05cfc);
         }
+        nav {
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(46,46,62,0.82);
+        }
+        a:focus-visible, button:focus-visible {
+            outline: 2px solid #7c5cfc;
+            outline-offset: 4px;
+        }
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #2e2e3e; border-radius: 4px; }
@@ -104,7 +112,7 @@
     <div class="bg-pattern fixed inset-0 pointer-events-none z-0"></div>
 
     <!-- Navigation Bar -->
-    <nav class="sticky top-0 z-50 bg-[#0d0d14]/80 px-6 py-4">
+    <nav class="sticky top-0 z-50 bg-[#0d0d14]/85 px-6 py-4">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-2 group">
                 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-[#7c5cfc] to-[#e05cfc] flex items-center justify-center font-bold text-white shadow-lg group-hover:shadow-[#7c5cfc]/50 transition-all">C</div>
@@ -435,10 +443,6 @@
 
                 {/* Header */}
                 <header className="text-center mb-10">
-                    <div className="inline-flex items-center gap-2 bg-[#1e1e2a] border border-[#2e2e3e] text-[#f0eeff] text-xs font-semibold tracking-wide px-4 py-1.5 rounded-full mb-5">
-                        <span className="w-2 h-2 rounded-full bg-[#3dffa0] animate-pulse"></span>
-                        <span>অনলাইন ব্যাচ ২০২৬ · ৯ম শ্রেণি রসায়ন</span>
-                    </div>
                     <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-4">
                         ছন্দে ছন্দে <span className="text-gradient">পর্যায় সারণি</span>
                     </h1>
