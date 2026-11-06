@@ -288,8 +288,19 @@ Every simulation page follows the same order:
     - Auto-advances every 5 s. The active dot's fill bar is the timer. It holds on hover, keyboard focus, touch, off-screen or a hidden tab, has a pause button, and is off with reduced motion.
   - breadcrumbs and previous/next
   - Ctrl+K search
+- **Search and sharing:**
+  - The public brand is **Chemputer Studio**. "Chemputer" alone collides with the University of Glasgow's robotic chemistry platform.
+  - Titles put the Bangla name first, then the English name and what it is (simulation, animation, virtual lab, step by step).
+  - Each page has:
+    - an English line under its title
+    - schema.org data (`WebSite`/`EducationalOrganization` on home, `BreadcrumbList` everywhere, `LearningResource` per simulation)
+    - its own 1200×630 share image (`npm run og`)
+    - a sitemap `<lastmod>` taken from git
+  - The README section "Search and sharing (SEO)" has the details.
 - **Ambience:**
-  - **3D background** (`src/scripts/bg3d.ts`): ball-and-stick molecules and a faint network on one fixed canvas, with perspective projection and no WebGL library (about 2 KB gzipped).
+  - **3D background** (`src/scripts/bg3d.ts`, scene in `bg3d-scene.ts`): ball-and-stick molecules and a faint network on one fixed canvas, with perspective projection and no WebGL library.
+    - Drawn in a Web Worker on an OffscreenCanvas where supported, so it never uses the page's main thread; otherwise drawn on the page.
+    - Steps its quality down by itself when frames take too long to draw.
     - It leans with the pointer and scrolling, runs at ~30 fps, and pauses while the tab is hidden or a simulation is fullscreen.
     - It shows a single still frame with reduced motion or Data Saver, and is dimmed on simulation pages.
   - **Ambient sound** (`src/scripts/sound.ts`, `ambient.ts`): a quiet generative Web Audio pad with soft chimes, so there is no audio file and nothing to license.
@@ -341,8 +352,9 @@ npm run new:sim -- --level ssc --chapter 7 --slug reaction-rate
 1. The script creates `src/sims/reaction-rate/Sim.tsx` (SimShell stub) and `src/content/sims/reaction-rate.mdx` (frontmatter filled in).
 2. Build the interaction with the UI kit and engine. Add engine tests if new chemistry logic is needed.
 3. Write the explanation sections in the MDX file.
-4. Open a pull request, then check the Vercel preview on a phone.
-5. Merge. The simulation appears on the chapter hub, in `/sims/`, in search, in the sitemap and on the home page "নতুন" list.
+4. Run `npm run og` to make its share image, and commit it with the page.
+5. Open a pull request, then check the Vercel preview on a phone.
+6. Merge. The simulation appears on the chapter hub, in `/sims/`, in search, in the sitemap and on the home page "নতুন" list.
 
 ---
 

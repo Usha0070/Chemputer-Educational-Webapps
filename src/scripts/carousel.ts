@@ -19,7 +19,11 @@ function mount(root: HTMLElement) {
   const prev = root.querySelector<HTMLButtonElement>('[data-carousel-prev]');
   const next = root.querySelector<HTMLButtonElement>('[data-carousel-next]');
   const pause = root.querySelector<HTMLButtonElement>('[data-carousel-pause]');
-  if (!track || !dotsBox || !prev || !next || !pause) return;
+  if (!track) return;
+  if (!dotsBox || !prev || !next || !pause) {
+    root.dataset.ready = 'true'; // a single slide: nothing to drive
+    return;
+  }
   const slides = [...track.children] as HTMLElement[];
   const interval = Number(root.dataset.interval) || 0;
 

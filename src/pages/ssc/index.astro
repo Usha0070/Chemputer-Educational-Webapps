@@ -4,15 +4,22 @@ import ChapterCard from '@/components/ChapterCard.astro';
 import MolecularMotif from '@/components/MolecularMotif.astro';
 import Base from '@/layouts/Base.astro';
 import { bn } from '@/chem/format';
-import { getChapters, getSims, simsIn } from '@/lib/content';
+import { chapterUrl, getChapters, getSims, simsIn } from '@/lib/content';
+import { collectionGraph, ogKey } from '@/lib/seo';
 
 const chapters = await getChapters();
 const sims = await getSims();
 ---
 
 <Base
-  title="নবম-দশম শ্রেণির রসায়ন: সব অধ্যায়"
-  description="নবম-দশম শ্রেণির রসায়ন বইয়ের ১২টি অধ্যায়, প্রতিটির ইন্টারেক্টিভ সিমুলেশন ও অ্যানিমেশন এক জায়গায়।"
+  title="নবম-দশম শ্রেণির রসায়ন: সব অধ্যায় | SSC Chemistry Class 9–10 Chapters"
+  description="নবম-দশম শ্রেণির (SSC) রসায়ন বইয়ের ১২টি অধ্যায়, প্রতিটির ইন্টারেক্টিভ রসায়ন সিমুলেশন ও অ্যানিমেশন এক জায়গায়। All 12 chapters of SSC chemistry with simulations in Bangla."
+  ogImage={ogKey.ssc}
+  jsonLd={collectionGraph(
+    'নবম-দশম শ্রেণির রসায়ন: সব অধ্যায় (SSC Chemistry)',
+    '/ssc/',
+    chapters.map((c) => ({ name: `${c.data.titleBn} (${c.data.titleEn})`, url: chapterUrl(c) })),
+  )}
 >
   <section class="relative overflow-hidden">
     <MolecularMotif variant="compact" class="pointer-events-none absolute inset-y-0 right-0 h-full w-full opacity-50 md:w-1/2" />
@@ -20,6 +27,9 @@ const sims = await getSims();
       <Breadcrumbs items={[{ label: 'হোম', href: '/' }, { label: 'নবম-দশম শ্রেণি' }]} />
       <p class="brand-bar label-en text-[10px]">SSC · Class 9–10</p>
       <h1 class="mt-4 text-3xl font-bold sm:text-5xl">নবম-দশম শ্রেণির রসায়ন</h1>
+      <p lang="en" class="mt-2 text-sm font-medium text-muted">
+        SSC Chemistry (Class 9–10, NCTB): every chapter with interactive simulations and animations in Bangla.
+      </p>
       <p class="mt-3 max-w-2xl text-base leading-relaxed text-muted">
         NCTB-এর “রসায়ন, নবম–দশম শ্রেণি” বইয়ের {bn(chapters.length)}টি অধ্যায়। যেকোনো অধ্যায় খুলে দেখো কী কী শিখবে আর কোন সিমুলেশনগুলো
         তৈরি আছে। মোট {bn(sims.length)}টি সিমুলেশন।

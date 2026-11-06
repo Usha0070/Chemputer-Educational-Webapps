@@ -15,7 +15,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "new:sim": "node scripts/new-sim.mjs",
-    "legacy": "node scripts/legacy.mjs"
+    "legacy": "node scripts/legacy.mjs",
+    "og": "node scripts/og.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "8.1.0",

@@ -2,19 +2,33 @@
 import '@/styles/global.css';
 import Footer from '@/components/Footer.astro';
 import Header from '@/components/Header.astro';
+import JsonLd from '@/components/JsonLd.astro';
 import Sidebar from '@/components/Sidebar.astro';
+import { ogImageUrl } from '@/lib/seo';
 import { SITE } from '@/lib/site';
+// Fonts are deliberately not preloaded: measured on a throttled phone, preloading the Bangla font made the first
+// paint later (LCP 2.1 s → 2.8 s) and added a 1.4 s main-thread task while the whole page was laid out in it.
 
 interface Props {
+  /** Page title; the brand is appended (" – Chemputer Studio") unless `fullTitle` is given. */
   title: string;
+  fullTitle?: string;
   description?: string;
+  /** Share image key: public/og/<key>.jpg (made by `npm run og`). */
+  ogImage?: string;
+  ogAlt?: string;
+  /** schema.org structured data for this page. */
+  jsonLd?: object | object[];
+  noindex?: boolean;
   /** data-* attributes for <body> (simulation pages record progress from these) */
   bodyData?: Record<string, string>;
 }
 
-const { title, description = SITE.description, bodyData = {} } = Astro.props;
-const fullTitle = title === SITE.name ? `${SITE.name} | রসায়ন চোখে দেখে শেখো` : `${title} | ${SITE.name}`;
+const { title, description = SITE.description, ogImage = 'home', ogAlt, jsonLd, noindex = false, bodyData = {} } = Astro.props;
+const fullTitle = Astro.props.fullTitle ?? `${title} – ${SITE.brand}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const image = ogImageUrl(ogImage);
+const imageAlt = ogAlt ?? `${title}: ${SITE.brand}`;
 const bodyAttrs = Object.fromEntries(Object.entries(bodyData).map(([k, v]) => [`data-${k}`, v]));
 // Simulation pages: the sidebar starts as a slim rail and the 3D background is dimmed, so the experiment comes first.
 const isSim = 'sim-url' in bodyData;
@@ -37,14 +51,30 @@ const isSim = 'sim-url' in bodyData;
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#050101" />
     <meta name="color-scheme" content="dark light" />
+    {noindex && <meta name="robots" content="noindex" />}
+    {SITE.verification.google && <meta name="google-site-verification" content={SITE.verification.google} />}
+    {SITE.verification.bing && <meta name="msvalidate.01" content={SITE.verification.bing} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/icons/icon-48.png" sizes="48x48" type="image/png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:site_name" content={SITE.brand} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="bn_BD" />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    {jsonLd && <JsonLd data={jsonLd} />}
     <script is:inline>
       // Apply the saved theme and sidebar width before first paint (dark + full sidebar are the defaults).
       try {

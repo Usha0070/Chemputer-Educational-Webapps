@@ -1,11 +1,16 @@
 ---
+// Visible breadcrumbs plus the same trail as schema.org BreadcrumbList (shown as the path in Google results).
+import { breadcrumbGraph } from '@/lib/seo';
 import Icon from './Icon.astro';
+import JsonLd from './JsonLd.astro';
 
 interface Props {
   items: { label: string; href?: string }[];
 }
 const { items } = Astro.props;
 ---
+
+<JsonLd data={breadcrumbGraph(items, Astro.url.pathname)} />
 
 <nav aria-label="অবস্থান" class="mb-5 text-sm text-muted">
   <ol class="flex flex-wrap items-center gap-1.5">

@@ -46,12 +46,14 @@ src/
     sims/<slug>.mdx      one page per simulation: frontmatter + the explanation sections
   pages/                 routes: /, /ssc/, /ssc/<chapter>/, /ssc/<chapter>/<sim>/, /sims/
   components/, layouts/  site chrome (header, sidebar/drawer, footer, cards, carousel, brand motif)
-  scripts/               small page scripts: theme, progress, sidebar, carousel, 3D background, ambient sound
+  scripts/               small page scripts: theme, progress, sidebar, carousel, 3D background (+ worker), ambient sound
   styles/global.css      design tokens (brand colours, chapter hues, chemistry colours, light/dark themes)
   styles/chrome.css      tinted cards, sidebar, carousel, background canvas
 scripts/
   new-sim.mjs            scaffold a simulation
   legacy.mjs             regenerate old-URL redirects (vercel.json) and GitHub Pages stubs
+  og.mjs                 regenerate share images (public/og/) and icons
+  lastmod.mjs            sitemap dates from git history
 tests/
   unit/                  Vitest tests outside the engine
   e2e/                   Playwright smoke tests
@@ -67,8 +69,29 @@ npm run new:sim -- --chapter 7 --slug reaction-rate --type simulation --title "�
 2. Put the chemistry in `src/chem/` with Vitest tests (golden values from the syllabus), and build the interaction with the UI kit.
 3. Write the MDX sections: কী দেখলে?, নিজে চেষ্টা করো, পরীক্ষায় যেভাবে আসে, সাধারণ ভুল. Use original wording, never text copied from the book.
 4. Set `status: live`. The chapter hub, `/sims/`, the home page, the sitemap and the smoke tests pick it up automatically.
+5. Run `npm run og` to make its share image (`public/og/<slug>.jpg`) and commit it. The SEO test fails if a page has none.
 
 The build fails if a simulation names a chapter or topic that is not in the curriculum file.
+
+## Search and sharing (SEO)
+
+- **Titles** lead with the Bangla name, then the English name with what it is, then the brand:
+  `প্রশমন ও টাইট্রেশন | Neutralisation and titration virtual lab – Chemputer Studio` (`src/lib/seo.ts`).
+  Each simulation also shows one English line under its title, so English searches have real text to match.
+- **Structured data** (schema.org JSON-LD):
+  - home: `WebSite` (with the brand's other spellings), `EducationalOrganization` and `Person`
+  - every page: `BreadcrumbList`, from the visible breadcrumbs
+  - simulation pages: `LearningResource`
+  - list pages: `CollectionPage`
+- **Share images**: one 1200×630 JPEG per page in `public/og/`, made by `npm run og`.
+  - The script builds the card templates (`src/pages/og-card/`, only with `OG_CARDS=1`) and screenshots them with Playwright's Chromium, which shapes Bangla text correctly.
+  - It also makes the PNG icons and `favicon.ico`.
+- **Sitemap**: `@astrojs/sitemap`, with each page's `<lastmod>` taken from git history (`scripts/lastmod.mjs`).
+- **Search Console / Bing**: paste the verification codes into `SITE.verification` in `src/lib/site.ts`. The meta tags appear only when a code is set.
+- **Speed**:
+  - The 3D background draws in a Web Worker (OffscreenCanvas), so it costs the page's main thread nothing.
+  - Fonts are not preloaded; on a throttled phone a preload made the first paint later.
+  - The home headline has a fixed line break on phones, so it doesn't jump when the Bangla font arrives.
 
 ## Old links
 

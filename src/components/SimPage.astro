@@ -8,6 +8,7 @@ import Icon from '@/components/Icon.astro';
 import SimCard from '@/components/SimCard.astro';
 import Base from '@/layouts/Base.astro';
 import { TYPE_LABEL, chapterHue, chapterLabel, chapterUrl, getChapters, getSims, pagesLabel, simUrl, type Sim } from '@/lib/content';
+import { ogKey, simGraph, simTagline, simTitle } from '@/lib/seo';
 import { SITE } from '@/lib/site';
 
 interface Props {
@@ -29,8 +30,11 @@ const issueUrl = `${SITE.repo}/issues/new?${new URLSearchParams({ title: `ভু
 ---
 
 <Base
-  title={d.title}
+  title={simTitle(sim)}
   description={d.description}
+  ogImage={ogKey.sim(sim)}
+  ogAlt={`${d.title} (${d.titleEn}): ${chapterLabel(chapter)}, ${chapter.data.titleBn}`}
+  jsonLd={simGraph(sim, chapter)}
   bodyData={{ 'sim-url': simUrl(sim), 'sim-title': d.title, 'sim-chapter': `${chapterLabel(chapter)} · ${chapter.data.titleBn}` }}
 >
   <div class="container-page pt-6 sm:pt-10" style={`--c: ${chapterHue(chapter)}`}>
@@ -58,6 +62,9 @@ const issueUrl = `${SITE.repo}/issues/new?${new URLSearchParams({ title: `ভু
           <span class="rounded-full border border-line bg-raised/80 px-2 py-0.5 text-[11px]">{TYPE_LABEL[d.type]}</span>
         </p>
         <h1 class="mt-1.5 text-2xl leading-snug font-bold sm:text-4xl">{d.title}</h1>
+        <p lang="en" class="mt-1 text-xs font-medium text-muted sm:text-sm">
+          {simTagline(sim, chapter)}
+        </p>
         <p class="mt-2 max-w-3xl text-sm leading-relaxed text-muted sm:text-base">{d.description}</p>
       </div>
     </header>
@@ -79,7 +86,7 @@ const issueUrl = `${SITE.repo}/issues/new?${new URLSearchParams({ title: `ভু
         <h2 id="related-heading" class="mb-4 text-xl font-bold">
           এই অধ্যায়ের আরও সিমুলেশন
         </h2>
-        <Carousel label="এই অধ্যায়ের আরও সিমুলেশন">
+        <Carousel label="এই অধ্যায়ের আরও সিমুলেশন" count={related.length}>
           {related.map((s) => (
             <div>
               <SimCard sim={s} chapter={chapter} showChapter={false} />
