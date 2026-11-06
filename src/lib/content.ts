@@ -42,7 +42,7 @@ export function getSims(): Promise<Sim[]> {
 }
 
 export const chapterUrl = (c: Chapter): string => `/${c.data.level}/${c.id}/`;
-export const simUrl = (s: Sim): string => `/ssc/${s.data.chapter.id}/${s.id}/`;
+export const simUrl = (s: Sim): string => s.data.path ?? `/ssc/${s.data.chapter.id}/${s.id}/`;
 
 export const chapterLabel = (c: Chapter): string => `অধ্যায় ${bn(c.data.number)}`;
 export const pagesLabel = ([a, b]: readonly [number, number]): string => (a === b ? `পৃষ্ঠা ${bn(a)}` : `পৃষ্ঠা ${bn(a)}–${bn(b)}`);

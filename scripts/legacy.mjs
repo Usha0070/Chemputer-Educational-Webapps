@@ -49,7 +49,7 @@ function main() {
   const map = legacyMap();
   const vercelPath = path.join(root, 'vercel.json');
   const vercel = JSON.parse(readFileSync(vercelPath, 'utf8'));
-  vercel.redirects = map.map(({ legacy, to }) => ({ source: `/${legacy}`, destination: to, permanent: true }));
+  vercel.redirects = map.map(({ legacy, to }) => ({ source: `/${legacy}`, destination: to, statusCode: 301 }));
   writeFileSync(vercelPath, JSON.stringify(vercel, null, 2) + '\n');
   writeFileSync(path.join(root, 'index.html'), stubHtml('/'));
   for (const { legacy, to } of map) writeFileSync(path.join(root, legacy), stubHtml(to));

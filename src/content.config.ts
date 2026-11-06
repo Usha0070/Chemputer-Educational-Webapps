@@ -44,6 +44,11 @@ const sims = defineCollection({
     /** Book pages; defaults to the chapter's page range */
     pages: pageRange.optional(),
     icon: z.enum(Object.keys(ICONS) as [keyof typeof ICONS, ...(keyof typeof ICONS)[]]),
+    /** Custom site-wide URL instead of /ssc/<chapter>/<slug>/ (e.g. /periodic-table/) */
+    path: z
+      .string()
+      .regex(/^\/[a-z0-9-/]+\/$/)
+      .optional(),
     /** Old flat URL (e.g. electron_configue_calculator.html) that redirects here */
     legacy: z.string().optional(),
     added: z.coerce.date(),

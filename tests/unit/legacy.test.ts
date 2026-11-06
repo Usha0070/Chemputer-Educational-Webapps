@@ -22,7 +22,7 @@ describe('legacy URLs', () => {
     const vercel = JSON.parse(readFileSync('vercel.json', 'utf8')) as {
       redirects: { source: string; destination: string; permanent: boolean }[];
     };
-    expect(vercel.redirects).toEqual(map.map(({ legacy, to }) => ({ source: `/${legacy}`, destination: to, permanent: true })));
+    expect(vercel.redirects).toEqual(map.map(({ legacy, to }) => ({ source: `/${legacy}`, destination: to, statusCode: 301 })));
   });
 
   it('has an up-to-date GitHub Pages stub for each and for index.html', () => {

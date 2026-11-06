@@ -3,3 +3,6 @@ export * from './elements';
 export * from './electron-config';
 export * from './format';
 export * from './notation';
+export * from './atom';
+export * from './atomic-models';
+export * from './element-data';

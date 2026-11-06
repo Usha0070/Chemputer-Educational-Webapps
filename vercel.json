@@ -20,27 +20,27 @@
     {
       "source": "/electron_configue_calculator.html",
       "destination": "/ssc/04-periodic-table/electron-configuration-calculator/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/electron_configuration_shortcut.html",
       "destination": "/ssc/03-structure-of-matter/electron-configuration-shortcut/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/electron_configue_by_blocks.html",
       "destination": "/ssc/04-periodic-table/group-by-block/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/periodic_table_mnemonics.html",
       "destination": "/ssc/04-periodic-table/periodic-table-mnemonics/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/periodic_properties_visualizer.html",
       "destination": "/ssc/04-periodic-table/periodic-trends/",
-      "permanent": true
+      "statusCode": 301
     }
   ]
 }
