@@ -44,6 +44,9 @@ export function getSims(): Promise<Sim[]> {
 export const chapterUrl = (c: Chapter): string => `/${c.data.level}/${c.id}/`;
 export const simUrl = (s: Sim): string => s.data.path ?? `/ssc/${s.data.chapter.id}/${s.id}/`;
 
+/** The chapter's own hue (a CSS variable defined for both themes in global.css). */
+export const chapterHue = (c: Chapter): string => `var(--ch-${c.data.number})`;
+
 export const chapterLabel = (c: Chapter): string => `অধ্যায় ${bn(c.data.number)}`;
 export const pagesLabel = ([a, b]: readonly [number, number]): string => (a === b ? `পৃষ্ঠা ${bn(a)}` : `পৃষ্ঠা ${bn(a)}–${bn(b)}`);
 

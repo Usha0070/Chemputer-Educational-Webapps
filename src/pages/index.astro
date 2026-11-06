@@ -1,4 +1,5 @@
 ---
+import Carousel from '@/components/Carousel.astro';
 import ChapterCard from '@/components/ChapterCard.astro';
 import Icon from '@/components/Icon.astro';
 import MolecularMotif from '@/components/MolecularMotif.astro';
@@ -11,7 +12,11 @@ import { SITE } from '@/lib/site';
 const chapters = await getChapters();
 const sims = await getSims();
 const chapterOf = new Map(chapters.map((c) => [c.id, c]));
-const newest = [...sims].sort((a, b) => b.data.added.getTime() - a.data.added.getTime() || 0).slice(0, 6);
+// Newest first; sims added on the same day alternate between chapters, so neighbouring cards get different colours.
+const num = (s: (typeof sims)[number]) => chapterOf.get(s.data.chapter.id)!.data.number;
+const newest = [...sims]
+  .sort((a, b) => b.data.added.getTime() - a.data.added.getTime() || a.data.order - b.data.order || num(a) - num(b))
+  .slice(0, 9);
 const firstSim = sims[0];
 ---
 
@@ -86,7 +91,7 @@ const firstSim = sims[0];
   </section>
 
   <section class="container-page mt-14" aria-labelledby="new-heading">
-    <div class="mb-6 flex items-end justify-between gap-4">
+    <div class="mb-4 flex items-end justify-between gap-4">
       <div>
         <p class="label-en text-[10px] text-gold">New</p>
         <h2 id="new-heading" class="mt-1 text-2xl font-bold">
@@ -97,11 +102,13 @@ const firstSim = sims[0];
         সব দেখো
       </a>
     </div>
-    <div class="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+    <Carousel label="নতুন সিমুলেশন">
       {newest.map((sim) => (
-        <SimCard sim={sim} chapter={chapterOf.get(sim.data.chapter.id)!} />
+        <div>
+          <SimCard sim={sim} chapter={chapterOf.get(sim.data.chapter.id)!} />
+        </div>
       ))}
-    </div>
+    </Carousel>
   </section>
 
   <section class="container-page mt-14" aria-labelledby="chapters-heading">

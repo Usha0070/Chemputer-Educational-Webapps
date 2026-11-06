@@ -45,8 +45,10 @@ src/
     curriculum/ssc.yaml  chapters, book pages, topics and learning outcomes
     sims/<slug>.mdx      one page per simulation: frontmatter + the explanation sections
   pages/                 routes: /, /ssc/, /ssc/<chapter>/, /ssc/<chapter>/<sim>/, /sims/
-  components/, layouts/  site chrome (header, footer, cards, brand motif)
-  styles/global.css      design tokens (brand colours, chemistry colours, light/dark themes)
+  components/, layouts/  site chrome (header, sidebar/drawer, footer, cards, carousel, brand motif)
+  scripts/               small page scripts: theme, progress, sidebar, carousel, 3D background, ambient sound
+  styles/global.css      design tokens (brand colours, chapter hues, chemistry colours, light/dark themes)
+  styles/chrome.css      tinted cards, sidebar, carousel, background canvas
 scripts/
   new-sim.mjs            scaffold a simulation
   legacy.mjs             regenerate old-URL redirects (vercel.json) and GitHub Pages stubs
