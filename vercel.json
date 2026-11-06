@@ -1,6 +1,46 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "echo 'Static site: no install needed'",
-  "buildCommand": "echo 'Static site: build output is committed (npm run build runs locally)'",
-  "outputDirectory": "."
+  "framework": "astro",
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "trailingSlash": true,
+  "headers": [
+    {
+      "source": "/_astro/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/electron_configue_calculator.html",
+      "destination": "/ssc/04-periodic-table/electron-configuration-calculator/",
+      "permanent": true
+    },
+    {
+      "source": "/electron_configuration_shortcut.html",
+      "destination": "/ssc/03-structure-of-matter/electron-configuration-shortcut/",
+      "permanent": true
+    },
+    {
+      "source": "/electron_configue_by_blocks.html",
+      "destination": "/ssc/04-periodic-table/group-by-block/",
+      "permanent": true
+    },
+    {
+      "source": "/periodic_table_mnemonics.html",
+      "destination": "/ssc/04-periodic-table/periodic-table-mnemonics/",
+      "permanent": true
+    },
+    {
+      "source": "/periodic_properties_visualizer.html",
+      "destination": "/ssc/04-periodic-table/periodic-trends/",
+      "permanent": true
+    }
+  ]
 }

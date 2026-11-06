@@ -1,0 +1,102 @@
+---
+// Decorative brand backdrop: thin-line molecular network (fused hexagon rings, bonds, glowing nodes),
+// circuit traces, an atom and a faint periodic-table grid. Original artwork drawn in code; purely decorative.
+interface Props {
+  class?: string;
+  /** "full" for the home hero, "compact" for page headers */
+  variant?: 'full' | 'compact';
+}
+const { class: cls = '', variant = 'full' } = Astro.props;
+
+// Flat-top hexagon vertices
+const hex = (cx: number, cy: number, r: number) =>
+  Array.from({ length: 6 }, (_, k) => {
+    const a = (Math.PI / 3) * k;
+    return [cx + r * Math.cos(a), cy + r * Math.sin(a)] as const;
+  });
+const path = (pts: readonly (readonly [number, number])[]) => 'M' + pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join('L') + 'Z';
+
+const A = hex(200, 260, 48);
+const B = hex(272, 218.4, 48);
+const C = hex(470, 330, 34);
+
+// Mini periodic-table silhouette: which rows each of the 18 columns has
+const rowsFor = (col: number) =>
+  col === 1 || col === 18 ? [1, 2, 3, 4, 5, 6, 7] : col === 2 || col >= 13 ? [2, 3, 4, 5, 6, 7] : [4, 5, 6, 7];
+const grid = Array.from({ length: 18 }, (_, i) => i + 1).flatMap((col) =>
+  rowsFor(col).map((row) => ({ x: 392 + (col - 1) * 13, y: 18 + (row - 1) * 13 })),
+);
+const lit = new Set([0, 9, 23, 40, 57, 77]);
+---
+
+<svg class={cls} viewBox="0 0 640 480" fill="none" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="motif-glow" cx="70%" cy="70%" r="60%">
+      <stop offset="0%" stop-color="var(--glow)" stop-opacity=".22"></stop>
+      <stop offset="100%" stop-color="var(--glow)" stop-opacity="0"></stop>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="480" fill="url(#motif-glow)"></rect>
+
+  {variant === 'full' && (
+    <g class="motif-line" stroke-width="1" opacity=".22">
+      {grid.map((c, i) => (
+        <rect x={c.x} y={c.y} width="10" height="10" rx="1.5" fill={lit.has(i) ? 'var(--glow)' : 'none'} fill-opacity=".35" />
+      ))}
+    </g>
+  )}
+
+  <!-- circuit traces -->
+  <g class="motif-line" stroke-width="1.2" opacity=".35" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 404H92L122 434H236"></path>
+    <path d="M0 444H58L78 464H184"></path>
+    <path d="M640 252H572L542 282H498"></path>
+    <path d="M640 292H604L584 312H556"></path>
+    <path d="M330 0V34L352 56V104"></path>
+    <path d="M24 0V60L46 82H96"></path>
+  </g>
+  <g fill="var(--glow)" opacity=".7">
+    <circle cx="236" cy="434" r="3"></circle>
+    <circle cx="184" cy="464" r="2.5"></circle>
+    <circle cx="498" cy="282" r="3"></circle>
+    <circle cx="556" cy="312" r="2.5"></circle>
+    <circle cx="352" cy="104" r="3"></circle>
+    <circle cx="96" cy="82" r="2.5"></circle>
+  </g>
+
+  <!-- fused rings + chain -->
+  <g class="motif-line" stroke-width="1.4" opacity=".5" stroke-linejoin="round">
+    <path d={path(A)}></path>
+    <path d={path(B)}></path>
+    <circle cx="200" cy="260" r="27"></circle>
+    <path d={`M${B[4]![0] + 5} ${B[4]![1] + 7}L${B[5]![0] - 5} ${B[5]![1] + 7}`}></path>
+    <path d={`M${B[0]![0] - 8} ${B[0]![1]}L${B[1]![0] - 4} ${B[1]![1] - 7}`}></path>
+    <path d={`M${B[0]![0]} ${B[0]![1]}L380 190L430 214`}></path>
+    <path d={`M${B[5]![0]} ${B[5]![1]}L318 120`}></path>
+    <path d={`M${A[3]![0]} ${A[3]![1]}L98 292`}></path>
+    <path d={`M${A[2]![0]} ${A[2]![1]}L160 362L108 392`}></path>
+    <path d={`M444 222L${C[3]![0]} ${C[3]![1]}`}></path>
+    <path d={path(C)}></path>
+  </g>
+  <g class="motif-line" stroke-width="1.6" opacity=".7">
+    <circle cx="430" cy="214" r="14"></circle>
+    <circle cx="330" cy="104" r="12"></circle>
+  </g>
+  <g>
+    <circle class="motif-node" cx="380" cy="190" r="5"></circle>
+    <circle class="motif-node" cx="98" cy="292" r="4.5" style="animation-delay:-1s"></circle>
+    <circle class="motif-node" cx="160" cy="362" r="4" style="animation-delay:-2s"></circle>
+    <circle class="motif-node" cx="108" cy="392" r="5.5" style="animation-delay:-3s"></circle>
+    <circle class="motif-node" cx={C[0]![0]} cy={C[0]![1]} r="5" style="animation-delay:-1.5s"></circle>
+    <circle class="motif-node" cx={B[1]![0]} cy={B[1]![1]} r="3.5" style="animation-delay:-2.5s"></circle>
+  </g>
+
+  {variant === 'full' && (
+    <g class="motif-line" stroke-width="1" opacity=".3">
+      <ellipse cx="560" cy="410" rx="54" ry="18" />
+      <ellipse cx="560" cy="410" rx="54" ry="18" transform="rotate(60 560 410)" />
+      <ellipse cx="560" cy="410" rx="54" ry="18" transform="rotate(120 560 410)" />
+      <circle cx="560" cy="410" r="4" fill="var(--glow)" />
+    </g>
+  )}
+</svg>

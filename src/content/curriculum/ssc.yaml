@@ -1,0 +1,249 @@
+# SSC (Class 9–10) chemistry curriculum, following the NCTB book "রসায়ন, নবম–দশম শ্রেণি" (2024 revised edition).
+# When NCTB revises the book, only this file changes. Simulations point at chapter ids and topic ids;
+# the build fails if a simulation names a chapter or topic that does not exist here.
+#
+# pages: first and last book page of the chapter.
+# Outcomes and summaries are Chemputer's own wording (not copied from the book).
+
+- id: 01-concepts-of-chemistry
+  level: ssc
+  number: 1
+  titleBn: 'রসায়নের ধারণা'
+  titleEn: 'Concepts of Chemistry'
+  pages: [1, 16]
+  summary: 'রসায়ন কী, কেন পড়ি, আর বিজ্ঞানীরা কীভাবে প্রশ্ন থেকে পরীক্ষা করে সিদ্ধান্তে পৌঁছান। সাথে ল্যাবরেটরিতে নিরাপদে কাজ করার নিয়ম।'
+  topics:
+    - { id: chemistry-and-its-scope, titleBn: 'রসায়ন ও এর পরিধি', titleEn: 'Chemistry and its scope' }
+    - { id: chemistry-and-other-sciences, titleBn: 'বিজ্ঞানের অন্য শাখার সাথে রসায়নের সম্পর্ক', titleEn: 'Chemistry and other sciences' }
+    - { id: scientific-investigation, titleBn: 'বৈজ্ঞানিক অনুসন্ধান', titleEn: 'Scientific investigation' }
+    - { id: lab-safety, titleBn: 'ল্যাবরেটরি নিরাপত্তা ও বিপদ সংকেত', titleEn: 'Laboratory safety and hazard symbols' }
+  outcomes:
+    - 'রসায়ন কী এবং দৈনন্দিন জীবনে এর ভূমিকা ব্যাখ্যা করতে পারবে।'
+    - 'পদার্থবিজ্ঞান, জীববিজ্ঞান, কৃষি ও চিকিৎসার সাথে রসায়নের সম্পর্ক উদাহরণ দিয়ে বলতে পারবে।'
+    - 'প্রশ্ন → অনুমান → পরীক্ষা → পর্যবেক্ষণ → সিদ্ধান্ত, এই ধাপে একটি সহজ অনুসন্ধান পরিকল্পনা করতে পারবে।'
+    - 'বিপদ সংকেত দেখে রাসায়নিক দ্রব্যের ঝুঁকি চিনতে ও নিরাপদে ব্যবহার করতে পারবে।'
+
+- id: 02-states-of-matter
+  level: ssc
+  number: 2
+  titleBn: 'পদার্থের অবস্থা'
+  titleEn: 'States of Matter'
+  pages: [17, 34]
+  summary: 'কঠিন, তরল ও গ্যাসের কণাগুলো কীভাবে সাজানো থাকে ও নড়াচড়া করে, তাপ দিলে কী বদলায়, আর গ্যাস কেন ছড়িয়ে পড়ে।'
+  topics:
+    - { id: matter-and-states, titleBn: 'পদার্থ ও এর তিন অবস্থা', titleEn: 'Matter and its three states' }
+    - { id: kinetic-theory, titleBn: 'কণার গতিতত্ত্ব', titleEn: 'Kinetic particle theory' }
+    - { id: change-of-state, titleBn: 'গলন, স্ফুটন, বাষ্পীভবন ও ঘনীভবন', titleEn: 'Melting, boiling, evaporation and condensation' }
+    - { id: sublimation, titleBn: 'ঊর্ধ্বপাতন', titleEn: 'Sublimation' }
+    - { id: diffusion-effusion, titleBn: 'ব্যাপন ও নিঃসরণ', titleEn: 'Diffusion and effusion' }
+  outcomes:
+    - 'কণার গতিতত্ত্ব দিয়ে কঠিন, তরল ও গ্যাসের ধর্মের পার্থক্য ব্যাখ্যা করতে পারবে।'
+    - 'তাপ দিলে অবস্থার পরিবর্তনের সময় তাপমাত্রা কেন স্থির থাকে, তা ব্যাখ্যা করতে পারবে।'
+    - 'গলনাঙ্ক, স্ফুটনাঙ্ক ও ঊর্ধ্বপাতনের উদাহরণ দিতে পারবে।'
+    - 'ব্যাপন ও নিঃসরণের হার আণবিক ভর ও তাপমাত্রার ওপর কীভাবে নির্ভর করে, তা বলতে পারবে।'
+
+- id: 03-structure-of-matter
+  level: ssc
+  number: 3
+  titleBn: 'পদার্থের গঠন'
+  titleEn: 'Structure of Matter'
+  pages: [35, 58]
+  summary: 'পরমাণুর ভেতরে কী আছে, বিজ্ঞানীরা কীভাবে তা জানলেন, আইসোটোপ কী, আর ইলেকট্রনগুলো শক্তিস্তর ও উপস্তরে কোন নিয়মে সাজানো থাকে।'
+  topics:
+    - { id: atoms-and-molecules, titleBn: 'মৌল, পরমাণু ও অণু', titleEn: 'Elements, atoms and molecules' }
+    - { id: symbols, titleBn: 'মৌলের প্রতীক', titleEn: 'Chemical symbols' }
+    - { id: subatomic-particles, titleBn: 'মৌলিক কণিকা: ইলেকট্রন, প্রোটন, নিউট্রন', titleEn: 'Subatomic particles' }
+    - { id: atomic-number-mass-number, titleBn: 'পারমাণবিক সংখ্যা ও ভরসংখ্যা', titleEn: 'Atomic number and mass number' }
+    - { id: isotopes, titleBn: 'আইসোটোপ ও এর ব্যবহার', titleEn: 'Isotopes and their uses' }
+    - { id: relative-atomic-mass, titleBn: 'আপেক্ষিক পারমাণবিক ভর ও আণবিক ভর', titleEn: 'Relative atomic and molecular mass' }
+    - { id: atomic-models, titleBn: 'রাদারফোর্ড ও বোর পরমাণু মডেল', titleEn: 'Rutherford and Bohr atomic models' }
+    - { id: electron-configuration, titleBn: 'শক্তিস্তর, উপস্তর ও ইলেকট্রন বিন্যাস', titleEn: 'Shells, subshells and electron configuration' }
+  outcomes:
+    - 'প্রোটন, নিউট্রন ও ইলেকট্রনের সংখ্যা থেকে মৌল, ভরসংখ্যা, আধান ও আইসোটোপ চিনতে পারবে।'
+    - 'আইসোটোপের প্রাচুর্য থেকে আপেক্ষিক পারমাণবিক ভর হিসাব করতে পারবে।'
+    - 'রাদারফোর্ডের আলফা কণা বিক্ষেপণ পরীক্ষা থেকে নিউক্লিয়াসের ধারণা ব্যাখ্যা করতে পারবে।'
+    - 'রাদারফোর্ড মডেলের সীমাবদ্ধতা ও বোর মডেলের শক্তিস্তরের ধারণা তুলনা করতে পারবে।'
+    - 'আউফবাউ নীতি মেনে যেকোনো মৌলের ইলেকট্রন বিন্যাস লিখতে এবং ব্যতিক্রমগুলো ব্যাখ্যা করতে পারবে।'
+
+- id: 04-periodic-table
+  level: ssc
+  number: 4
+  titleBn: 'পর্যায় সারণি'
+  titleEn: 'Periodic Table'
+  pages: [59, 81]
+  summary: 'পর্যায় সারণি কীভাবে তৈরি হলো, ইলেকট্রন বিন্যাস থেকে কীভাবে মৌলের পর্যায় ও গ্রুপ বের করা যায়, আর পর্যায় ও গ্রুপ ধরে ধর্মগুলো কীভাবে বদলায়।'
+  topics:
+    - { id: history-of-periodic-table, titleBn: 'পর্যায় সারণির বিকাশ', titleEn: 'Development of the periodic table' }
+    - { id: modern-periodic-table, titleBn: 'আধুনিক পর্যায় সারণি: পর্যায় ও গ্রুপ', titleEn: 'The modern periodic table: periods and groups' }
+    - { id: position-from-configuration, titleBn: 'ইলেকট্রন বিন্যাস থেকে পর্যায় ও গ্রুপ নির্ণয়', titleEn: 'Period and group from electron configuration' }
+    - { id: blocks, titleBn: 's, p, d ও f ব্লক', titleEn: 's, p, d and f blocks' }
+    - { id: periodic-properties, titleBn: 'পর্যায়বৃত্ত ধর্ম', titleEn: 'Periodic properties' }
+    - { id: special-groups, titleBn: 'বিশেষ নামে পরিচিত গ্রুপ ও তাদের ধর্ম', titleEn: 'Named groups and their properties' }
+  outcomes:
+    - 'ডোবেরাইনার থেকে মোসলে পর্যন্ত পর্যায় সারণির বিকাশ ধাপে ধাপে বলতে পারবে।'
+    - 'ইলেকট্রন বিন্যাস দেখে মৌলের পর্যায়, ব্লক ও গ্রুপ নির্ণয় করতে পারবে।'
+    - 'পরমাণুর আকার, আয়নীকরণ শক্তি, ইলেকট্রন আসক্তি ও তড়িৎ ঋণাত্মকতা পর্যায় ও গ্রুপে কীভাবে বদলায়, কারণসহ ব্যাখ্যা করতে পারবে।'
+    - 'ক্ষার ধাতু, মৃৎক্ষার ধাতু, হ্যালোজেন, নিষ্ক্রিয় গ্যাস ও অবস্থান্তর মৌল সারণিতে চিনতে পারবে।'
+
+- id: 05-chemical-bonds
+  level: ssc
+  number: 5
+  titleBn: 'রাসায়নিক বন্ধন'
+  titleEn: 'Chemical Bonds'
+  pages: [82, 108]
+  summary: 'পরমাণুগুলো কেন যুক্ত হয়, ইলেকট্রন দিয়ে-নিয়ে বা ভাগাভাগি করে কীভাবে বন্ধন তৈরি হয়, আর যোজনী থেকে কীভাবে যৌগের সংকেত লেখা যায়।'
+  topics:
+    - { id: valence-electrons-octet, titleBn: 'যোজ্যতা ইলেকট্রন, অষ্টক ও দুই নিয়ম', titleEn: 'Valence electrons, octet and duet rules' }
+    - { id: valency-and-radicals, titleBn: 'যোজনী ও যৌগমূলক', titleEn: 'Valency and radicals' }
+    - { id: writing-formulas, titleBn: 'যৌগের সংকেত লেখা', titleEn: 'Writing chemical formulas' }
+    - { id: ions, titleBn: 'আয়ন: ক্যাটায়ন ও অ্যানায়ন', titleEn: 'Ions: cations and anions' }
+    - { id: ionic-bond, titleBn: 'আয়নিক বন্ধন', titleEn: 'Ionic bonding' }
+    - { id: covalent-bond, titleBn: 'সমযোজী বন্ধন', titleEn: 'Covalent bonding' }
+    - { id: metallic-bond, titleBn: 'ধাতব বন্ধন', titleEn: 'Metallic bonding' }
+    - { id: properties-of-compounds, titleBn: 'আয়নিক ও সমযোজী যৌগের ধর্ম', titleEn: 'Properties of ionic and covalent compounds' }
+  outcomes:
+    - 'নিষ্ক্রিয় গ্যাসের স্থিতিশীলতা দিয়ে অষ্টক ও দুই নিয়ম ব্যাখ্যা করতে পারবে।'
+    - 'আয়ন ও যৌগমূলকের যোজনী ব্যবহার করে যৌগের সঠিক সংকেত লিখতে পারবে।'
+    - 'ইলেকট্রন স্থানান্তর দেখিয়ে আয়নিক বন্ধন এবং ইলেকট্রন ভাগাভাগি দেখিয়ে সমযোজী বন্ধন (একক, দ্বি ও ত্রি বন্ধন) আঁকতে পারবে।'
+    - 'আয়নিক ও সমযোজী যৌগের গলনাঙ্ক, দ্রাব্যতা ও তড়িৎ পরিবাহিতার পার্থক্য ব্যাখ্যা করতে পারবে।'
+
+- id: 06-mole-concept
+  level: ssc
+  number: 6
+  titleBn: 'মোলের ধারণা ও রাসায়নিক গণনা'
+  titleEn: 'Mole Concept and Chemical Calculations'
+  pages: [109, 141]
+  summary: 'অগণিত কণাকে গোনার উপায় মোল, ভর থেকে কণার সংখ্যা, দ্রবণের ঘনমাত্রা, সংকেত নির্ণয় আর সমীকরণ সমতাকরণ ও তা থেকে হিসাব।'
+  topics:
+    - { id: mole-and-avogadro, titleBn: 'মোল ও অ্যাভোগেড্রো সংখ্যা', titleEn: 'The mole and Avogadro constant' }
+    - { id: molar-mass, titleBn: 'মোলার ভর ও গ্যাসের মোলার আয়তন', titleEn: 'Molar mass and molar volume of gases' }
+    - { id: molarity, titleBn: 'দ্রবণের ঘনমাত্রা ও মোলারিটি', titleEn: 'Concentration and molarity' }
+    - { id: percentage-composition, titleBn: 'যৌগে মৌলের শতকরা সংযুতি', titleEn: 'Percentage composition' }
+    - { id: empirical-molecular-formula, titleBn: 'স্থূল সংকেত ও আণবিক সংকেত', titleEn: 'Empirical and molecular formulas' }
+    - { id: balancing-equations, titleBn: 'রাসায়নিক সমীকরণ ও সমতাকরণ', titleEn: 'Chemical equations and balancing' }
+    - { id: stoichiometry, titleBn: 'সমীকরণভিত্তিক গণনা', titleEn: 'Calculations from equations' }
+  outcomes:
+    - 'ভর, মোল সংখ্যা ও কণার সংখ্যার মধ্যে রূপান্তর করতে পারবে।'
+    - 'দ্রবণের মোলারিটি হিসাব করতে এবং নির্দিষ্ট ঘনমাত্রার দ্রবণ তৈরির পদ্ধতি বর্ণনা করতে পারবে।'
+    - 'শতকরা সংযুতি থেকে স্থূল সংকেত এবং আণবিক ভর থেকে আণবিক সংকেত নির্ণয় করতে পারবে।'
+    - 'ভরের নিত্যতা মেনে রাসায়নিক সমীকরণ সমতা করতে এবং তা থেকে বিক্রিয়ক ও উৎপাদের পরিমাণ হিসাব করতে পারবে।'
+
+- id: 07-chemical-reactions
+  level: ssc
+  number: 7
+  titleBn: 'রাসায়নিক বিক্রিয়া'
+  titleEn: 'Chemical Reactions'
+  pages: [142, 167]
+  summary: 'বিক্রিয়ার প্রকারভেদ, জারণ-বিজারণে ইলেকট্রনের আদান-প্রদান, বিক্রিয়ার হার কীসে বাড়ে-কমে, আর উভমুখী বিক্রিয়ার সাম্যাবস্থা।'
+  topics:
+    - { id: physical-chemical-change, titleBn: 'ভৌত ও রাসায়নিক পরিবর্তন', titleEn: 'Physical and chemical change' }
+    - { id: types-of-reactions, titleBn: 'রাসায়নিক বিক্রিয়ার প্রকারভেদ', titleEn: 'Types of chemical reaction' }
+    - { id: redox, titleBn: 'জারণ-বিজারণ ও জারণ সংখ্যা', titleEn: 'Oxidation, reduction and oxidation numbers' }
+    - { id: reaction-rate, titleBn: 'বিক্রিয়ার হার ও প্রভাবক', titleEn: 'Rate of reaction and catalysts' }
+    - { id: reversible-equilibrium, titleBn: 'উভমুখী বিক্রিয়া ও রাসায়নিক সাম্যাবস্থা', titleEn: 'Reversible reactions and equilibrium' }
+    - { id: le-chatelier, titleBn: 'লা-শাতেলিয়ার নীতি', titleEn: "Le Chatelier's principle" }
+    - { id: precipitation-neutralisation, titleBn: 'অধঃক্ষেপণ ও প্রশমন বিক্রিয়া', titleEn: 'Precipitation and neutralisation' }
+    - { id: rusting, titleBn: 'লোহায় মরিচা ও প্রতিরোধ', titleEn: 'Rusting and its prevention' }
+  outcomes:
+    - 'বিভিন্ন বিক্রিয়াকে সংযোজন, বিয়োজন, প্রতিস্থাপন, জারণ-বিজারণ, উভমুখী ইত্যাদি শ্রেণিতে ভাগ করতে পারবে।'
+    - 'ইলেকট্রন আদান-প্রদান ও জারণ সংখ্যার পরিবর্তন দিয়ে জারক ও বিজারক চিনতে পারবে।'
+    - 'তাপমাত্রা, ঘনমাত্রা, পৃষ্ঠতলের ক্ষেত্রফল ও প্রভাবক বিক্রিয়ার হারকে কীভাবে প্রভাবিত করে, সংঘর্ষ তত্ত্ব দিয়ে ব্যাখ্যা করতে পারবে।'
+    - 'লা-শাতেলিয়ার নীতি প্রয়োগ করে সাম্যাবস্থার সরণ অনুমান করতে পারবে।'
+
+- id: 08-chemistry-and-energy
+  level: ssc
+  number: 8
+  titleBn: 'রসায়ন ও শক্তি'
+  titleEn: 'Chemistry and Energy'
+  pages: [168, 205]
+  summary: 'বিক্রিয়ায় তাপ কেন বের হয় বা শোষিত হয়, বিদ্যুৎ দিয়ে কীভাবে যৌগ ভাঙা যায়, আর রাসায়নিক বিক্রিয়া থেকে কীভাবে বিদ্যুৎ পাওয়া যায়।'
+  topics:
+    - { id: exo-endothermic, titleBn: 'তাপোৎপাদী ও তাপহারী বিক্রিয়া', titleEn: 'Exothermic and endothermic reactions' }
+    - { id: fuels-combustion, titleBn: 'জ্বালানি ও দহন', titleEn: 'Fuels and combustion' }
+    - { id: electrolysis, titleBn: 'তড়িৎ বিশ্লেষণ ও তড়িৎ প্রলেপন', titleEn: 'Electrolysis and electroplating' }
+    - { id: galvanic-cell, titleBn: 'গ্যালভানিক কোষ', titleEn: 'Galvanic cells' }
+    - { id: nuclear-energy, titleBn: 'পারমাণবিক শক্তি', titleEn: 'Nuclear energy' }
+  outcomes:
+    - 'বন্ধন ভাঙা ও গঠনের শক্তি দিয়ে তাপোৎপাদী ও তাপহারী বিক্রিয়া ব্যাখ্যা করতে এবং শক্তি চিত্র আঁকতে পারবে।'
+    - 'গলিত ও জলীয় দ্রবণের তড়িৎ বিশ্লেষণে কোন তড়িৎদ্বারে কী উৎপন্ন হয়, তা অনুমান করতে পারবে।'
+    - 'জিংক-কপার গ্যালভানিক কোষে ইলেকট্রন প্রবাহ, লবণ সেতুর কাজ ও অর্ধবিক্রিয়া লিখতে পারবে।'
+    - 'তড়িৎ বিশ্লেষ্য কোষ ও গ্যালভানিক কোষের পার্থক্য করতে পারবে।'
+
+- id: 09-acid-base-balance
+  level: ssc
+  number: 9
+  titleBn: 'এসিড-ক্ষারক সমতা'
+  titleEn: 'Acid–Base Balance'
+  pages: [206, 232]
+  summary: 'এসিড ও ক্ষারক চেনার উপায়, pH স্কেল ও নির্দেশক, প্রশমন ও টাইট্রেশন, আর পানির খরতা ও বিশুদ্ধকরণ।'
+  topics:
+    - { id: acids-and-bases, titleBn: 'এসিড, ক্ষারক ও ক্ষার', titleEn: 'Acids, bases and alkalis' }
+    - { id: ph-and-indicators, titleBn: 'pH স্কেল ও নির্দেশক', titleEn: 'The pH scale and indicators' }
+    - { id: neutralisation-titration, titleBn: 'প্রশমন ও টাইট্রেশন', titleEn: 'Neutralisation and titration' }
+    - { id: salts, titleBn: 'লবণ', titleEn: 'Salts' }
+    - { id: water-hardness, titleBn: 'খর পানি ও মৃদু পানি', titleEn: 'Hard and soft water' }
+    - { id: water-treatment, titleBn: 'পানির উৎস, দূষণ ও বিশুদ্ধকরণ', titleEn: 'Water sources, pollution and treatment' }
+    - { id: acid-rain, titleBn: 'এসিড বৃষ্টি', titleEn: 'Acid rain' }
+  outcomes:
+    - 'pH মান দেখে কোনো দ্রবণ অম্লীয়, ক্ষারীয় না নিরপেক্ষ, তা বলতে পারবে।'
+    - 'লিটমাস, ফেনলফথ্যালিন, মিথাইল অরেঞ্জ ও সার্বজনীন নির্দেশকের রং পরিবর্তন ব্যাখ্যা করতে পারবে।'
+    - 'টাইট্রেশনের মাধ্যমে এসিড বা ক্ষারের ঘনমাত্রা নির্ণয়ের পদ্ধতি বর্ণনা ও হিসাব করতে পারবে।'
+    - 'অস্থায়ী ও স্থায়ী খরতার কারণ এবং দূর করার উপায় বলতে পারবে।'
+
+- id: 10-metals-and-non-metals
+  level: ssc
+  number: 10
+  titleBn: 'খনিজ সম্পদ: ধাতু-অধাতু'
+  titleEn: 'Mineral Resources: Metals and Non-metals'
+  pages: [233, 260]
+  summary: 'আকরিক থেকে ধাতু কীভাবে বের করা হয়, সক্রিয়তা সিরিজ কীভাবে পদ্ধতি ঠিক করে দেয়, সংকর ধাতু ও শিল্পে গুরুত্বপূর্ণ কিছু রাসায়নিক।'
+  topics:
+    - { id: rocks-minerals-ores, titleBn: 'শিলা, খনিজ ও আকরিক', titleEn: 'Rocks, minerals and ores' }
+    - { id: reactivity-series, titleBn: 'ধাতুর সক্রিয়তা সিরিজ', titleEn: 'Reactivity series of metals' }
+    - { id: extraction-of-metals, titleBn: 'ধাতু নিষ্কাশন', titleEn: 'Extraction of metals' }
+    - { id: iron-extraction, titleBn: 'মারুত চুল্লিতে লোহা নিষ্কাশন', titleEn: 'Iron extraction in the blast furnace' }
+    - { id: alloys, titleBn: 'সংকর ধাতু', titleEn: 'Alloys' }
+    - { id: sulfuric-acid, titleBn: 'স্পর্শ পদ্ধতিতে সালফিউরিক এসিড', titleEn: 'Sulfuric acid by the contact process' }
+  outcomes:
+    - 'শিলা, খনিজ ও আকরিকের পার্থক্য বলতে পারবে।'
+    - 'সক্রিয়তা সিরিজে অবস্থান দেখে একটি ধাতু নিষ্কাশনের উপযুক্ত পদ্ধতি বেছে নিতে পারবে।'
+    - 'মারুত চুল্লিতে লোহা নিষ্কাশনের বিক্রিয়াগুলো লিখতে পারবে।'
+    - 'সংকর ধাতু কেন বিশুদ্ধ ধাতুর চেয়ে শক্ত, তা ব্যাখ্যা করতে পারবে।'
+
+- id: 11-fossil-resources
+  level: ssc
+  number: 11
+  titleBn: 'খনিজ সম্পদ: জীবাশ্ম'
+  titleEn: 'Mineral Resources: Fossils'
+  pages: [261, 286]
+  summary: 'পেট্রোলিয়াম ও প্রাকৃতিক গ্যাস থেকে কী কী পাই, হাইড্রোকার্বনের গঠন ও নামকরণ, আর এক জৈব যৌগ থেকে আরেক যৌগে রূপান্তর।'
+  topics:
+    - { id: fossil-fuels, titleBn: 'জীবাশ্ম জ্বালানি', titleEn: 'Fossil fuels' }
+    - { id: fractional-distillation, titleBn: 'পেট্রোলিয়ামের আংশিক পাতন', titleEn: 'Fractional distillation of petroleum' }
+    - { id: hydrocarbons, titleBn: 'হাইড্রোকার্বন: অ্যালকেন, অ্যালকিন ও অ্যালকাইন', titleEn: 'Hydrocarbons: alkanes, alkenes and alkynes' }
+    - { id: functional-groups, titleBn: 'কার্যকরী মূলক ও সমগোত্রীয় শ্রেণি', titleEn: 'Functional groups and homologous series' }
+    - { id: organic-conversions, titleBn: 'জৈব যৌগের রূপান্তর', titleEn: 'Organic conversions' }
+    - { id: polymers, titleBn: 'পলিমার ও পলিমারকরণ', titleEn: 'Polymers and polymerisation' }
+  outcomes:
+    - 'আংশিক পাতনে স্ফুটনাঙ্ক অনুযায়ী পেট্রোলিয়ামের অংশগুলো কীভাবে আলাদা হয়, ব্যাখ্যা করতে পারবে।'
+    - 'অ্যালকেন, অ্যালকিন ও অ্যালকাইনের গঠন আঁকতে ও নাম দিতে পারবে।'
+    - 'সম্পৃক্ত ও অসম্পৃক্ত হাইড্রোকার্বন পরীক্ষার মাধ্যমে আলাদা করতে পারবে।'
+    - 'হাইড্রোকার্বন থেকে অ্যালকোহল, অ্যালডিহাইড ও কার্বক্সিলিক এসিডে রূপান্তরের শর্তসহ বিক্রিয়া লিখতে পারবে।'
+
+- id: 12-chemistry-in-our-lives
+  level: ssc
+  number: 12
+  titleBn: 'আমাদের জীবনে রসায়ন'
+  titleEn: 'Chemistry in Our Lives'
+  pages: [287, 310]
+  summary: 'সাবান কীভাবে ময়লা তোলে, বেকিং পাউডার ও ব্লিচিং পাউডার কীভাবে কাজ করে, আর খাদ্য সংরক্ষণ ও কৃষিতে রসায়ন।'
+  topics:
+    - { id: soap-detergent, titleBn: 'সাবান ও ডিটারজেন্ট', titleEn: 'Soaps and detergents' }
+    - { id: household-chemicals, titleBn: 'গৃহস্থালি রাসায়নিক দ্রব্য', titleEn: 'Household chemicals' }
+    - { id: food-preservation, titleBn: 'খাদ্য সংরক্ষণ', titleEn: 'Food preservation' }
+    - { id: agriculture-soil, titleBn: 'কৃষি ও মাটির রসায়ন', titleEn: 'Agriculture and soil chemistry' }
+  outcomes:
+    - 'সাবানীকরণ বিক্রিয়া এবং সাবান কীভাবে তেল-ময়লা দূর করে, ব্যাখ্যা করতে পারবে।'
+    - 'বেকিং পাউডার ও ব্লিচিং পাউডারের কার্যপ্রণালী রাসায়নিক বিক্রিয়ার মাধ্যমে বলতে পারবে।'
+    - 'বিভিন্ন খাদ্য সংরক্ষণ পদ্ধতি কেন কাজ করে, বলতে পারবে।'
+    - 'অম্লীয় মাটিতে চুন প্রয়োগের কারণ pH দিয়ে ব্যাখ্যা করতে পারবে।'

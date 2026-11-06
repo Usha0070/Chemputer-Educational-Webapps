@@ -1,0 +1,192 @@
+---
+// Simulation page template (§6): header → simulation → কী দেখলে? → নিজে চেষ্টা করো →
+// পরীক্ষায় যেভাবে আসে → সাধারণ ভুল (all from the MDX body) → related and previous/next in book order.
+import { render } from 'astro:content';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Icon from '@/components/Icon.astro';
+import SimCard from '@/components/SimCard.astro';
+import Base from '@/layouts/Base.astro';
+import { TYPE_LABEL, chapterLabel, chapterUrl, getChapters, getSims, pagesLabel, simUrl, type Chapter, type Sim } from '@/lib/content';
+import { SITE } from '@/lib/site';
+
+export async function getStaticPaths() {
+  const [chapters, sims] = await Promise.all([getChapters(), getSims()]);
+  return sims.map((sim, i) => ({
+    params: { chapter: sim.data.chapter.id, sim: sim.id },
+    props: { sim, chapter: chapters.find((c) => c.id === sim.data.chapter.id)!, prev: sims[i - 1], next: sims[i + 1], sims, chapters },
+  }));
+}
+
+interface Props {
+  sim: Sim;
+  chapter: Chapter;
+  prev?: Sim;
+  next?: Sim;
+  sims: Sim[];
+  chapters: Chapter[];
+}
+const { sim, chapter, prev, next, sims, chapters } = Astro.props;
+const { Content } = await render(sim);
+const d = sim.data;
+const pages = d.pages ?? chapter.data.pages;
+const related = sims.filter((s) => s.id !== sim.id && s.data.chapter.id === chapter.id).slice(0, 3);
+const chapterOf = (s: Sim) => chapters.find((c) => c.id === s.data.chapter.id)!;
+const issueUrl = `${SITE.repo}/issues/new?${new URLSearchParams({ title: `ভুল: ${d.title}`, body: `পাতা: ${SITE.url}${simUrl(sim)}\n\nকী ভুল দেখলে?\n` })}`;
+---
+
+<Base
+  title={d.title}
+  description={d.description}
+  bodyData={{ 'sim-url': simUrl(sim), 'sim-title': d.title, 'sim-chapter': `${chapterLabel(chapter)} · ${chapter.data.titleBn}` }}
+>
+  <div class="container-page pt-6 sm:pt-10">
+    <Breadcrumbs
+      items={[
+        { label: 'হোম', href: '/' },
+        { label: 'নবম-দশম', href: '/ssc/' },
+        { label: chapterLabel(chapter), href: chapterUrl(chapter) },
+        { label: d.title },
+      ]}
+    />
+    <header class="mb-6 flex items-start gap-4 sm:mb-8 sm:items-center">
+      <span class="icon-tile h-12 w-12 bg-brand/15 text-gold ring-brand/40 sm:h-14 sm:w-14">
+        <Icon name={d.icon} class="h-6 w-6 sm:h-7 sm:w-7" />
+      </span>
+      <div class="min-w-0">
+        <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold text-muted">
+          <a href={chapterUrl(chapter)} class="text-brand-ink hover:underline">
+            {chapterLabel(chapter)} · {chapter.data.titleBn}
+          </a>
+          <span aria-hidden="true">·</span>
+          <span class="inline-flex items-center gap-1">
+            <Icon name="book" class="h-3.5 w-3.5" /> বই: {pagesLabel(pages)}
+          </span>
+          <span class="rounded-full border border-line bg-raised/80 px-2 py-0.5 text-[11px]">{TYPE_LABEL[d.type]}</span>
+        </p>
+        <h1 class="mt-1.5 text-2xl leading-snug font-bold sm:text-4xl">{d.title}</h1>
+        <p class="mt-2 max-w-3xl text-sm leading-relaxed text-muted sm:text-base">{d.description}</p>
+      </div>
+    </header>
+
+    <article class="sim-article">
+      <Content />
+    </article>
+
+    <p class="mt-10 flex flex-wrap items-center gap-2 text-sm text-muted">
+      <Icon name="flag" class="h-4 w-4" />
+      ভুল পেয়েছ?
+      <a href={issueUrl} target="_blank" rel="noopener" class="font-semibold text-gold hover:underline">
+        আমাদের জানাও
+      </a>
+    </p>
+
+    {related.length > 0 && (
+      <section class="mt-12" aria-labelledby="related-heading">
+        <h2 id="related-heading" class="mb-4 text-xl font-bold">
+          এই অধ্যায়ের আরও সিমুলেশন
+        </h2>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {related.map((s) => (
+            <SimCard sim={s} chapter={chapter} showChapter={false} />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <nav class="mt-10 grid gap-3 sm:grid-cols-2" aria-label="বইয়ের ক্রমে আগের ও পরের সিমুলেশন">
+      {prev ? (
+        <a href={simUrl(prev)} class="panel flex items-center gap-3 px-4 py-3 hover:border-brand/70">
+          <Icon name="arrowLeft" class="h-4 w-4 shrink-0 text-gold" />
+          <span class="min-w-0">
+            <span class="block text-xs text-muted">আগেরটি · {chapterLabel(chapterOf(prev))}</span>
+            <span class="block truncate font-semibold">{prev.data.title}</span>
+          </span>
+        </a>
+      ) : (
+        <span />
+      )}
+      {next && (
+        <a href={simUrl(next)} class="panel flex items-center justify-end gap-3 px-4 py-3 text-right hover:border-brand/70">
+          <span class="min-w-0">
+            <span class="block text-xs text-muted">পরেরটি · {chapterLabel(chapterOf(next))}</span>
+            <span class="block truncate font-semibold">{next.data.title}</span>
+          </span>
+          <Icon name="arrowRight" class="h-4 w-4 shrink-0 text-gold" />
+        </a>
+      )}
+    </nav>
+  </div>
+</Base>
+
+<style>
+  /* The simulation spans the full width; the explanation below it reads at a comfortable measure. */
+  .sim-article :global(> :not(astro-island)) {
+    max-width: 48rem;
+  }
+  .sim-article {
+    font-size: 16px;
+    line-height: 1.85;
+  }
+  .sim-article :global(h2) {
+    margin-top: 2.75rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .sim-article :global(h2::before) {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 1.2em;
+    border-radius: 99px;
+    background: var(--brand);
+    flex-shrink: 0;
+  }
+  .sim-article :global(p),
+  .sim-article :global(li) {
+    color: color-mix(in oklab, var(--ink) 88%, transparent);
+  }
+  .sim-article :global(p) {
+    margin: 0.75rem 0;
+  }
+  .sim-article :global(ul),
+  .sim-article :global(ol) {
+    margin: 0.75rem 0;
+    padding-inline-start: 1.5rem;
+  }
+  .sim-article :global(ul) {
+    list-style: disc;
+  }
+  .sim-article :global(ol) {
+    list-style: decimal;
+  }
+  .sim-article :global(li) {
+    margin: 0.4rem 0;
+  }
+  .sim-article :global(li::marker) {
+    color: var(--brand-ink);
+    font-weight: 700;
+  }
+  .sim-article :global(strong) {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .sim-article :global(:not(pre) > code) {
+    border-radius: 6px;
+    background: var(--raised);
+    padding: 0.1rem 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--gold);
+  }
+  .sim-article :global(a) {
+    color: var(--gold);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+</style>

@@ -1,0 +1,66 @@
+---
+import { SITE } from '@/lib/site';
+import BrandMark from './BrandMark.astro';
+import Icon from './Icon.astro';
+
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/ssc/', label: 'অধ্যায়সমূহ', icon: 'book', active: path.startsWith('/ssc/') },
+  { href: '/sims/', label: 'সব সিমুলেশন', icon: 'grid', active: path.startsWith('/sims/') },
+] as const;
+---
+
+<header class="site-nav">
+  <div class="container-page flex h-16 items-center justify-between gap-3">
+    <a href="/" class="flex min-w-0 items-center gap-2.5" aria-label="Chemputer হোম">
+      <BrandMark class="h-9 w-9 shrink-0" />
+      <span class="wordmark truncate text-[15px] sm:text-lg">CHEMPUTER</span>
+    </a>
+    <nav class="flex items-center gap-1 sm:gap-2" aria-label="প্রধান মেনু">
+      {nav.map((item) => (
+        <a
+          href={item.href}
+          class:list={[
+            'inline-flex min-h-[40px] items-center gap-1.5 rounded-xl px-2.5 text-sm font-semibold transition hover:bg-raised hover:text-ink sm:px-3',
+            item.active ? 'text-gold' : 'text-muted',
+          ]}
+          aria-current={item.active ? 'page' : undefined}
+        >
+          <Icon name={item.icon} class="h-[18px] w-[18px]" />
+          <span class="hidden sm:inline">{item.label}</span>
+          <span class="sr-only sm:hidden">{item.label}</span>
+        </a>
+      ))}
+      <button
+        type="button"
+        data-theme-toggle
+        class="inline-flex min-h-[40px] w-10 items-center justify-center rounded-xl text-muted transition hover:bg-raised hover:text-ink"
+        aria-label="আলো/অন্ধকার থিম বদলাও"
+        title="থিম বদলাও"
+      >
+        <span class="theme-icon-dark">
+          <Icon name="sun" class="h-[18px] w-[18px]" />
+        </span>
+        <span class="theme-icon-light">
+          <Icon name="moon" class="h-[18px] w-[18px]" />
+        </span>
+      </button>
+      <a
+        href={SITE.youtube}
+        target="_blank"
+        rel="noopener"
+        class="hidden min-h-[40px] items-center gap-1.5 rounded-xl bg-brand px-3 text-sm font-semibold text-on-brand transition hover:bg-brand-hover md:inline-flex"
+      >
+        <Icon name="youtube" class="h-4 w-4" />
+        <span>YouTube</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  :global([data-theme='light']) .theme-icon-dark,
+  :global([data-theme='dark']) .theme-icon-light {
+    display: none;
+  }
+</style>

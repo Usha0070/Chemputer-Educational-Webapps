@@ -1,0 +1,27 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  items: { label: string; href?: string }[];
+}
+const { items } = Astro.props;
+---
+
+<nav aria-label="অবস্থান" class="mb-5 text-sm text-muted">
+  <ol class="flex flex-wrap items-center gap-1.5">
+    {items.map((item, i) => (
+      <li class="flex items-center gap-1.5">
+        {i > 0 && <Icon name="chevronRight" class="h-3.5 w-3.5 opacity-60" />}
+        {item.href ? (
+          <a href={item.href} class="hover:text-ink hover:underline">
+            {item.label}
+          </a>
+        ) : (
+          <span aria-current="page" class="text-ink/90">
+            {item.label}
+          </span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>

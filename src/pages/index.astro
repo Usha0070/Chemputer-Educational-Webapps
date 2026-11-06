@@ -1,0 +1,139 @@
+---
+import ChapterCard from '@/components/ChapterCard.astro';
+import Icon from '@/components/Icon.astro';
+import MolecularMotif from '@/components/MolecularMotif.astro';
+import SimCard from '@/components/SimCard.astro';
+import Base from '@/layouts/Base.astro';
+import { bn } from '@/chem/format';
+import { getChapters, getSims, simsIn } from '@/lib/content';
+import { SITE } from '@/lib/site';
+
+const chapters = await getChapters();
+const sims = await getSims();
+const chapterOf = new Map(chapters.map((c) => [c.id, c]));
+const newest = [...sims].sort((a, b) => b.data.added.getTime() - a.data.added.getTime() || 0).slice(0, 6);
+const firstSim = sims[0];
+---
+
+<Base title={SITE.name}>
+  <section class="relative overflow-hidden">
+    <MolecularMotif class="pointer-events-none absolute inset-y-0 right-0 h-full w-full opacity-60 md:w-[62%] md:opacity-100" />
+    <div class="container-page relative pt-14 pb-16 sm:pt-20 sm:pb-24">
+      <div class="max-w-2xl">
+        <p class="brand-bar label-en text-[10px] sm:text-xs">SSC · Class 9–10 Chemistry</p>
+        <h1 class="mt-5">
+          <span class="wordmark block text-[2.6rem] leading-none sm:text-7xl">CHEMPUTER</span>
+          <span class="mt-4 block text-3xl leading-tight font-bold text-ink sm:text-5xl">রসায়ন চোখে দেখে শেখো</span>
+        </h1>
+        <div class="mt-5 h-px w-40 bg-ink/70"></div>
+        <p class="label-en mt-4 text-[11px] text-gold sm:text-xs">Concepts · Simulations · Virtual Labs</p>
+        <p class="mt-5 max-w-xl text-base leading-relaxed text-ink/80 sm:text-lg">
+          মুখস্থ নয়, নিজে নেড়েচেড়ে বোঝো। নবম-দশম শ্রেণির রসায়ন বইয়ের প্রতিটি অধ্যায়ের ধারণা এখানে ইন্টারেক্টিভ সিমুলেশন, অ্যানিমেশন আর
+          ভার্চুয়াল ল্যাবে।
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a href="/ssc/" class="btn-primary px-6">
+            অধ্যায় বেছে নাও <Icon name="arrowRight" class="h-4 w-4" />
+          </a>
+          <a href="/sims/" class="btn-secondary px-6">
+            সব সিমুলেশন ({bn(sims.length)})
+          </a>
+        </div>
+        <div data-resume hidden class="mt-6">
+          <a
+            href="/"
+            class="inline-flex max-w-full items-center gap-3 rounded-2xl border border-gold/40 bg-surface/80 px-4 py-3 text-sm hover:border-gold"
+          >
+            <Icon name="clock" class="h-5 w-5 shrink-0 text-gold" />
+            <span class="min-w-0">
+              <span class="block text-xs text-muted">যেখানে ছিলে সেখান থেকে শুরু করো</span>
+              <span class="block truncate font-semibold text-ink" data-resume-title></span>
+            </span>
+            <Icon name="arrowRight" class="h-4 w-4 shrink-0 text-gold" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-page" aria-labelledby="class-heading">
+    <h2 id="class-heading" class="sr-only">
+      ক্লাস বেছে নাও
+    </h2>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <a href="/ssc/" class="group panel flex items-center gap-4 border-brand/50 p-5 hover:border-brand">
+        <span class="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-brand font-display text-lg font-extrabold text-on-brand">
+          SSC
+        </span>
+        <span class="min-w-0 flex-1">
+          <span class="block text-lg font-bold text-ink">নবম-দশম শ্রেণি</span>
+          <span class="block text-sm text-muted">
+            {bn(chapters.length)}টি অধ্যায় · {bn(sims.length)}টি সিমুলেশন
+          </span>
+        </span>
+        <Icon name="arrowRight" class="h-5 w-5 text-gold transition-transform group-hover:translate-x-1" />
+      </a>
+      <div class="panel flex items-center gap-4 p-5 opacity-70">
+        <span class="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-line bg-raised font-display text-lg font-extrabold text-muted">
+          HSC
+        </span>
+        <span class="min-w-0 flex-1">
+          <span class="block text-lg font-bold text-ink">একাদশ-দ্বাদশ শ্রেণি</span>
+          <span class="block text-sm text-muted">শীঘ্রই আসছে</span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-page mt-14" aria-labelledby="new-heading">
+    <div class="mb-6 flex items-end justify-between gap-4">
+      <div>
+        <p class="label-en text-[10px] text-gold">New</p>
+        <h2 id="new-heading" class="mt-1 text-2xl font-bold">
+          নতুন সিমুলেশন
+        </h2>
+      </div>
+      <a href="/sims/" class="text-sm font-semibold text-gold hover:underline">
+        সব দেখো
+      </a>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+      {newest.map((sim) => (
+        <SimCard sim={sim} chapter={chapterOf.get(sim.data.chapter.id)!} />
+      ))}
+    </div>
+  </section>
+
+  <section class="container-page mt-14" aria-labelledby="chapters-heading">
+    <div class="mb-6">
+      <p class="label-en text-[10px] text-gold">Chapters</p>
+      <h2 id="chapters-heading" class="mt-1 text-2xl font-bold">
+        বইয়ের অধ্যায় অনুযায়ী
+      </h2>
+      <p class="mt-1 text-sm text-muted">রসায়ন, নবম–দশম শ্রেণি (NCTB)। প্রতিটি অধ্যায়ে সিমুলেশন যোগ হচ্ছে।</p>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {chapters.map((c) => (
+        <ChapterCard chapter={c} simCount={simsIn(c, sims).length} />
+      ))}
+    </div>
+  </section>
+
+  {firstSim && (
+    <section class="container-page mt-14">
+      <div class="panel relative overflow-hidden p-6 sm:p-8">
+        <MolecularMotif variant="compact" class="pointer-events-none absolute inset-0 h-full w-full opacity-40" />
+        <div class="relative max-w-xl">
+          <p class="label-en text-[10px] text-gold">Watch &amp; learn</p>
+          <h2 class="mt-2 text-xl font-bold sm:text-2xl">ভিডিও ক্লাসের সাথে মিলিয়ে দেখো</h2>
+          <p class="mt-2 text-sm leading-relaxed text-muted">
+            Chemputer-এর ইউটিউব চ্যানেলে প্রতিটি ধারণার ব্যাখ্যা থাকে। ভিডিও দেখার পর এখানে নিজে সিমুলেশন চালিয়ে দেখো।
+          </p>
+          <a href={SITE.youtube} target="_blank" rel="noopener" class="btn-primary mt-5 px-5">
+            <Icon name="youtube" class="h-4 w-4" /> ইউটিউব চ্যানেল
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+</Base>

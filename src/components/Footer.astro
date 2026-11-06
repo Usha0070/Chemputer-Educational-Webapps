@@ -1,0 +1,42 @@
+---
+import { SITE } from '@/lib/site';
+import BrandMark from './BrandMark.astro';
+import Icon from './Icon.astro';
+---
+
+<footer class="site-footer">
+  <div class="container-page flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex items-center gap-3">
+      <BrandMark class="h-10 w-10 shrink-0" />
+      <div>
+        <p class="wordmark text-base">CHEMPUTER</p>
+        <p class="label-en text-[10px] text-muted">Chemistry made simple</p>
+      </div>
+    </div>
+    <div class="flex flex-col gap-3 text-sm text-muted sm:items-end">
+      <div class="flex items-center gap-4">
+        <a
+          class="inline-flex min-h-[40px] items-center gap-1.5 font-semibold hover:text-ink"
+          href={SITE.youtube}
+          target="_blank"
+          rel="noopener"
+        >
+          <Icon name="youtube" class="h-4 w-4 text-brand-ink" />
+          YouTube
+        </a>
+        <a
+          class="inline-flex min-h-[40px] items-center gap-1.5 font-semibold hover:text-ink"
+          href={SITE.facebook}
+          target="_blank"
+          rel="noopener"
+        >
+          <Icon name="facebook" class="h-4 w-4" />
+          Facebook
+        </a>
+      </div>
+      <p>
+        © {SITE.year} Chemputer · তৈরি করেছেন <span class="font-semibold text-ink">{SITE.author}</span>
+      </p>
+    </div>
+  </div>
+</footer>
