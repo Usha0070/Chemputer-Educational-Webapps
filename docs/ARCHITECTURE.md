@@ -265,14 +265,18 @@ Every simulation page follows the same order:
 
 ## 7. UI and theme
 
-- **Themes:** keep the current dark violet brand and add a **light theme** (phones in daylight, classroom projectors). Follow the system setting, with a toggle.
-- **Design tokens:** surfaces, text and accent as CSS variables. A **chemistry colour language** is defined once and used everywhere:
-  - s/p/d/f blocks: already done
-  - element categories
-  - acid ↔ base (pH colours)
-  - oxidation (red) ↔ reduction (blue)
-  - solid/liquid/gas particles
-  - exceptions in rose
+- **Brand (from the Chemputer YouTube/Facebook banners):** the violet look is gone. Everything follows the banner:
+  - background: black `#000000` on the left flowing into deep maroon `#1e0606`–`#3c0606` toward the right and bottom (radial red glow)
+  - brand red `#ba0000` for label bars and primary buttons (white text on it: 6.8:1)
+  - headline gold `#fcde56`, secondary gold `#f6d86c`, white text `#f6f6f6`, salmon glow nodes `#de7e72`
+  - motifs drawn in code as original SVG: thin-line molecular network (fused hexagon rings, bonds, glowing nodes), circuit traces, an atom, a faint periodic-table grid. Used in the home hero and page headers at low opacity; text readability comes first.
+  - type: Orbitron (wide, techy) for the CHEMPUTER wordmark and letter-spaced English labels, with the tagline “Chemistry made simple”. All Bangla stays Hind Siliguri; formulas use JetBrains Mono.
+- **Themes:** dark is the brand default; a derived **light theme** (phones in daylight, classroom projectors) is one tap away and remembered on the device. On light backgrounds gold text becomes a darker amber (`#8f5a00`) and accents become deep red, so every text colour passes WCAG AA (≥ 4.5:1) in both themes.
+- **Design tokens:** `src/styles/global.css` defines every colour as a semantic CSS variable (`--bg`, `--surface`, `--raised`, `--line`, `--ink`, `--muted`, `--brand`, `--gold`, `--accent`, `--glow`…) with dark and light values; Tailwind utilities (`bg-surface`, `text-gold`, `border-brand/40`) read them. A **chemistry colour language** is defined once and used everywhere, kept clearly apart from brand red and gold:
+  - s/p/d/f blocks: blue `#60a5fa`, green `#4ade80`, purple `#c084fc`, pink `#f472b6` (700/800 shades in light mode)
+  - ground-state exceptions: cyan `#22d3ee`, always with the word “ব্যতিক্রম”
+  - data series for trend maps and charts: `--data-1` … `--data-6`
+  - added as the simulations need them: element categories, acid ↔ base (pH colours), oxidation ↔ reduction, solid/liquid/gas particles
 - **Navigation:**
   - class switcher (৯–১০ / ১১–১২)
   - chapter sidebar on desktop, bottom sheet on mobile

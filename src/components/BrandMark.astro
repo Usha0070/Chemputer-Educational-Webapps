@@ -1,0 +1,15 @@
+---
+// The Chemputer mark: a hexagonal ring with one glowing bond node. Original artwork.
+interface Props {
+  class?: string;
+}
+const { class: cls = 'h-9 w-9' } = Astro.props;
+---
+
+<svg class={cls} viewBox="0 0 40 40" fill="none" aria-hidden="true">
+  <rect x="0.5" y="0.5" width="39" height="39" rx="10" fill="var(--brand)" />
+  <path d="M20 7.5 30.8 13.75v12.5L20 32.5 9.2 26.25v-12.5Z" stroke="var(--gold)" stroke-width="2.2" stroke-linejoin="round" />
+  <circle cx="20" cy="20" r="5.2" stroke="#fff" stroke-opacity=".85" stroke-width="1.6" />
+  <path d="M30.8 13.75 35 11" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" />
+  <circle cx="35" cy="11" r="2.4" fill="var(--gold)" />
+</svg>

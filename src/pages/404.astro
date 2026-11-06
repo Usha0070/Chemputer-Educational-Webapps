@@ -1,0 +1,24 @@
+---
+import Icon from '@/components/Icon.astro';
+import MolecularMotif from '@/components/MolecularMotif.astro';
+import Base from '@/layouts/Base.astro';
+---
+
+<Base title="পাতাটি পাওয়া যায়নি" description="এই ঠিকানায় কোনো পাতা নেই।">
+  <section class="relative overflow-hidden">
+    <MolecularMotif variant="compact" class="pointer-events-none absolute inset-0 h-full w-full opacity-40" />
+    <div class="container-page relative py-20 text-center sm:py-28">
+      <p class="wordmark text-6xl sm:text-8xl">404</p>
+      <h1 class="mt-4 text-2xl font-bold sm:text-3xl">পাতাটি পাওয়া যায়নি</h1>
+      <p class="mx-auto mt-3 max-w-md text-muted">হয়তো ঠিকানাটি বদলে গেছে। অধ্যায় তালিকা থেকে খুঁজে দেখো।</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href="/ssc/" class="btn-primary px-6">
+          অধ্যায়সমূহ <Icon name="arrowRight" class="h-4 w-4" />
+        </a>
+        <a href="/" class="btn-secondary px-6">
+          হোম
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

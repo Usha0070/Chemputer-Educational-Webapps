@@ -1,0 +1,138 @@
+---
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Icon from '@/components/Icon.astro';
+import MolecularMotif from '@/components/MolecularMotif.astro';
+import SimCard from '@/components/SimCard.astro';
+import Base from '@/layouts/Base.astro';
+import { bn, bnPad } from '@/chem/format';
+import { chapterLabel, chapterUrl, getChapters, getSims, pagesLabel, simUrl, simsIn, type Chapter } from '@/lib/content';
+
+export async function getStaticPaths() {
+  const chapters = await getChapters();
+  return chapters.map((chapter, i) => ({
+    params: { chapter: chapter.id },
+    props: { chapter, prev: chapters[i - 1], next: chapters[i + 1] },
+  }));
+}
+
+interface Props {
+  chapter: Chapter;
+  prev?: Chapter;
+  next?: Chapter;
+}
+const { chapter, prev, next } = Astro.props;
+const sims = simsIn(chapter, await getSims());
+const d = chapter.data;
+---
+
+<Base title={`অধ্যায় ${bn(d.number)}: ${d.titleBn}`} description={`${d.titleBn} (${d.titleEn}): ${d.summary}`}>
+  <section class="relative overflow-hidden">
+    <MolecularMotif variant="compact" class="pointer-events-none absolute inset-y-0 right-0 h-full w-full opacity-40 md:w-1/2" />
+    <div class="container-page relative pt-8 pb-8 sm:pt-12">
+      <Breadcrumbs items={[{ label: 'হোম', href: '/' }, { label: 'নবম-দশম শ্রেণি', href: '/ssc/' }, { label: chapterLabel(chapter) }]} />
+      <p class="brand-bar label-en text-[10px]">
+        Chapter {String(d.number).padStart(2, '0')} · {d.titleEn}
+      </p>
+      <h1 class="mt-4 text-3xl font-bold sm:text-5xl">
+        <span class="text-muted">অধ্যায় {bnPad(d.number)}</span>
+        <span class="text-gradient">{d.titleBn}</span>
+      </h1>
+      <p class="mt-3 flex items-center gap-2 text-sm text-muted">
+        <Icon name="book" class="h-4 w-4 text-gold" /> বই: {pagesLabel(d.pages)}
+      </p>
+      <p class="mt-4 max-w-3xl text-base leading-relaxed text-ink/85">{d.summary}</p>
+    </div>
+  </section>
+
+  <div class="container-page grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+    <section aria-labelledby="sims-heading">
+      <h2 id="sims-heading" class="mb-4 text-xl font-bold">
+        সিমুলেশন
+      </h2>
+      {sims.length > 0 ? (
+        <div class="grid gap-4 sm:grid-cols-2">
+          {sims.map((sim) => (
+            <SimCard sim={sim} chapter={chapter} showChapter={false} />
+          ))}
+        </div>
+      ) : (
+        <div class="panel panel-pad flex items-center gap-4">
+          <span class="icon-tile h-12 w-12 bg-brand/15 text-gold ring-brand/40">
+            <Icon name="sparkles" class="h-6 w-6" />
+          </span>
+          <div>
+            <p class="text-lg font-bold">শীঘ্রই আসছে</p>
+            <p class="text-sm text-muted">এই অধ্যায়ের সিমুলেশন তৈরি হচ্ছে। ততক্ষণ অন্য অধ্যায়গুলো ঘুরে দেখো।</p>
+          </div>
+        </div>
+      )}
+
+      <h2 class="mt-10 mb-4 text-xl font-bold">বিষয়সমূহ (বইয়ের ক্রমে)</h2>
+      <ol class="space-y-2">
+        {d.topics.map((t, i) => {
+          const related = sims.filter((s) => s.data.topics.includes(t.id));
+          return (
+            <li class="panel flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+              <span class="flex items-baseline gap-3">
+                <span class="font-mono text-xs text-muted">{bn(`${d.number}.${i + 1}`)}</span>
+                <span>
+                  <span class="font-semibold text-ink">{t.titleBn}</span>
+                  <span class="block text-xs text-muted">{t.titleEn}</span>
+                </span>
+              </span>
+              {related.length > 0 && (
+                <span class="flex flex-wrap gap-1.5 sm:justify-end">
+                  {related.map((s) => (
+                    <a href={simUrl(s)} class="chip min-h-[32px] text-xs">
+                      <Icon name={s.data.icon} class="h-3.5 w-3.5 text-gold" />
+                      {s.data.title}
+                    </a>
+                  ))}
+                </span>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+
+    <aside class="space-y-4">
+      <section class="panel panel-pad" aria-labelledby="outcomes-heading">
+        <h2 id="outcomes-heading" class="flex items-center gap-2 text-lg font-bold">
+          <Icon name="target" class="h-5 w-5 text-gold" /> এই অধ্যায় শেষে তুমি পারবে
+        </h2>
+        <ul class="mt-3 space-y-2.5 text-sm leading-relaxed text-ink/85">
+          {d.outcomes.map((o) => (
+            <li class="flex gap-2">
+              <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-block-p" />
+              <span>{o}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </aside>
+  </div>
+
+  <nav class="container-page mt-12 grid gap-3 sm:grid-cols-2" aria-label="অন্য অধ্যায়">
+    {prev ? (
+      <a href={chapterUrl(prev)} class="panel flex items-center gap-3 px-4 py-3 hover:border-brand/70">
+        <Icon name="arrowLeft" class="h-4 w-4 text-gold" />
+        <span>
+          <span class="block text-xs text-muted">আগের অধ্যায়</span>
+          <span class="font-semibold">{prev.data.titleBn}</span>
+        </span>
+      </a>
+    ) : (
+      <span />
+    )}
+    {next && (
+      <a href={chapterUrl(next)} class="panel flex items-center justify-end gap-3 px-4 py-3 text-right hover:border-brand/70">
+        <span>
+          <span class="block text-xs text-muted">পরের অধ্যায়</span>
+          <span class="font-semibold">{next.data.titleBn}</span>
+        </span>
+        <Icon name="arrowRight" class="h-4 w-4 text-gold" />
+      </a>
+    )}
+  </nav>
+</Base>

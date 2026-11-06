@@ -1,0 +1,437 @@
+@import 'tailwindcss';
+
+/* Self-hosted fonts (Fontsource). Hind Siliguri: Bangla text. JetBrains Mono: formulas and numbers.
+   Orbitron: the CHEMPUTER wordmark and letter-spaced English labels only. */
+@import '@fontsource/hind-siliguri/400.css';
+@import '@fontsource/hind-siliguri/500.css';
+@import '@fontsource/hind-siliguri/600.css';
+@import '@fontsource/hind-siliguri/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/600.css';
+@import '@fontsource/orbitron/500.css';
+@import '@fontsource/orbitron/800.css';
+
+/* Theme switch: <html data-theme="dark|light">. Dark is the brand default. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+@custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
+
+/* ── Design tokens ─────────────────────────────────────────────────────────
+   Brand (from the Chemputer banners): black → deep maroon, label red #ba0000,
+   headline gold #fcde56, white #f6f6f6, salmon glow nodes #de7e72.
+   Every colour in the UI comes from these variables. */
+:root {
+  color-scheme: dark;
+
+  /* Surfaces, darkest → lightest */
+  --bg: #050101;
+  --bg-deep: #1e0606;
+  --bg-glow: #3c0606;
+  --surface: #0f0606;
+  --raised: #1b0b0b;
+  --line: #3a1c1b;
+  --line-strong: #5c2b28;
+
+  /* Text */
+  --ink: #f6f6f6;
+  --muted: #ae9895;
+
+  /* Brand */
+  --brand: #ba0000; /* label bars, primary buttons (white text on it: 6.8:1) */
+  --brand-hover: #d40f0f;
+  --on-brand: #ffffff;
+  --brand-ink: #ff8a7d; /* red-family text on dark surfaces */
+  --gold: #fcde56; /* headline gold */
+  --gold-2: #f6d86c;
+  --accent: #fcde56; /* highlight / focus / active accent */
+  --on-accent: #1a0b00;
+  --glow: #de7e72;
+  --motif: #de7e72; /* thin-line molecular motifs (used at low opacity) */
+
+  /* Chemistry colour language. Kept away from brand red and gold. */
+  --block-s: #60a5fa;
+  --block-p: #4ade80;
+  --block-d: #c084fc;
+  --block-f: #f472b6;
+  --exc: #22d3ee; /* ground-state exceptions */
+  --danger: #ff8a80; /* form errors */
+
+  /* Data colours for charts and trend maps */
+  --data-1: #a78bfa;
+  --data-2: #fbbf24;
+  --data-3: #34d399;
+  --data-4: #22d3ee;
+  --data-5: #fb7185;
+  --data-6: #fb923c;
+
+  --shadow-panel: 0 20px 50px -30px rgb(0 0 0 / 0.9);
+  --fill-max: 0.8; /* strongest data fill behind text */
+  --orb: clamp(32px, 9vw, 52px);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #fbf6f3;
+  --bg-deep: #f6e7e2;
+  --bg-glow: #f1d2ca;
+  --surface: #ffffff;
+  --raised: #f8f0ec;
+  --line: #e7d5cf;
+  --line-strong: #d3b5ad;
+
+  --ink: #1c0d0c;
+  --muted: #6a5552;
+
+  --brand: #ba0000;
+  --brand-hover: #9c0000;
+  --on-brand: #ffffff;
+  --brand-ink: #a30000;
+  --gold: #8f5a00; /* gold text needs a darker amber on light backgrounds (5.8:1 on white) */
+  --gold-2: #a86c00;
+  --accent: #a30000;
+  --on-accent: #ffffff;
+  --glow: #c2554a;
+  --motif: #ba0000;
+
+  --block-s: #1d4ed8;
+  --block-p: #166534;
+  --block-d: #7e22ce;
+  --block-f: #be185d;
+  --exc: #0e7490;
+  --danger: #b00020;
+
+  --data-1: #6d28d9;
+  --data-2: #92400e;
+  --data-3: #047857;
+  --data-4: #0e7490;
+  --data-5: #be123c;
+  --data-6: #c2410c;
+
+  --shadow-panel: 0 18px 40px -28px rgb(90 20 10 / 0.35);
+  --fill-max: 0.45;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-deep: var(--bg-deep);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-on-brand: var(--on-brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-gold: var(--gold);
+  --color-gold-2: var(--gold-2);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-glow: var(--glow);
+  --color-block-s: var(--block-s);
+  --color-block-p: var(--block-p);
+  --color-block-d: var(--block-d);
+  --color-block-f: var(--block-f);
+  --color-exc: var(--exc);
+  --color-danger: var(--danger);
+  --color-data-1: var(--data-1);
+  --color-data-2: var(--data-2);
+  --color-data-3: var(--data-3);
+  --color-data-4: var(--data-4);
+  --color-data-5: var(--data-5);
+  --color-data-6: var(--data-6);
+
+  --font-sans: 'Hind Siliguri', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-display: 'Orbitron', 'Hind Siliguri', system-ui, sans-serif;
+
+  --animate-fade-up: fade-up 0.35s ease-out both;
+  --animate-pop: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes pulse-node {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    background: var(--bg);
+  }
+  body {
+    @apply flex min-h-screen flex-col font-sans text-ink antialiased;
+    background-color: var(--bg);
+    /* Black on the left flowing into deep maroon toward the right/bottom, like the banner. */
+    background-image:
+      radial-gradient(1200px 700px at 100% 100%, var(--bg-glow) 0%, transparent 65%),
+      radial-gradient(900px 600px at 85% 0%, color-mix(in oklab, var(--bg-deep) 80%, transparent) 0%, transparent 70%),
+      linear-gradient(100deg, var(--bg) 35%, var(--bg-deep) 100%);
+    background-attachment: fixed;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--brand) 55%, transparent);
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  sup {
+    top: -0.55em;
+    font-size: 0.68em;
+  }
+  sub {
+    bottom: -0.25em;
+    font-size: 0.7em;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 99px;
+    border: 2px solid var(--bg);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--brand);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+  }
+
+  /* Brand */
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+  }
+  .label-en {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .brand-bar {
+    @apply inline-flex items-center gap-2 rounded-sm bg-brand px-3 py-1 text-on-brand;
+  }
+  .text-gradient {
+    background-image: linear-gradient(90deg, var(--gold), var(--gold-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Site chrome */
+  .site-nav {
+    @apply sticky top-0 z-50 border-b border-line/80 backdrop-blur-md;
+    background: color-mix(in oklab, var(--bg) 82%, transparent);
+  }
+  .site-footer {
+    @apply mt-16 border-t border-line/80;
+    background: color-mix(in oklab, var(--bg) 70%, transparent);
+  }
+
+  /* Surfaces */
+  .panel {
+    @apply rounded-2xl border border-line;
+    background: color-mix(in oklab, var(--surface) 92%, transparent);
+    box-shadow: var(--shadow-panel);
+  }
+  .panel-pad {
+    @apply p-4 sm:p-6;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-line bg-raised/80 px-3 py-1 text-xs font-semibold text-muted;
+  }
+  .label {
+    @apply text-[13px] font-semibold text-muted;
+  }
+  .icon-tile {
+    @apply grid shrink-0 place-items-center rounded-xl ring-1;
+  }
+
+  /* Controls */
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .btn-icon {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold transition duration-200 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply bg-brand text-on-brand shadow-lg shadow-brand/25 hover:bg-brand-hover active:scale-[.98];
+  }
+  .btn-secondary {
+    @apply border border-line bg-raised text-ink hover:border-accent/60 hover:bg-accent/10;
+  }
+  .btn-icon {
+    @apply w-11 border border-line bg-raised px-0 text-ink hover:border-accent/60 hover:bg-accent/10;
+  }
+  .chip {
+    @apply inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-line bg-raised/70 px-3 text-sm font-medium text-muted transition hover:border-accent/60 hover:text-ink;
+  }
+  .chip[aria-pressed='true'] {
+    @apply border-accent/70 bg-accent/15 text-ink;
+  }
+  .input {
+    @apply min-h-[48px] w-full rounded-xl border border-line bg-bg px-4 font-mono text-lg text-ink transition placeholder:font-sans placeholder:text-base placeholder:text-muted/80 focus:border-accent focus:ring-2 focus:ring-accent/30 focus:outline-none;
+  }
+  .seg {
+    @apply inline-flex w-full rounded-xl border border-line bg-bg p-1 sm:w-auto;
+  }
+  .seg-btn {
+    @apply flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-lg px-4 text-sm font-semibold text-muted transition hover:text-ink sm:flex-none;
+  }
+  .seg-btn[aria-pressed='true'] {
+    @apply bg-brand text-on-brand shadow-md shadow-brand/25;
+  }
+
+  /* Orbital notation */
+  .orb-token {
+    @apply font-mono whitespace-nowrap;
+  }
+
+  /* Orbital boxes (calculator + shortcut) */
+  .orb {
+    @apply relative flex flex-col items-center justify-center rounded-xl border border-line bg-raised font-mono text-ink transition-all duration-500 ease-out;
+    width: var(--orb);
+    height: var(--orb);
+    font-size: clamp(12px, 3.4vw, 17px);
+  }
+  .orb[data-state='dim'] {
+    @apply scale-95 opacity-25 grayscale;
+  }
+  .orb[data-state='current'] {
+    @apply z-10 scale-110 border-accent bg-accent/20;
+    box-shadow: 0 0 22px color-mix(in oklab, var(--accent) 45%, transparent);
+  }
+  .orb[data-state='new'] {
+    @apply border-accent/70 bg-accent/10;
+  }
+  .orb[data-state='exception'] {
+    @apply z-10 scale-110 border-exc bg-exc/15 text-exc;
+    box-shadow: 0 0 22px color-mix(in oklab, var(--exc) 40%, transparent);
+  }
+  .orb-count {
+    @apply absolute -top-2.5 -right-2 animate-pop rounded-full bg-brand px-1 font-sans text-[10px] leading-4 font-bold text-on-brand shadow sm:-top-2 sm:-right-1.5 sm:px-1.5 sm:text-[11px] sm:leading-5;
+  }
+  .orb[data-state='exception'] .orb-count {
+    @apply bg-exc text-bg;
+  }
+
+  /* Long-form text on simulation and chapter pages (MDX) */
+  .prose-chem {
+    @apply max-w-3xl text-[16px] leading-[1.85] text-ink/90;
+  }
+  .prose-chem h2 {
+    @apply mt-10 mb-3 flex items-center gap-2 text-xl font-bold text-ink sm:text-2xl;
+  }
+  .prose-chem h2::before {
+    content: '';
+    @apply inline-block h-5 w-1.5 shrink-0 rounded-full bg-brand;
+  }
+  .prose-chem h3 {
+    @apply mt-6 mb-2 text-lg font-semibold text-ink;
+  }
+  .prose-chem p {
+    @apply my-3;
+  }
+  .prose-chem ul,
+  .prose-chem ol {
+    @apply my-3 space-y-2 ps-6;
+  }
+  .prose-chem ul {
+    @apply list-disc;
+  }
+  .prose-chem ol {
+    @apply list-decimal;
+  }
+  .prose-chem li::marker {
+    color: var(--brand-ink);
+  }
+  .prose-chem strong {
+    @apply font-semibold text-ink;
+  }
+  .prose-chem a {
+    @apply font-semibold text-gold underline decoration-gold/40 underline-offset-4 hover:decoration-gold;
+  }
+  .prose-chem code {
+    @apply rounded bg-raised px-1.5 py-0.5 font-mono text-[0.9em];
+  }
+  .prose-chem blockquote {
+    @apply my-4 rounded-r-xl border-l-4 border-gold/60 bg-raised/70 px-4 py-2;
+  }
+
+  /* Fullscreen simulation shell (also the fallback when the Fullscreen API is missing, e.g. iPhone) */
+  .sim-shell:fullscreen,
+  .sim-shell[data-pseudo-fullscreen='true'] {
+    @apply overflow-auto rounded-none;
+    background: var(--bg);
+  }
+  .sim-shell[data-pseudo-fullscreen='true'] {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+  }
+}
+
+/* Decorative brand motifs (molecular network, circuit traces, glow nodes). */
+.motif-node {
+  fill: var(--glow);
+  filter: drop-shadow(0 0 6px var(--glow));
+  animation: pulse-node 4s ease-in-out infinite;
+}
+.motif-line {
+  stroke: var(--motif);
+  fill: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .motif-node {
+    animation: none;
+  }
+}

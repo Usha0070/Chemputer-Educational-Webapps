@@ -1,0 +1,67 @@
+---
+import '@/styles/global.css';
+import Footer from '@/components/Footer.astro';
+import Header from '@/components/Header.astro';
+import { SITE } from '@/lib/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** data-* attributes for <body> (simulation pages record progress from these) */
+  bodyData?: Record<string, string>;
+}
+
+const { title, description = SITE.description, bodyData = {} } = Astro.props;
+const fullTitle = title === SITE.name ? `${SITE.name} | রসায়ন চোখে দেখে শেখো` : `${title} | ${SITE.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const bodyAttrs = Object.fromEntries(Object.entries(bodyData).map(([k, v]) => [`data-${k}`, v]));
+---
+
+<!doctype html>
+<html lang="bn" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE.authorEn} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#050101" />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="bn_BD" />
+    <script is:inline>
+      // Apply the saved theme before first paint (dark is the brand default).
+      try {
+        const t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+        if (t === 'light') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fbf6f3');
+      } catch {
+        /* storage blocked: keep the dark default */
+      }
+    </script>
+  </head>
+  <body {...bodyAttrs}>
+    <a
+      href="#main"
+      class="sr-only z-[200] rounded-lg bg-brand px-4 py-2 font-semibold text-on-brand focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+    >
+      মূল অংশে যাও
+    </a>
+    <Header />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import '@/scripts/theme';
+      import '@/scripts/progress';
+    </script>
+  </body>
+</html>
