@@ -102,3 +102,11 @@ test('icons, manifest and robots are served', async ({ request }) => {
   const manifest = await (await request.get('/site.webmanifest')).json();
   expect(manifest.icons.length).toBeGreaterThanOrEqual(2);
 });
+
+test('Google Search Console ownership stays verifiable (file and meta tag)', async ({ request }) => {
+  const file = await request.get('/google710df23056d5f7f3.html');
+  expect(file.status()).toBe(200);
+  expect((await file.text()).trim()).toBe('google-site-verification: google710df23056d5f7f3.html');
+  const home = await (await request.get('/')).text();
+  expect(home).toContain('<meta name="google-site-verification" content="TgflAoBa6zT7IdX0fX_K2mZV3CQ8E8gxlVzcMDQSfT0">');
+});
