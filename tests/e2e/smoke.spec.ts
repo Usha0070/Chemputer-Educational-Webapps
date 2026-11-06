@@ -38,7 +38,8 @@ function watchErrors(page: Page): string[] {
 }
 
 async function expectNoHorizontalScroll(page: Page) {
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  // clientWidth, not innerWidth: with mobile emulation the visual viewport grows to fit overflowing content.
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow, 'page is wider than the viewport').toBeLessThanOrEqual(1);
 }
 
@@ -96,12 +97,14 @@ test.describe('simulation behaviour', () => {
 
   test('calculator reads ?z= and shows the group', async ({ page }) => {
     await page.goto('/ssc/04-periodic-table/electron-configuration-calculator/?z=29');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
     await expect(page.getByText('কপার').first()).toBeVisible();
     await expect(page.getByText('১১ নম্বর গ্রুপের')).toBeVisible();
   });
 
   test('theme toggle switches to light and back', async ({ page }) => {
     await page.goto('/');
+    await page.waitForLoadState('load');
     const html = page.locator('html');
     await expect(html).toHaveAttribute('data-theme', 'dark');
     await page.locator('[data-theme-toggle]').click();
@@ -112,6 +115,7 @@ test.describe('simulation behaviour', () => {
 
   test('catalogue filters by chapter', async ({ page }) => {
     await page.goto('/sims/');
+    await page.waitForLoadState('load');
     const cards = page.locator('[data-sim-list] [data-sim-card]');
     const total = await cards.count();
     await page.locator('[data-filter-chapter="03-structure-of-matter"]').click();
@@ -144,6 +148,7 @@ test.describe('simulation behaviour', () => {
 
   test('bohr model emits the red Balmer line for 3 → 2', async ({ page }) => {
     await page.goto('/ssc/03-structure-of-matter/rutherford-vs-bohr/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
     await page.getByRole('button', { name: 'শক্তিস্তর n = 3-এ নাও' }).click();
     await page.getByRole('button', { name: 'শক্তিস্তর n = 2-এ নাও' }).click();
     await expect(page.getByText(/λ = ৬৫৬ nm/)).toBeVisible();
@@ -151,9 +156,65 @@ test.describe('simulation behaviour', () => {
 
   test('periodic table search selects an element', async ({ page }) => {
     await page.goto('/periodic-table/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
     await page.getByLabel('খোঁজো (প্রতীক, নাম বা সংখ্যা)').fill('Hg');
     await page.getByLabel('খোঁজো (প্রতীক, নাম বা সংখ্যা)').press('Enter');
     await expect(page.getByRole('heading', { name: 'মার্কারি' })).toBeVisible();
     await expect(page.getByText('[Xe] ', { exact: false }).first()).toBeVisible();
+  });
+
+  test('formula writing criss-crosses calcium phosphate', async ({ page }) => {
+    await page.goto('/ssc/05-chemical-bonds/formula-writing/?cation=Ca&anion=PO4');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    const next = page.getByRole('button', { name: 'পরের ধাপ' });
+    while (await next.isEnabled()) await next.click();
+    await expect(page.getByLabel('Ca₃(PO₄)₂').last()).toBeVisible();
+    await expect(page.getByText('ক্যালসিয়াম ফসফেট').first()).toBeVisible();
+  });
+
+  test('ionic bonding transfers two electrons for MgO', async ({ page }) => {
+    await page.goto('/ssc/05-chemical-bonds/ionic-bond/?pair=MgO');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    const next = page.getByRole('button', { name: 'পরের ধাপ' });
+    while (await next.isEnabled()) await next.click();
+    await expect(page.getByText(/আয়নিক বন্ধন।/).first()).toBeVisible();
+    await expect(page.getByLabel('MgO').last()).toBeVisible();
+  });
+
+  test('covalent builder completes N2 with a triple bond', async ({ page }) => {
+    await page.goto('/ssc/05-chemical-bonds/covalent-bond/?molecule=N2');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    const add = page.getByRole('button', { name: 'একটি যুগল ভাগাভাগি করো' });
+    for (let i = 0; i < 3; i++) await add.click();
+    await expect(add).toBeDisabled();
+    await expect(page.getByText('অণু সম্পূর্ণ!', { exact: false })).toBeVisible();
+    await expect(page.getByText('N≡N', { exact: true }).first()).toBeVisible();
+  });
+
+  test('equation balancer accepts 4Fe + 3O2 -> 2Fe2O3', async ({ page }) => {
+    await page.goto('/ssc/06-mole-concept/equation-balancer/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    const plus = page.locator('button[aria-label$="সহগ বাড়াও"]');
+    for (let i = 0; i < 3; i++) await plus.nth(0).click();
+    for (let i = 0; i < 2; i++) await plus.nth(1).click();
+    await plus.nth(2).click();
+    await expect(page.getByText('সমতা হয়েছে! তুমি নিজেই করেছ।')).toBeVisible();
+  });
+
+  test('mole calculator: 18 g of water is one mole', async ({ page }) => {
+    await page.goto('/ssc/06-mole-concept/mole-calculator/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    const results = page.locator('section[aria-label="ফলাফল"]');
+    await expect(results).toContainText('১ mol');
+    await expect(results).toContainText('৬.০২২ × ১০২৩');
+  });
+
+  test('empirical formula solver reaches glucose', async ({ page }) => {
+    await page.goto('/ssc/06-mole-concept/empirical-formula/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    const next = page.getByRole('button', { name: 'পরের ধাপ' });
+    while (await next.count()) await next.click();
+    await expect(page.getByLabel('CH₂O').first()).toBeVisible();
+    await expect(page.getByLabel('C₆H₁₂O₆').first()).toBeVisible();
   });
 });

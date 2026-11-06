@@ -1,6 +1,7 @@
 // Chemical typography: <Formula>H2SO4</Formula> → H₂SO₄, <Equation>2H2 + O2 -> 2H2O</Equation>.
 import { Fragment } from 'react';
 import { formulaToUnicode, tokenizeEquation, tokenizeFormula } from '@/chem/notation';
+import { bn } from '@/chem/format';
 import { cx } from './primitives';
 
 export function Formula({ children, className }: { children: string; className?: string }) {
@@ -43,6 +44,23 @@ export function Equation({ children, className }: { children: string; className?
           </span>
         );
       })}
+    </span>
+  );
+}
+
+/** Scientific notation with Bangla digits: 1.2044e24 → ১.২০ × ১০²⁴ (exponent as a real superscript). */
+export function Sci({ value, digits = 3, className }: { value: number; digits?: number; className?: string }) {
+  if (!Number.isFinite(value)) return <span className={className}>—</span>;
+  const abs = Math.abs(value);
+  if (abs === 0 || (abs >= 0.01 && abs < 10000)) {
+    const fixed = Number(value.toPrecision(digits + 1));
+    return <span className={cx('font-mono', className)}>{bn(String(fixed))}</span>;
+  }
+  const e = Math.floor(Math.log10(abs));
+  const m = value / 10 ** e;
+  return (
+    <span className={cx('font-mono whitespace-nowrap', className)} aria-label={`${m.toFixed(digits)} গুণ ১০-এর ঘাত ${e}`}>
+      {bn(m.toFixed(digits).replace(/\.?0+$/, ''))} × ১০<sup>{bn(e)}</sup>
     </span>
   );
 }

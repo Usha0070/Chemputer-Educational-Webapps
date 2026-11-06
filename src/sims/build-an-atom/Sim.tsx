@@ -184,7 +184,7 @@ export default function BuildAnAtom() {
 
   return (
     <SimShell ref={shellRef} label="পরমাণু তৈরি করো" onReset={() => set(DEFAULT)}>
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)]">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)]">
         <section className="panel panel-pad" aria-label="পরমাণুর চিত্র">
           <AtomDiagram atom={atom} shells={r.shells} spinning={active && !reduced} label={desc} />
           <div className="mt-2 flex flex-wrap justify-center gap-4 text-xs text-muted">

@@ -84,7 +84,7 @@ export default function ElectronConfigurationCalculator() {
   return (
     <SimShell label="ইলেকট্রন বিন্যাস ক্যালকুলেটর" onReset={reset}>
       <div className="space-y-5">
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
           <section className="panel panel-pad space-y-5" aria-label="ইনপুট">
             <ZForm value={input} onChange={setInput} onSubmit={submit} max={MAX} buttonLabel="হিসাব করো" error={error} />
             <div>
