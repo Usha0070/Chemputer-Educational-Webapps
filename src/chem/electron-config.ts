@@ -225,3 +225,28 @@ export const BLOCK_RULES: Record<Block | 'he', string> = {
   f: 'ল্যান্থানাইড ও অ্যাক্টিনাইড সিরিজের সকল f-ব্লক মৌল গ্রুপ ৩-এ অবস্থিত',
   he: 'হিলিয়ামের বিন্যাস 1s^2 (s-ব্লক), তবে এর শক্তিস্তর পূর্ণ ও এটি নিষ্ক্রিয় গ্যাস, তাই একে গ্রুপ ১৮-তে রাখা হয়',
 };
+
+const NOBLE_CORES = [
+  { z: 2, symbol: 'He' },
+  { z: 10, symbol: 'Ne' },
+  { z: 18, symbol: 'Ar' },
+  { z: 36, symbol: 'Kr' },
+  { z: 54, symbol: 'Xe' },
+  { z: 86, symbol: 'Rn' },
+];
+
+/** Noble-gas core notation: 26 → { core: 'Ar', rest: [3d6, 4s2] } (rest in shell order). */
+export function coreConfig(z: number): { core: string | null; rest: FilledOrbital[] } {
+  const core = [...NOBLE_CORES].reverse().find((c) => c.z < z) ?? null;
+  const all = orbitalList(groundState(z), 'shell');
+  if (!core) return { core: null, rest: all };
+  const coreOcc = groundState(core.z);
+  const rest = all.filter((o) => (coreOcc[o.id] ?? 0) !== o.e || !(o.id in coreOcc));
+  return { core: core.symbol, rest };
+}
+
+/** Plain text, e.g. "[Ar] 3d6 4s2". */
+export function coreConfigText(z: number): string {
+  const { core, rest } = coreConfig(z);
+  return [core ? `[${core}]` : '', ...rest.map((o) => `${o.id}${o.e}`)].filter(Boolean).join(' ');
+}

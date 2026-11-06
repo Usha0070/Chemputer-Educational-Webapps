@@ -4,3 +4,5 @@ export * from './hooks';
 export * from './icons';
 export * from './primitives';
 export * from './SimShell';
+export * from './controls';
+export * from './canvas';
