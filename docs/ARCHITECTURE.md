@@ -92,7 +92,7 @@ Simulation `type` values: `animation` (guided, step by step) · `simulation` (fr
 
 ## 4. Simulation catalogue: Class 9–10 (NCTB)
 
-★★★ = build first (core concept, heavy exam weight, hard to grasp from text) · ✅ = exists today.
+★★★ = build first (core concept, heavy exam weight, hard to grasp from text) · ✅ = live on the site. All 25 ★★★ simulations are live (November 2026).
 
 ### অধ্যায় ১ · রসায়নের ধারণা (book p. 1)
 | Simulation | Type | Priority |
@@ -103,18 +103,18 @@ Simulation `type` values: `animation` (guided, step by step) · `simulation` (fr
 ### অধ্যায় ২ · পদার্থের অবস্থা (p. 17)
 | Simulation | Type | Priority |
 |---|---|---|
-| কণার গতিতত্ত্ব: particle box, solid/liquid/gas, temperature slider | simulation | ★★★ |
-| ব্যাপন ও নিঃসরণ: NH₃ and HCl diffusing in a tube, where the white ring forms, and the effect of temperature and molar mass | simulation | ★★★ |
-| গলন, স্ফুটন ও তাপমাত্রা: heating curve of ice → water → steam, with a live thermometer and particles | lab | ★★★ |
+| কণার গতিতত্ত্ব: particle box, solid/liquid/gas, temperature slider | simulation | ★★★ ✅ |
+| ব্যাপন ও নিঃসরণ: NH₃ and HCl diffusing in a tube, where the white ring forms, and the effect of temperature and molar mass | simulation | ★★★ ✅ |
+| গলন, স্ফুটন ও তাপমাত্রা: heating curve of ice → water → steam, with a live thermometer and particles | lab | ★★★ ✅ |
 | ঊর্ধ্বপাতন: subliming camphor / ammonium chloride | animation | ★★ |
 | থার্মোমিটার পড়া: reading practice with a virtual thermometer | lab | ★ |
 
 ### অধ্যায় ৩ · পদার্থের গঠন (p. 35)
 | Simulation | Type | Priority |
 |---|---|---|
-| পরমাণু তৈরি করো: add protons, neutrons and electrons, then see element, mass number, charge, ion or isotope | simulation | ★★★ |
-| রাদারফোর্ডের আলফা কণা বিক্ষেপণ: gold-foil experiment | animation | ★★★ |
-| রাদারফোর্ড বনাম বোর মডেল: why the Rutherford atom would collapse, and Bohr's energy levels with photon emission | animation | ★★★ |
+| পরমাণু তৈরি করো: add protons, neutrons and electrons, then see element, mass number, charge, ion or isotope | simulation | ★★★ ✅ |
+| রাদারফোর্ডের আলফা কণা বিক্ষেপণ: gold-foil experiment | animation | ★★★ ✅ |
+| রাদারফোর্ড বনাম বোর মডেল: why the Rutherford atom would collapse, and Bohr's energy levels with photon emission | animation | ★★★ ✅ |
 | আইসোটোপ ও আপেক্ষিক পারমাণবিক ভর: abundance sliders → weighted average (Cl = 35.5) | simulation | ★★ |
 | প্রতীক এসেছে কোথা থেকে: Latin/English names → symbols (Na ← Natrium, Fe ← Ferrum) | reference | ★ |
 | ইলেকট্রন বিন্যাস: শর্টকাট ও আউফবাউ ✅ (move here from Chapter 4) | animation | ✅ |
@@ -125,7 +125,7 @@ Simulation `type` values: `animation` (guided, step by step) · `simulation` (fr
 |---|---|---|
 | ইলেকট্রন বিন্যাস থেকে পর্যায় ও গ্রুপ ✅ | solver | ✅ |
 | ব্লক অনুযায়ী গ্রুপ নির্ণয় ✅ | solver | ✅ |
-| পর্যায়বৃত্ত ধর্ম ✅ → extend to all 118 elements as `/periodic-table/` | reference | ★★★ |
+| পর্যায়বৃত্ত ধর্ম ✅ → extend to all 118 elements as `/periodic-table/` | reference | ★★★ ✅ |
 | ছন্দে ছন্দে পর্যায় সারণি ✅ | reference | ✅ |
 | পর্যায় সারণির বিকাশ: timeline (Döbereiner → Newlands → Mendeleev → Moseley), Mendeleev's gaps predicting Ge | animation | ★★ |
 | একই গ্রুপ, একই ধর্ম: Li, Na and K in water, with reactivity rising down the group | lab | ★★ |
@@ -134,9 +134,9 @@ Simulation `type` values: `animation` (guided, step by step) · `simulation` (fr
 ### অধ্যায় ৫ · রাসায়নিক বন্ধন (p. 82)
 | Simulation | Type | Priority |
 |---|---|---|
-| যৌগের সংকেত লেখা: valency criss-cross with ions and radicals (Al³⁺ + SO₄²⁻ → Al₂(SO₄)₃) | solver | ★★★ |
-| আয়নিক বন্ধন: electron transfer Na → Cl, then MgO and CaCl₂; drag the electrons | animation | ★★★ |
-| সমযোজী বন্ধন: dot-and-cross builder for H₂, O₂, N₂, H₂O, NH₃, CH₄ (single, double, triple bonds) | simulation | ★★★ |
+| যৌগের সংকেত লেখা: valency criss-cross with ions and radicals (Al³⁺ + SO₄²⁻ → Al₂(SO₄)₃) | solver | ★★★ ✅ |
+| আয়নিক বন্ধন: electron transfer Na → Cl, then MgO and CaCl₂; drag the electrons | animation | ★★★ ✅ |
+| সমযোজী বন্ধন: dot-and-cross builder for H₂, O₂, N₂, H₂O, NH₃, CH₄ (single, double, triple bonds) | simulation | ★★★ ✅ |
 | অষ্টক ও দুই নিয়ম: why noble gases are stable | animation | ★★ |
 | ধাতব বন্ধন: electron sea; apply a voltage and watch electrons drift | animation | ★★ |
 | আয়নিক বনাম সমযোজী: virtual conductivity test (bulb glows for NaCl solution, not for sugar), melting point and solubility | lab | ★★ |
@@ -144,9 +144,9 @@ Simulation `type` values: `animation` (guided, step by step) · `simulation` (fr
 ### অধ্যায় ৬ · মোলের ধারণা ও রাসায়নিক গণনা (p. 109)
 | Simulation | Type | Priority |
 |---|---|---|
-| সমীকরণের সমতা বিধান: equation balancer with live atom counts on a balance | solver | ★★★ |
-| মোল: mass ↔ moles ↔ particles, "counting by weighing" | simulation | ★★★ |
-| শতকরা সংযুতি → স্থূল ও আণবিক সংকেত: step-by-step solver | solver | ★★★ |
+| সমীকরণের সমতা বিধান: equation balancer with live atom counts on a balance | solver | ★★★ ✅ |
+| মোল: mass ↔ moles ↔ particles, "counting by weighing" | simulation | ★★★ ✅ |
+| শতকরা সংযুতি → স্থূল ও আণবিক সংকেত: step-by-step solver | solver | ★★★ ✅ |
 | দ্রবণ তৈরি: weigh solute, dissolve, fill a volumetric flask to the mark; molarity | lab | ★★ |
 | ভরভিত্তিক হিসাব: stoichiometry and limiting reactant, visualised as particles | solver | ★★ |
 | তুঁতের কেলাস পানি: heat CuSO₄·5H₂O (blue → white), then mass change → % water | lab | ★★ |
@@ -154,9 +154,9 @@ Simulation `type` values: `animation` (guided, step by step) · `simulation` (fr
 ### অধ্যায় ৭ · রাসায়নিক বিক্রিয়া (p. 142)
 | Simulation | Type | Priority |
 |---|---|---|
-| বিক্রিয়ার হার: collision-theory particles with temperature, concentration, surface area, catalyst and a live rate graph | simulation | ★★★ |
-| জারণ-বিজারণ: electron transfer, plus an oxidation-number calculator | animation | ★★★ |
-| লা-শাতেলিয়ার নীতি: equilibrium that shifts with temperature, pressure and concentration | simulation | ★★★ |
+| বিক্রিয়ার হার: collision-theory particles with temperature, concentration, surface area, catalyst and a live rate graph | simulation | ★★★ ✅ |
+| জারণ-বিজারণ: electron transfer, plus an oxidation-number calculator | animation | ★★★ ✅ |
+| লা-শাতেলিয়ার নীতি: equilibrium that shifts with temperature, pressure and concentration | simulation | ★★★ ✅ |
 | বিক্রিয়ার প্রকারভেদ: sort animated reactions (synthesis, decomposition, displacement, redox, reversible, exothermic/endothermic) | reference | ★★ |
 | ভৌত বনাম রাসায়নিক পরিবর্তন | reference | ★ |
 | লোহার মরিচা: tubes with air, water, oil, salt water and a drying agent over "days"; ways to prevent rust | lab | ★★ |
@@ -165,9 +165,9 @@ Simulation `type` values: `animation` (guided, step by step) · `simulation` (fr
 ### অধ্যায় ৮ · রসায়ন ও শক্তি (p. 168)
 | Simulation | Type | Priority |
 |---|---|---|
-| তড়িৎ বিশ্লেষণ: molten NaCl, brine, acidified water, CuSO₄ (electroplating); ions migrate to electrodes | simulation | ★★★ |
-| গ্যালভানিক কোষ: build a Zn/Cu (Daniell) cell, with electron flow, salt bridge and voltmeter | simulation | ★★★ |
-| তাপোৎপাদী ও তাপহারী: energy profile diagram plus virtual thermometer experiments (NaOH dissolving, NH₄Cl dissolving) | lab | ★★★ |
+| তড়িৎ বিশ্লেষণ: molten NaCl, brine, acidified water, CuSO₄ (electroplating); ions migrate to electrodes | simulation | ★★★ ✅ |
+| গ্যালভানিক কোষ: build a Zn/Cu (Daniell) cell, with electron flow, salt bridge and voltmeter | simulation | ★★★ ✅ |
+| তাপোৎপাদী ও তাপহারী: energy profile diagram plus virtual thermometer experiments (NaOH dissolving, NH₄Cl dissolving) | lab | ★★★ ✅ |
 | তড়িৎ বিশ্লেষ্য কোষ বনাম গ্যালভানিক কোষ: side-by-side comparison | animation | ★★ |
 | পারমাণবিক বিদ্যুৎ: fission chain reaction, controlled vs uncontrolled (Rooppur context) | animation | ★★ |
 | জ্বালানি ও দহন: complete vs incomplete combustion, fuel comparison | simulation | ★ |
@@ -175,8 +175,8 @@ Simulation `type` values: `animation` (guided, step by step) · `simulation` (fr
 ### অধ্যায় ৯ · এসিড-ক্ষারক সমতা (p. 206)
 | Simulation | Type | Priority |
 |---|---|---|
-| pH স্কেল ও নির্দেশক: household substances on the pH scale; litmus, phenolphthalein, methyl orange and universal indicator colours | reference | ★★★ |
-| প্রশমন / টাইট্রেশন: burette adds NaOH to HCl, with a pH curve and indicator change | lab | ★★★ |
+| pH স্কেল ও নির্দেশক: household substances on the pH scale; litmus, phenolphthalein, methyl orange and universal indicator colours | reference | ★★★ ✅ |
+| প্রশমন / টাইট্রেশন: burette adds NaOH to HCl, with a pH curve and indicator change | lab | ★★★ ✅ |
 | খর পানি: soap lather vs scum; temporary vs permanent hardness and how to remove each | lab | ★★ |
 | এসিড বৃষ্টি: how SO₂ and NO₂ form acids, and the effect on marble and plants | animation | ★★ |
 | পানি পরিশোধন: coagulation → sedimentation → filtration → chlorination; arsenic awareness | animation | ★★ |
@@ -185,7 +185,7 @@ Simulation `type` values: `animation` (guided, step by step) · `simulation` (fr
 ### অধ্যায় ১০ · খনিজ সম্পদ: ধাতু-অধাতু (p. 233)
 | Simulation | Type | Priority |
 |---|---|---|
-| সক্রিয়তা সিরিজ → নিষ্কাশন পদ্ধতি: choose the extraction method for a metal | solver | ★★★ |
+| সক্রিয়তা সিরিজ → নিষ্কাশন পদ্ধতি: choose the extraction method for a metal | solver | ★★★ ✅ |
 | মারুত চুল্লি: iron extraction in a blast furnace | animation | ★★ |
 | সংকর ধাতু: why alloys are harder (atomic layers that cannot slide) | animation | ★★ |
 | স্পর্শ পদ্ধতি: sulfur → SO₂ → SO₃ → H₂SO₄ with conditions | animation | ★★ |
@@ -194,9 +194,9 @@ Simulation `type` values: `animation` (guided, step by step) · `simulation` (fr
 ### অধ্যায় ১১ · খনিজ সম্পদ: জীবাশ্ম (p. 261)
 | Simulation | Type | Priority |
 |---|---|---|
-| পেট্রোলিয়ামের আংশিক পাতন: fractionating column with temperature and fractions | animation | ★★★ |
-| হাইড্রোকার্বন বিল্ডার: build alkanes, alkenes and alkynes in 3D, with names and isomers | simulation | ★★★ |
-| জৈব রূপান্তর মানচিত্র: hydrocarbon → alcohol → aldehyde → acid, each arrow with its reagent and condition | reference | ★★★ |
+| পেট্রোলিয়ামের আংশিক পাতন: fractionating column with temperature and fractions | animation | ★★★ ✅ |
+| হাইড্রোকার্বন বিল্ডার: build alkanes, alkenes and alkynes in 3D, with names and isomers | simulation | ★★★ ✅ |
+| জৈব রূপান্তর মানচিত্র: hydrocarbon → alcohol → aldehyde → acid, each arrow with its reagent and condition | reference | ★★★ ✅ |
 | সম্পৃক্ত বনাম অসম্পৃক্ত: bromine-water test | lab | ★★ |
 | পলিমারকরণ: ethene → polythene chain growing | animation | ★★ |
 | জৈব বনাম অজৈব যৌগ: heating test | lab | ★ |

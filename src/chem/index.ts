@@ -17,3 +17,7 @@ export * from './equilibrium';
 export * from './electrochem';
 export * from './thermo';
 export * from './random';
+export * from './matter';
+export * from './acids';
+export * from './metals';
+export * from './organic';
