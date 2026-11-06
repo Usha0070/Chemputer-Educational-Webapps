@@ -6,3 +6,5 @@ export * from './primitives';
 export * from './SimShell';
 export * from './controls';
 export * from './canvas';
+export * from './charts';
+export * from './lab';

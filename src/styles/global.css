@@ -464,6 +464,39 @@
   }
 }
 
+/* Electrons hopping from the reducing agent to the oxidising agent */
+.electron-hop {
+  animation: electron-hop 1.6s ease-in-out infinite;
+}
+@keyframes electron-hop {
+  0% {
+    transform: translateX(-120px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120px);
+    opacity: 0;
+  }
+}
+
+/* Rising bubbles (virtual lab kit) */
+@keyframes bubble-up {
+  from {
+    transform: translateY(0);
+    opacity: 0.9;
+  }
+  to {
+    transform: translateY(var(--rise, -80px));
+    opacity: 0;
+  }
+}
+
 /* Decorative brand motifs (molecular network, circuit traces, glow nodes). */
 .motif-node {
   fill: var(--glow);
