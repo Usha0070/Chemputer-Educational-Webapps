@@ -1,20 +1,31 @@
 // Sitemap <lastmod> dates. A simulation page changes when its MDX or its src/sims/<slug>/ code changes (last git
-// commit touching them; falls back to the `added` date when git history is missing, e.g. a shallow clone).
+// commit touching them). Without that history it falls back to the `added` date: no git, or a shallow clone
+// (Vercel, CI) where a file untouched in the fetched commits only shows the cut-off commit, which is not its date.
 // Chapter pages take their newest simulation (or the curriculum file); home, /ssc/ and /sims/ the newest of all.
 // No date is ever later than today.
 import { execFileSync } from 'node:child_process';
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 
 const SIMS = 'src/content/sims';
 const CURRICULUM = 'src/content/curriculum/ssc.yaml';
 
+const git = (args) => execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+
+/** Commits where a shallow clone's history is cut off (their "changes" are really the whole tree). */
+function shallowRoots() {
+  try {
+    const file = git(['rev-parse', '--git-path', 'shallow']);
+    return new Set(existsSync(file) ? readFileSync(file, 'utf8').split(/\s+/).filter(Boolean) : []);
+  } catch {
+    return new Set();
+  }
+}
+const CUT = shallowRoots();
+
 function gitDate(paths) {
   try {
-    const out = execFileSync('git', ['log', '-1', '--format=%cI', '--', ...paths], {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'ignore'],
-    }).trim();
-    return out ? new Date(out) : null;
+    const [hash, date] = git(['log', '-1', '--format=%H %cI', '--', ...paths]).split(' ');
+    return hash && date && !CUT.has(hash) ? new Date(date) : null;
   } catch {
     return null;
   }
