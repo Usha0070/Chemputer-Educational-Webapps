@@ -37,3 +37,5 @@ build.mjs           build script
 
 To add a tool, add an entry to `TOOLS` in `src/site.js` and create `src/tools/<entry>.jsx`.
 The home page and the "next tool" links update automatically.
+
+The plan for growing the site to the full Class 9–10 book (and later HSC) is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).

@@ -7,9 +7,8 @@ import { iconSvg } from './ui/icons.js';
 export const SITE = {
   name: 'Chemputer',
   author: 'ইউশা খান',
-  authorUrl: 'https://www.facebook.com/usha.khan.50596',
-  youtube: 'https://www.youtube.com/@chemputerstudiobyeusha',
-  facebookGroup: 'https://www.facebook.com/groups/chemputer007',
+  facebook: 'https://www.facebook.com/usha.khan.50596',
+  youtube: 'https://www.youtube.com/@ChemputerStudio',
   year: '২০২৬',
 };
 
@@ -104,10 +103,10 @@ function nav({ home }) {
 function footer() {
   return `<footer class="site-footer">
   <div class="container-page flex flex-col items-center justify-between gap-3 py-6 text-sm text-muted sm:flex-row">
-    <p>© ${SITE.year} <span class="font-semibold text-ink">Chemputer</span> · তৈরি করেছেন <a class="font-semibold text-accent hover:underline" href="${SITE.authorUrl}" target="_blank" rel="noopener">${SITE.author}</a></p>
+    <p>© ${SITE.year} <span class="font-semibold text-ink">Chemputer</span> · তৈরি করেছেন <a class="font-semibold text-accent hover:underline" href="${SITE.facebook}" target="_blank" rel="noopener">${SITE.author}</a></p>
     <div class="flex items-center gap-4">
       <a class="inline-flex items-center gap-1.5 hover:text-ink" href="${SITE.youtube}" target="_blank" rel="noopener">${iconSvg('youtube', 'h-4 w-4')}YouTube</a>
-      <a class="inline-flex items-center gap-1.5 hover:text-ink" href="${SITE.facebookGroup}" target="_blank" rel="noopener">${iconSvg('facebook', 'h-4 w-4')}Facebook গ্রুপ</a>
+      <a class="inline-flex items-center gap-1.5 hover:text-ink" href="${SITE.facebook}" target="_blank" rel="noopener">${iconSvg('facebook', 'h-4 w-4')}Facebook</a>
     </div>
   </div>
 </footer>`;
