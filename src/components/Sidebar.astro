@@ -1,0 +1,132 @@
+---
+// Site sidebar: every chapter with its simulations, the current page highlighted.
+// ≥1024 px it is docked (full, or a slim rail of chapter badges; the choice is remembered).
+// Below that the same element is a slide-in drawer opened from the header's menu button (src/scripts/sidebar.ts).
+// Chapters are native <details>, so opening them works without JavaScript.
+import { bn, bnPad } from '@/chem/format';
+import { chapterHue, chapterUrl, getChapters, getSims, simUrl, simsIn } from '@/lib/content';
+import BrandMark from './BrandMark.astro';
+import Icon from './Icon.astro';
+
+const path = Astro.url.pathname;
+const [chapters, sims] = await Promise.all([getChapters(), getSims()]);
+const currentSim = sims.find((s) => simUrl(s) === path);
+const currentChapter = currentSim?.data.chapter.id ?? chapters.find((c) => path.startsWith(chapterUrl(c)))?.id;
+const links = [
+  { href: '/', label: 'হোম', icon: 'home' },
+  { href: '/ssc/', label: 'সব অধ্যায়', icon: 'book' },
+  { href: '/periodic-table/', label: 'পর্যায় সারণি', icon: 'table' },
+  { href: '/sims/', label: 'সব সিমুলেশন', icon: 'grid' },
+] as const;
+const here = (href: string) => (path === href ? 'page' : undefined);
+---
+
+<aside id="site-sidebar" class="sidebar" aria-label="সাইট মেনু">
+  <div class="sb-head flex h-16 shrink-0 items-center justify-between gap-3 border-b border-line/80 px-4">
+    <a href="/" class="flex items-center gap-2" aria-label="Chemputer হোম">
+      <BrandMark class="h-8 w-8 shrink-0" />
+      <span class="wordmark text-[15px] tracking-[0.06em]">CHEMPUTER</span>
+    </a>
+    <button
+      type="button"
+      class="inline-flex h-10 w-10 items-center justify-center rounded-xl text-muted hover:bg-raised hover:text-ink"
+      data-drawer-close
+      aria-label="মেনু বন্ধ করো"
+    >
+      <Icon name="x" class="h-5 w-5" />
+    </button>
+  </div>
+
+  <div class="px-3 pt-3">
+    <button
+      type="button"
+      class="sb-collapse sb-link w-full justify-between"
+      data-sidebar-collapse
+      aria-controls="site-sidebar"
+      aria-expanded="true"
+      aria-label="সাইডবার ছোট করো"
+      title="সাইডবার ছোট/বড় করো"
+    >
+      <span class="sb-collapse-label label-en text-[10px] text-muted">Menu</span>
+      <Icon name="panelLeft" class="h-[18px] w-[18px]" />
+    </button>
+  </div>
+
+  <nav class="sb-full flex-1 px-3 pt-1 pb-6" aria-label="অধ্যায় ও সিমুলেশন">
+    <ul class="space-y-0.5">
+      {links.map((l) => (
+        <li>
+          <a href={l.href} class="sb-link" aria-current={here(l.href)}>
+            <Icon name={l.icon} class="h-[18px] w-[18px] shrink-0" />
+            {l.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="label-en mt-5 mb-2 px-3 text-[10px] text-gold">Chapters · অধ্যায়</p>
+    <ul class="space-y-0.5">
+      {chapters.map((c) => {
+        const list = simsIn(c, sims);
+        const open = c.id === currentChapter;
+        return (
+          <li style={`--c: ${chapterHue(c)}`}>
+            <details class="sb-chapter" open={open}>
+              <summary class="sb-link" data-current={open ? 'true' : undefined}>
+                <span class="sb-badge" aria-hidden="true">
+                  {bnPad(c.data.number)}
+                </span>
+                <span class="min-w-0 flex-1 leading-snug">
+                  <span class="sr-only">অধ্যায় {bn(c.data.number)}: </span>
+                  {c.data.titleBn}
+                </span>
+                <span class="text-[11px] font-medium text-muted">{list.length > 0 ? bn(list.length) : ''}</span>
+                <Icon name="chevronDown" class="sb-chevron h-4 w-4 shrink-0 text-muted" />
+              </summary>
+              <ul class="sb-sims">
+                <li>
+                  <a href={chapterUrl(c)} class="sb-link" aria-current={here(chapterUrl(c))}>
+                    অধ্যায়ের পাতা
+                  </a>
+                </li>
+                {list.map((s) => (
+                  <li>
+                    <a href={simUrl(s)} class="sb-link" aria-current={here(simUrl(s))} data-sim-card={simUrl(s)}>
+                      {s.data.title}
+                    </a>
+                  </li>
+                ))}
+                {list.length === 0 && <li class="px-3 py-1.5 text-xs text-muted">সিমুলেশন শীঘ্রই আসছে</li>}
+              </ul>
+            </details>
+          </li>
+        );
+      })}
+    </ul>
+  </nav>
+
+  <nav class="sb-rail flex-1 space-y-1 px-2 pt-1 pb-6" aria-label="অধ্যায় (ছোট মেনু)">
+    {links.map((l) => (
+      <a href={l.href} class="sb-rail-link" aria-current={here(l.href)} aria-label={l.label} title={l.label}>
+        <Icon name={l.icon} class="h-[18px] w-[18px]" />
+      </a>
+    ))}
+    <div class="mx-auto my-2 h-px w-8 bg-line" aria-hidden="true"></div>
+    {chapters.map((c) => (
+      <a
+        href={chapterUrl(c)}
+        class="sb-rail-link"
+        style={`--c: ${chapterHue(c)}`}
+        aria-current={c.id === currentChapter ? 'page' : undefined}
+        aria-label={`অধ্যায় ${bn(c.data.number)}: ${c.data.titleBn}`}
+        title={`অধ্যায় ${bn(c.data.number)}: ${c.data.titleBn}`}
+      >
+        <span class="sb-badge">{bnPad(c.data.number)}</span>
+      </a>
+    ))}
+  </nav>
+</aside>
+<div class="drawer-backdrop" data-drawer-backdrop hidden></div>
+
+<script>
+  import '@/scripts/sidebar';
+</script>

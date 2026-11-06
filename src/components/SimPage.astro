@@ -3,10 +3,11 @@
 // পরীক্ষায় যেভাবে আসে → সাধারণ ভুল (all from the MDX body) → related and previous/next in book order.
 import { render } from 'astro:content';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Carousel from '@/components/Carousel.astro';
 import Icon from '@/components/Icon.astro';
 import SimCard from '@/components/SimCard.astro';
 import Base from '@/layouts/Base.astro';
-import { TYPE_LABEL, chapterLabel, chapterUrl, getChapters, getSims, pagesLabel, simUrl, type Sim } from '@/lib/content';
+import { TYPE_LABEL, chapterHue, chapterLabel, chapterUrl, getChapters, getSims, pagesLabel, simUrl, type Sim } from '@/lib/content';
 import { SITE } from '@/lib/site';
 
 interface Props {
@@ -21,7 +22,7 @@ const chapter = chapters.find((c) => c.id === sim.data.chapter.id)!;
 const { Content } = await render(sim);
 const d = sim.data;
 const pages = d.pages ?? chapter.data.pages;
-const related = sims.filter((s) => s.id !== sim.id && s.data.chapter.id === chapter.id).slice(0, 3);
+const related = sims.filter((s) => s.id !== sim.id && s.data.chapter.id === chapter.id);
 const chapterOf = (s: Sim) => chapters.find((c) => c.id === s.data.chapter.id)!;
 const issueBody = [`পাতা: ${SITE.url}${simUrl(sim)}`, '', 'কী ভুল দেখলে?', ''].join('\n');
 const issueUrl = `${SITE.repo}/issues/new?${new URLSearchParams({ title: `ভুল: ${d.title}`, body: issueBody })}`;
@@ -32,7 +33,7 @@ const issueUrl = `${SITE.repo}/issues/new?${new URLSearchParams({ title: `ভু
   description={d.description}
   bodyData={{ 'sim-url': simUrl(sim), 'sim-title': d.title, 'sim-chapter': `${chapterLabel(chapter)} · ${chapter.data.titleBn}` }}
 >
-  <div class="container-page pt-6 sm:pt-10">
+  <div class="container-page pt-6 sm:pt-10" style={`--c: ${chapterHue(chapter)}`}>
     <Breadcrumbs
       items={[
         { label: 'হোম', href: '/' },
@@ -42,12 +43,12 @@ const issueUrl = `${SITE.repo}/issues/new?${new URLSearchParams({ title: `ভু
       ]}
     />
     <header class="mb-6 flex items-start gap-4 sm:mb-8 sm:items-center">
-      <span class="icon-tile h-12 w-12 bg-brand/15 text-gold ring-brand/40 sm:h-14 sm:w-14">
+      <span class="icon-tile tint-tile h-12 w-12 sm:h-14 sm:w-14">
         <Icon name={d.icon} class="h-6 w-6 sm:h-7 sm:w-7" />
       </span>
       <div class="min-w-0">
         <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold text-muted">
-          <a href={chapterUrl(chapter)} class="text-brand-ink hover:underline">
+          <a href={chapterUrl(chapter)} class="tint-text hover:underline">
             {chapterLabel(chapter)} · {chapter.data.titleBn}
           </a>
           <span aria-hidden="true">·</span>
@@ -78,11 +79,13 @@ const issueUrl = `${SITE.repo}/issues/new?${new URLSearchParams({ title: `ভু
         <h2 id="related-heading" class="mb-4 text-xl font-bold">
           এই অধ্যায়ের আরও সিমুলেশন
         </h2>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Carousel label="এই অধ্যায়ের আরও সিমুলেশন">
           {related.map((s) => (
-            <SimCard sim={s} chapter={chapter} showChapter={false} />
+            <div>
+              <SimCard sim={s} chapter={chapter} showChapter={false} />
+            </div>
           ))}
-        </div>
+        </Carousel>
       </section>
     )}
 

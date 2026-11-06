@@ -9,36 +9,53 @@ const nav = [
   { href: '/periodic-table/', label: 'পর্যায় সারণি', icon: 'table', active: path.startsWith('/periodic-table/') },
   { href: '/sims/', label: 'সব সিমুলেশন', icon: 'grid', active: path.startsWith('/sims/') },
 ] as const;
+const iconBtn =
+  'inline-flex min-h-[40px] w-9 shrink-0 items-center justify-center rounded-xl text-muted transition hover:bg-raised hover:text-ink sm:w-10';
 ---
 
 <header class="site-nav">
-  <div class="container-page flex h-16 items-center justify-between gap-3">
-    <a href="/" class="flex min-w-0 items-center gap-2 sm:gap-2.5" aria-label="Chemputer হোম">
-      <BrandMark class="h-8 w-8 shrink-0 sm:h-9 sm:w-9" />
-      <span class="wordmark text-[13px] tracking-[0.06em] min-[400px]:text-[15px] sm:text-lg">CHEMPUTER</span>
-    </a>
+  <div class="flex h-16 w-full items-center justify-between gap-2 px-3 sm:gap-3 sm:px-6">
+    <div class="flex min-w-0 items-center gap-1 sm:gap-2">
+      <button
+        type="button"
+        class:list={[iconBtn, 'lg:hidden']}
+        data-drawer-open
+        aria-controls="site-sidebar"
+        aria-expanded="false"
+        aria-label="মেনু খোলো"
+        title="মেনু"
+      >
+        <Icon name="menu" class="h-5 w-5" />
+      </button>
+      <a href="/" class="flex min-w-0 items-center gap-2 sm:gap-2.5" aria-label="Chemputer হোম">
+        <BrandMark class="h-8 w-8 shrink-0 sm:h-9 sm:w-9" />
+        <span class="wordmark text-[13px] tracking-[0.06em] min-[400px]:text-[15px] sm:text-lg">CHEMPUTER</span>
+      </a>
+    </div>
     <nav class="flex shrink-0 items-center gap-0.5 sm:gap-2" aria-label="প্রধান মেনু">
       {nav.map((item) => (
         <a
           href={item.href}
           class:list={[
-            'inline-flex min-h-[40px] min-w-[36px] items-center justify-center gap-1.5 rounded-xl px-1.5 text-sm font-semibold transition hover:bg-raised hover:text-ink sm:px-3',
+            'hidden min-h-[40px] min-w-[36px] items-center justify-center gap-1.5 rounded-xl px-1.5 text-sm font-semibold transition hover:bg-raised hover:text-ink sm:inline-flex sm:px-3',
             item.active ? 'text-gold' : 'text-muted',
           ]}
           aria-current={item.active ? 'page' : undefined}
         >
           <Icon name={item.icon} class="h-[18px] w-[18px]" />
-          <span class="hidden sm:inline">{item.label}</span>
-          <span class="sr-only sm:hidden">{item.label}</span>
+          <span class="hidden xl:inline">{item.label}</span>
+          <span class="sr-only xl:hidden">{item.label}</span>
         </a>
       ))}
-      <button
-        type="button"
-        data-theme-toggle
-        class="inline-flex min-h-[40px] w-9 items-center justify-center rounded-xl text-muted transition hover:bg-raised hover:text-ink sm:w-10"
-        aria-label="আলো/অন্ধকার থিম বদলাও"
-        title="থিম বদলাও"
-      >
+      <button type="button" data-sound-toggle class={iconBtn} aria-pressed="false" aria-label="পটভূমির শব্দ" title="পটভূমির শব্দ চালু/বন্ধ">
+        <span class="sound-off">
+          <Icon name="volumeOff" class="h-[18px] w-[18px]" />
+        </span>
+        <span class="sound-on">
+          <Icon name="volume" class="h-[18px] w-[18px]" />
+        </span>
+      </button>
+      <button type="button" data-theme-toggle class={iconBtn} aria-label="আলো/অন্ধকার থিম বদলাও" title="থিম বদলাও">
         <span class="theme-icon-dark">
           <Icon name="sun" class="h-[18px] w-[18px]" />
         </span>

@@ -2,6 +2,7 @@
 import '@/styles/global.css';
 import Footer from '@/components/Footer.astro';
 import Header from '@/components/Header.astro';
+import Sidebar from '@/components/Sidebar.astro';
 import { SITE } from '@/lib/site';
 
 interface Props {
@@ -15,10 +16,18 @@ const { title, description = SITE.description, bodyData = {} } = Astro.props;
 const fullTitle = title === SITE.name ? `${SITE.name} | রসায়ন চোখে দেখে শেখো` : `${title} | ${SITE.name}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const bodyAttrs = Object.fromEntries(Object.entries(bodyData).map(([k, v]) => [`data-${k}`, v]));
+// Simulation pages: the sidebar starts as a slim rail and the 3D background is dimmed, so the experiment comes first.
+const isSim = 'sim-url' in bodyData;
 ---
 
 <!doctype html>
-<html lang="bn" data-theme="dark">
+<html
+  lang="bn"
+  data-theme="dark"
+  data-page={isSim ? 'sim' : 'page'}
+  data-sidebar={isSim ? 'rail' : 'open'}
+  data-bg={isSim ? 'dim' : 'full'}
+>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -37,13 +46,16 @@ const bodyAttrs = Object.fromEntries(Object.entries(bodyData).map(([k, v]) => [`
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="bn_BD" />
     <script is:inline>
-      // Apply the saved theme before first paint (dark is the brand default).
+      // Apply the saved theme and sidebar width before first paint (dark + full sidebar are the defaults).
       try {
+        const h = document.documentElement;
         const t = localStorage.getItem('theme');
-        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+        if (t === 'light' || t === 'dark') h.dataset.theme = t;
         if (t === 'light') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fbf6f3');
+        const sb = localStorage.getItem(h.dataset.page === 'sim' ? 'chemputer:sidebar:sim' : 'chemputer:sidebar');
+        if (sb === 'rail' || sb === 'open') h.dataset.sidebar = sb;
       } catch {
-        /* storage blocked: keep the dark default */
+        /* storage blocked: keep the defaults */
       }
     </script>
   </head>
@@ -54,14 +66,22 @@ const bodyAttrs = Object.fromEntries(Object.entries(bodyData).map(([k, v]) => [`
     >
       মূল অংশে যাও
     </a>
+    <canvas class="bg3d" data-bg3d aria-hidden="true"></canvas>
     <Header />
-    <main id="main" class="flex-1">
-      <slot />
-    </main>
-    <Footer />
+    <div class="flex flex-1">
+      <Sidebar />
+      <div class="flex min-w-0 flex-1 flex-col">
+        <main id="main" class="flex-1">
+          <slot />
+        </main>
+        <Footer />
+      </div>
+    </div>
     <script>
       import '@/scripts/theme';
       import '@/scripts/progress';
+      import '@/scripts/sound';
+      import '@/scripts/bg3d';
     </script>
   </body>
 </html>

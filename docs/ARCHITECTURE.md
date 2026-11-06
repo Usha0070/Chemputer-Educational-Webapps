@@ -277,11 +277,25 @@ Every simulation page follows the same order:
   - ground-state exceptions: cyan `#22d3ee`, always with the word “ব্যতিক্রম”
   - data series for trend maps and charts: `--data-1` … `--data-6`
   - added as the simulations need them: element categories, acid ↔ base (pH colours), oxidation ↔ reduction, solid/liquid/gas particles
+- **Chapter hues:** each chapter has its own colour (`--ch-1` … `--ch-12`): mostly warm brand-family shades (rose, red, gold, amber, ember, magenta, copper), plus a few cool contrasts (sky, violet, emerald, teal, lime). The hue appears on that chapter's cards, sidebar badge and page accents. Cards (`.tint`, `src/styles/chrome.css`) carry two soft glows that drift slowly inside them: the chapter hue plus a second warm hue that differs from card to card. The animation is transform-only and stops under reduced motion. Glow strengths are capped so every text colour stays AA on the tinted card in both themes.
 - **Navigation:**
   - class switcher (৯–১০ / ১১–১২)
-  - chapter sidebar on desktop, bottom sheet on mobile
+  - **sidebar** (`Sidebar.astro`): every chapter (native `<details>`) with its simulations, the current page highlighted and seen sims ticked.
+    - From 1024 px it is docked and collapses to a slim rail of chapter badges. The choice is remembered, with a separate setting for simulation pages, which start as a rail.
+    - Below 1024 px the same element is a slide-in drawer from the header's menu button, with a focus trap, Esc/backdrop to close, and focus returned to the button.
+  - **carousels** (`Carousel.astro`) for "নতুন সিমুলেশন" and related sims.
+    - Layout: a scroll-snap row with one card plus a peek on phones, two from 640 px, three from 1024 px. Prev/next, dots and ←/→ all wrap.
+    - Auto-advances every 5 s. The active dot's fill bar is the timer. It holds on hover, keyboard focus, touch, off-screen or a hidden tab, has a pause button, and is off with reduced motion.
   - breadcrumbs and previous/next
   - Ctrl+K search
+- **Ambience:**
+  - **3D background** (`src/scripts/bg3d.ts`): ball-and-stick molecules and a faint network on one fixed canvas, with perspective projection and no WebGL library (about 2 KB gzipped).
+    - It leans with the pointer and scrolling, runs at ~30 fps, and pauses while the tab is hidden or a simulation is fullscreen.
+    - It shows a single still frame with reduced motion or Data Saver, and is dimmed on simulation pages.
+  - **Ambient sound** (`src/scripts/sound.ts`, `ambient.ts`): a quiet generative Web Audio pad with soft chimes, so there is no audio file and nothing to license.
+    - It is off by default and turned on from the header speaker button; the choice is remembered.
+    - Browsers block sound before a tap, so a page opened with sound left on waits for the first interaction.
+    - The engine (~1 KB) is downloaded only when first needed, and it fades out while the tab is hidden.
 - **Mobile first:** 360 px baseline, 44 px touch targets, landscape fullscreen for simulations.
 - **Presentation mode (`?present=1`):** large text with no site chrome, for live classes and YouTube recordings. **Embed mode (`?embed=1`)** to place a simulation inside slides or other sites.
 - **Progress without accounts:** "দেখা হয়েছে" ticks, bookmarks and "continue where you left off", stored on the device.

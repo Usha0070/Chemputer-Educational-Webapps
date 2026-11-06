@@ -57,7 +57,11 @@
     - { id: isotopes, titleBn: 'আইসোটোপ ও এর ব্যবহার', titleEn: 'Isotopes and their uses' }
     - { id: relative-atomic-mass, titleBn: 'আপেক্ষিক পারমাণবিক ভর ও আণবিক ভর', titleEn: 'Relative atomic and molecular mass' }
     - { id: atomic-models, titleBn: 'রাদারফোর্ড ও বোর পরমাণু মডেল', titleEn: 'Rutherford and Bohr atomic models' }
-    - { id: electron-configuration, titleBn: 'শক্তিস্তর, উপস্তর ও ইলেকট্রন বিন্যাস', titleEn: 'Shells, subshells and electron configuration' }
+    - {
+        id: electron-configuration,
+        titleBn: 'শক্তিস্তর, উপস্তর ও ইলেকট্রন বিন্যাস',
+        titleEn: 'Shells, subshells and electron configuration',
+      }
   outcomes:
     - 'প্রোটন, নিউট্রন ও ইলেকট্রনের সংখ্যা থেকে মৌল, ভরসংখ্যা, আধান ও আইসোটোপ চিনতে পারবে।'
     - 'আইসোটোপের প্রাচুর্য থেকে আপেক্ষিক পারমাণবিক ভর হিসাব করতে পারবে।'
@@ -74,8 +78,16 @@
   summary: 'পর্যায় সারণি কীভাবে তৈরি হলো, ইলেকট্রন বিন্যাস থেকে কীভাবে মৌলের পর্যায় ও গ্রুপ বের করা যায়, আর পর্যায় ও গ্রুপ ধরে ধর্মগুলো কীভাবে বদলায়।'
   topics:
     - { id: history-of-periodic-table, titleBn: 'পর্যায় সারণির বিকাশ', titleEn: 'Development of the periodic table' }
-    - { id: modern-periodic-table, titleBn: 'আধুনিক পর্যায় সারণি: পর্যায় ও গ্রুপ', titleEn: 'The modern periodic table: periods and groups' }
-    - { id: position-from-configuration, titleBn: 'ইলেকট্রন বিন্যাস থেকে পর্যায় ও গ্রুপ নির্ণয়', titleEn: 'Period and group from electron configuration' }
+    - {
+        id: modern-periodic-table,
+        titleBn: 'আধুনিক পর্যায় সারণি: পর্যায় ও গ্রুপ',
+        titleEn: 'The modern periodic table: periods and groups',
+      }
+    - {
+        id: position-from-configuration,
+        titleBn: 'ইলেকট্রন বিন্যাস থেকে পর্যায় ও গ্রুপ নির্ণয়',
+        titleEn: 'Period and group from electron configuration',
+      }
     - { id: blocks, titleBn: 's, p, d ও f ব্লক', titleEn: 's, p, d and f blocks' }
     - { id: periodic-properties, titleBn: 'পর্যায়বৃত্ত ধর্ম', titleEn: 'Periodic properties' }
     - { id: special-groups, titleBn: 'বিশেষ নামে পরিচিত গ্রুপ ও তাদের ধর্ম', titleEn: 'Named groups and their properties' }
