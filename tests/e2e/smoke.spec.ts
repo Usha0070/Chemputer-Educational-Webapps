@@ -217,4 +217,52 @@ test.describe('simulation behaviour', () => {
     await expect(page.getByLabel('CH₂O').first()).toBeVisible();
     await expect(page.getByLabel('C₆H₁₂O₆').first()).toBeVisible();
   });
+
+  test('reaction rate produces products as the clock runs', async ({ page }) => {
+    await page.goto('/ssc/07-chemical-reactions/reaction-rate/?');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    await expect(page.locator('section[aria-label="উৎপাদ বনাম সময়"] p.font-mono').first()).not.toHaveText('০', { timeout: 15_000 });
+  });
+
+  test('redox names the agents and the calculator finds Cr = +6', async ({ page }) => {
+    await page.goto('/ssc/07-chemical-reactions/redox/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    const next = page.getByRole('button', { name: 'পরের ধাপ' });
+    while (await next.isEnabled()) await next.click();
+    await expect(page.getByText('বিজারক:')).toBeVisible();
+    await page.getByRole('button', { name: 'জারণ সংখ্যা নির্ণয়' }).click();
+    await page.locator('input[spellcheck="false"]').fill('K2Cr2O7');
+    await expect(page.getByText('Cr = +৬')).toBeVisible();
+  });
+
+  test('le chatelier shifts right when N2 is added', async ({ page }) => {
+    await page.goto('/ssc/07-chemical-reactions/le-chatelier/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    await page.getByRole('button', { name: /N₂ যোগ করো/ }).click();
+    await expect(page.getByText(/সাম্যাবস্থা ডানে সরছে/)).toBeVisible();
+  });
+
+  test('electrolysis of acidified water gives H2 : O2 = 2 : 1', async ({ page }) => {
+    await page.goto('/ssc/08-chemistry-and-energy/electrolysis/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    await page.getByRole('button', { name: 'সুইচ চালু করো' }).click();
+    await expect(page.getByText('H2 : O2 = ২ : ১')).toBeVisible({ timeout: 10_000 });
+  });
+
+  test('galvanic cell reads 1.10 V and drops to zero without the salt bridge', async ({ page }) => {
+    await page.goto('/ssc/08-chemistry-and-energy/galvanic-cell/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    const svg = page.locator('section[aria-label="কোষ"] svg');
+    await expect(svg).toContainText('1.10');
+    await page.getByRole('button', { name: /লবণ সেতু/ }).click();
+    await expect(svg).toContainText('0.00');
+  });
+
+  test('dissolving NaOH warms the water', async ({ page }) => {
+    await page.goto('/ssc/08-chemistry-and-energy/exo-endothermic/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    await page.getByRole('button', { name: 'যোগ করো ও নাড়ো' }).click();
+    await expect(page.getByText(/তাপোৎপাদী: বিক্রিয়া তাপ ছেড়ে দেয়/)).toBeVisible();
+    await expect(page.locator('section[aria-label="হিসাব"]')).toContainText('kJ/mol');
+  });
 });
