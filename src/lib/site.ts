@@ -15,7 +15,7 @@ export const SITE = {
   description:
     'নবম-দশম শ্রেণির রসায়ন চোখে দেখে শেখো: ইন্টারেক্টিভ রসায়ন সিমুলেশন, অ্যানিমেশন ও ভার্চুয়াল ল্যাব, NCTB বইয়ের অধ্যায় অনুযায়ী। Free SSC chemistry simulations and animations in Bangla.',
   /** Search engine ownership codes (Search Console → HTML tag, Bing Webmaster → meta tag). Empty = not rendered. */
-  verification: { google: '', bing: '' },
+  verification: { google: 'TgflAoBa6zT7IdX0fX_K2mZV3CQ8E8gxlVzcMDQSfT0', bing: '' },
 } as const;
 
 export const LEVELS = {
