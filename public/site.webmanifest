@@ -1,0 +1,16 @@
+{
+  "name": "Chemputer Studio: রসায়ন সিমুলেশন",
+  "short_name": "Chemputer",
+  "description": "নবম-দশম শ্রেণির রসায়ন চোখে দেখে শেখো: ইন্টারেক্টিভ সিমুলেশন, অ্যানিমেশন ও ভার্চুয়াল ল্যাব।",
+  "lang": "bn",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#050101",
+  "theme_color": "#050101",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

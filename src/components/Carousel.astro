@@ -6,11 +6,13 @@ import Icon from './Icon.astro';
 
 interface Props {
   label: string;
+  /** number of slides; with one or none there are no controls at all */
+  count?: number;
   /** ms per page; 0 turns auto-advance off */
   interval?: number;
   class?: string;
 }
-const { label, interval = 5000, class: cls } = Astro.props;
+const { label, count = 2, interval = 5000, class: cls } = Astro.props;
 const btn =
   'inline-flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-raised/80 text-ink transition hover:border-accent/60 hover:bg-accent/10 disabled:opacity-40';
 ---
@@ -27,27 +29,29 @@ const btn =
   <div class="carousel-track" data-carousel-track aria-live="off">
     <slot />
   </div>
-  <div class="carousel-controls mt-1 items-center justify-between gap-3">
-    <div class="flex items-center gap-2">
-      <button type="button" class={btn} data-carousel-pause aria-pressed="false" aria-label="স্বয়ংক্রিয় চলা থামাও">
-        <span data-icon-pause>
-          <Icon name="pause" class="h-4 w-4" />
-        </span>
-        <span data-icon-play hidden>
-          <Icon name="play" class="h-4 w-4" />
-        </span>
-      </button>
-      <div class="flex flex-wrap items-center" data-carousel-dots role="group" aria-label="স্লাইড বেছে নাও"></div>
+  {count > 1 && (
+    <div class="carousel-controls mt-1 items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <button type="button" class={btn} data-carousel-pause aria-pressed="false" aria-label="স্বয়ংক্রিয় চলা থামাও">
+          <span data-icon-pause>
+            <Icon name="pause" class="h-4 w-4" />
+          </span>
+          <span data-icon-play hidden>
+            <Icon name="play" class="h-4 w-4" />
+          </span>
+        </button>
+        <div class="flex flex-wrap items-center" data-carousel-dots role="group" aria-label="স্লাইড বেছে নাও"></div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" class={btn} data-carousel-prev aria-label="আগের স্লাইড">
+          <Icon name="chevronLeft" class="h-5 w-5" />
+        </button>
+        <button type="button" class={btn} data-carousel-next aria-label="পরের স্লাইড">
+          <Icon name="chevronRight" class="h-5 w-5" />
+        </button>
+      </div>
     </div>
-    <div class="flex items-center gap-2">
-      <button type="button" class={btn} data-carousel-prev aria-label="আগের স্লাইড">
-        <Icon name="chevronLeft" class="h-5 w-5" />
-      </button>
-      <button type="button" class={btn} data-carousel-next aria-label="পরের স্লাইড">
-        <Icon name="chevronRight" class="h-5 w-5" />
-      </button>
-    </div>
-  </div>
+  )}
 </div>
 
 <script>

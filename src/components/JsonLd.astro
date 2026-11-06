@@ -1,0 +1,10 @@
+---
+// schema.org structured data. `<` is escaped so text can never close the script element.
+interface Props {
+  data: object | object[];
+}
+const { data } = Astro.props;
+const json = JSON.stringify(data).replace(/</g, '\\u003c');
+---
+
+<script type="application/ld+json" is:inline set:html={json} />

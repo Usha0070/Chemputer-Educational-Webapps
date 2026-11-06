@@ -277,14 +277,16 @@
     grid-auto-columns: calc((100% - 2 * var(--gap)) / 3);
   }
 }
+/* The controls row always takes its space (hidden until the script is ready), so nothing below shifts (CLS). */
 .carousel-controls {
-  display: none;
+  display: flex;
+  visibility: hidden;
 }
 .carousel[data-ready='true'] .carousel-controls {
-  display: flex;
+  visibility: visible;
 }
 .carousel[data-single='true'] .carousel-controls {
-  display: none;
+  visibility: hidden;
 }
 .carousel:not([data-autoplay]) [data-carousel-pause] {
   display: none;

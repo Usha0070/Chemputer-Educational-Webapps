@@ -7,6 +7,7 @@ import SimCard from '@/components/SimCard.astro';
 import Base from '@/layouts/Base.astro';
 import { bn } from '@/chem/format';
 import { getChapters, getSims, simsIn } from '@/lib/content';
+import { ogKey, siteGraph } from '@/lib/seo';
 import { SITE } from '@/lib/site';
 
 const chapters = await getChapters();
@@ -20,7 +21,13 @@ const newest = [...sims]
 const firstSim = sims[0];
 ---
 
-<Base title={SITE.name}>
+<Base
+  title={SITE.brand}
+  fullTitle={`${SITE.brand}: রসায়ন সিমুলেশন ও অ্যানিমেশন | SSC Chemistry Simulations in Bangla`}
+  ogImage={ogKey.home}
+  ogAlt={`${SITE.brand}: রসায়ন চোখে দেখে শেখো. Chemistry simulations and animations in Bangla for SSC (Class 9–10)`}
+  jsonLd={siteGraph()}
+>
   <section class="relative overflow-hidden">
     <MolecularMotif class="pointer-events-none absolute inset-y-0 right-0 h-full w-full opacity-60 md:w-[62%] md:opacity-100" />
     <div class="container-page relative pt-14 pb-16 sm:pt-20 sm:pb-24">
@@ -28,7 +35,11 @@ const firstSim = sims[0];
         <p class="brand-bar label-en text-[10px] sm:text-xs">SSC · Class 9–10 Chemistry</p>
         <h1 class="mt-5">
           <span class="wordmark block text-[2.6rem] leading-none sm:text-7xl">CHEMPUTER</span>
-          <span class="mt-4 block text-3xl leading-tight font-bold text-ink sm:text-5xl">রসায়ন চোখে দেখে শেখো</span>
+          <span class="mt-4 block text-3xl leading-tight font-bold text-ink sm:text-5xl">
+            <!-- fixed two lines on phones: the line count must not change when the Bangla font arrives (layout shift) -->
+            রসায়ন চোখে <br class="sm:hidden" />
+            দেখে শেখো
+          </span>
         </h1>
         <div class="mt-5 h-px w-40 bg-ink/70"></div>
         <p class="label-en mt-4 text-[11px] text-gold sm:text-xs">Concepts · Simulations · Virtual Labs</p>
@@ -95,14 +106,14 @@ const firstSim = sims[0];
       <div>
         <p class="label-en text-[10px] text-gold">New</p>
         <h2 id="new-heading" class="mt-1 text-2xl font-bold">
-          নতুন সিমুলেশন
+          নতুন রসায়ন সিমুলেশন
         </h2>
       </div>
       <a href="/sims/" class="text-sm font-semibold text-gold hover:underline">
         সব দেখো
       </a>
     </div>
-    <Carousel label="নতুন সিমুলেশন">
+    <Carousel label="নতুন সিমুলেশন" count={newest.length}>
       {newest.map((sim) => (
         <div>
           <SimCard sim={sim} chapter={chapterOf.get(sim.data.chapter.id)!} />
@@ -123,6 +134,32 @@ const firstSim = sims[0];
       {chapters.map((c) => (
         <ChapterCard chapter={c} simCount={simsIn(c, sims).length} />
       ))}
+    </div>
+  </section>
+
+  <section class="container-page mt-14" aria-labelledby="about-heading">
+    <div class="panel panel-pad grid gap-6 md:grid-cols-2">
+      <div>
+        <p class="label-en text-[10px] text-gold">About</p>
+        <h2 id="about-heading" class="mt-1 text-xl font-bold">
+          {SITE.brand} কী?
+        </h2>
+        <p class="mt-3 text-sm leading-relaxed text-ink/85">
+          {SITE.brand} নবম-দশম শ্রেণির শিক্ষার্থীদের জন্য বিনামূল্যের বাংলা রসায়ন শেখার সাইট। NCTB-এর রসায়ন বইয়ের প্রতিটি অধ্যায়ের জন্য
+          ইন্টারেক্টিভ রসায়ন সিমুলেশন, অ্যানিমেশন, ভার্চুয়াল ল্যাব আর ধাপে ধাপে সমাধান: ইলেকট্রন বিন্যাস, পর্যায় সারণি, রাসায়নিক বন্ধন,
+          সমীকরণের সমতা, মোল, বিক্রিয়ার হার, জারণ-বিজারণ, তড়িৎ বিশ্লেষণ, এসিড-ক্ষারক ও টাইট্রেশন, ধাতু নিষ্কাশন আর জৈব রসায়ন।
+        </p>
+      </div>
+      <div lang="en">
+        <p class="label-en text-[10px] text-gold">In English</p>
+        <h2 class="mt-1 text-xl font-bold">Chemistry simulations for SSC, in Bangla</h2>
+        <p class="mt-3 text-sm leading-relaxed text-ink/85">
+          {SITE.brand} is a free chemistry learning site for SSC (Class 9–10, NCTB) students in Bangladesh. Every chapter of the book comes
+          with interactive chemistry simulations, animations, virtual labs and step-by-step solvers. Topics include electron configuration,
+          the periodic table, chemical bonding, balancing equations, the mole, rates of reaction, redox, electrolysis, acids, bases and
+          titration, extraction of metals and organic chemistry. Video lessons are on the {SITE.brand} YouTube channel.
+        </p>
+      </div>
     </div>
   </section>
 

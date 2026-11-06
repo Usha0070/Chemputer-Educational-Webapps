@@ -6,6 +6,7 @@ import SimCard from '@/components/SimCard.astro';
 import Base from '@/layouts/Base.astro';
 import { bn, bnPad } from '@/chem/format';
 import { chapterHue, chapterLabel, chapterUrl, getChapters, getSims, pagesLabel, simUrl, simsIn, type Chapter } from '@/lib/content';
+import { collectionGraph, ogKey } from '@/lib/seo';
 
 export async function getStaticPaths() {
   const chapters = await getChapters();
@@ -25,7 +26,16 @@ const sims = simsIn(chapter, await getSims());
 const d = chapter.data;
 ---
 
-<Base title={`অধ্যায় ${bn(d.number)}: ${d.titleBn}`} description={`${d.titleBn} (${d.titleEn}): ${d.summary}`}>
+<Base
+  title={`অধ্যায় ${bn(d.number)}: ${d.titleBn} | ${d.titleEn}: SSC Chemistry Chapter ${d.number}`}
+  description={`নবম-দশম শ্রেণির রসায়ন, অধ্যায় ${bn(d.number)}: ${d.titleBn} (${d.titleEn})। ${d.summary}`}
+  ogImage={ogKey.chapter(chapter)}
+  jsonLd={collectionGraph(
+    `অধ্যায় ${bn(d.number)}: ${d.titleBn} (${d.titleEn})`,
+    chapterUrl(chapter),
+    sims.map((s) => ({ name: `${s.data.title} (${s.data.titleEn})`, url: simUrl(s) })),
+  )}
+>
   <section class="chapter-hero relative overflow-hidden" style={`--c: ${chapterHue(chapter)}`}>
     <MolecularMotif variant="compact" class="pointer-events-none absolute inset-y-0 right-0 h-full w-full opacity-40 md:w-1/2" />
     <div class="container-page relative pt-8 pb-8 sm:pt-12">
@@ -37,6 +47,9 @@ const d = chapter.data;
         <span class="text-muted">অধ্যায় {bnPad(d.number)}</span>
         <span class="text-gradient">{d.titleBn}</span>
       </h1>
+      <p lang="en" class="mt-2 text-sm font-medium text-muted">
+        Chapter {d.number}: {d.titleEn}. SSC chemistry (Class 9–10) simulations and animations in Bangla.
+      </p>
       <p class="mt-3 flex items-center gap-2 text-sm text-muted">
         <Icon name="book" class="tint-text h-4 w-4" /> বই: {pagesLabel(d.pages)}
       </p>
