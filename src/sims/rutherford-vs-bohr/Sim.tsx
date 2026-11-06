@@ -179,7 +179,7 @@ export default function RutherfordVsBohr() {
 
   return (
     <SimShell ref={shellRef} label="রাদারফোর্ড বনাম বোর মডেল" clock={clock} onReset={reset}>
-      <div className="grid gap-5 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <CollapsePanel
           tickRef={tickRef}
           resetKey={resetKey}

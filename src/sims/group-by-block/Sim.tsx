@@ -71,7 +71,7 @@ export default function GroupByBlock() {
 
   return (
     <SimShell label="ব্লক অনুযায়ী গ্রুপ নির্ণয়" onReset={reset}>
-      <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+      <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
         <section className="panel panel-pad lg:sticky lg:top-24" aria-label="মৌল নির্বাচন">
           <h2 className="mb-4 text-lg font-bold">মৌল নির্বাচন করো</h2>
           <div className="mb-4 flex flex-wrap gap-2" role="group" aria-label="ব্লক অনুযায়ী ছাঁকো">
