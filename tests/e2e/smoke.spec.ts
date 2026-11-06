@@ -265,4 +265,85 @@ test.describe('simulation behaviour', () => {
     await expect(page.getByText(/তাপোৎপাদী: বিক্রিয়া তাপ ছেড়ে দেয়/)).toBeVisible();
     await expect(page.locator('section[aria-label="হিসাব"]')).toContainText('kJ/mol');
   });
+
+  test('kinetic theory melts ice when heated', async ({ page }) => {
+    await page.goto('/ssc/02-states-of-matter/kinetic-theory/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    const slider = page.getByRole('slider', { name: 'তাপমাত্রা' });
+    await slider.fill('300');
+    await expect(page.locator('section[aria-label="কণার বাক্স"] p[aria-live]')).toContainText('তরল:');
+    await slider.fill('420');
+    await expect(page.locator('section[aria-label="কণার বাক্স"] p[aria-live]')).toContainText('গ্যাস:');
+  });
+
+  test('diffusion forms the ring about 59 cm from the NH3 end', async ({ page }) => {
+    await page.goto('/ssc/02-states-of-matter/diffusion/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    await page.getByRole('button', { name: 'তুলা বসাও ও শুরু করো' }).click();
+    await expect(page.getByText(/NH₃ প্রান্ত থেকে ৫৯ সেমি দূরে/)).toBeVisible({ timeout: 20_000 });
+  });
+
+  test('heating curve reaches the melting plateau', async ({ page }) => {
+    await page.goto('/ssc/02-states-of-matter/heating-curve/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    await page.getByRole('button', { name: 'চালাও' }).first().click();
+    await expect(page.getByText('গলন চলছে (০ °সে)।')).toBeVisible({ timeout: 15_000 });
+  });
+
+  test('pH scale: lemon juice is acidic and soap turns phenolphthalein pink', async ({ page }) => {
+    await page.goto('/ssc/09-acid-base-balance/ph-scale/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    await expect(page.getByText('অম্লীয়', { exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'ফেনলফথ্যালিন' }).click();
+    await page.getByRole('button', { name: 'সাবান পানি' }).click();
+    await expect(page.locator('section[aria-label="নির্দেশক পরীক্ষা"]')).toContainText('গোলাপি');
+  });
+
+  test('titration turns phenolphthalein pink near 25 mL', async ({ page }) => {
+    await page.goto('/ssc/09-acid-base-balance/titration/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    for (let i = 0; i < 24; i++) await page.getByRole('button', { name: '+১ mL' }).click();
+    await expect(page.locator('section[aria-label="হিসাব"]')).toContainText('নির্দেশকের রং বদলানো পর্যন্ত');
+    for (let i = 0; i < 21; i++) await page.getByRole('button', { name: 'এক ফোঁটা' }).click();
+    await expect(page.locator('section[aria-label="হিসাব"]')).toContainText('প্রান্ত বিন্দু');
+  });
+
+  test('extraction: aluminium needs electrolysis; iron displaces copper', async ({ page }) => {
+    await page.goto('/ssc/10-metals-and-non-metals/extraction-method/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    await page.getByRole('button', { name: /^Al/ }).first().click();
+    await expect(page.locator('section[aria-label="নিষ্কাশন পদ্ধতি"]')).toContainText('তড়িৎ বিশ্লেষণ');
+    const test = page.locator('section[aria-label="প্রতিস্থাপন পরীক্ষা"]');
+    await test.getByRole('button', { name: 'Fe', exact: true }).click();
+    await expect(test).toContainText('বিক্রিয়া হয়েছে!');
+  });
+
+  test('fractional distillation sends C14 to kerosene', async ({ page }) => {
+    await page.goto('/ssc/11-fossil-resources/fractional-distillation/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    await page.getByLabel('অণুতে কার্বন পরমাণু').fill('14');
+    await expect(page.locator('section[aria-label="একটি অণু অনুসরণ করো"]')).toContainText('কেরোসিন');
+  });
+
+  test('hydrocarbon builder names but-2-ene and opens the 3D model', async ({ page }) => {
+    await page.goto('/ssc/11-fossil-resources/hydrocarbon-builder/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    const chain = page.getByRole('group', { name: 'প্রধান শিকলে কার্বন' });
+    await chain.getByRole('button', { name: /বাড়াও/ }).click();
+    await chain.getByRole('button', { name: /বাড়াও/ }).click();
+    await page
+      .getByRole('group', { name: 'দ্বিবন্ধনের অবস্থান' })
+      .getByRole('button', { name: /বাড়াও/ })
+      .click();
+    await expect(page.getByText('but-2-ene')).toBeVisible();
+    await page.getByRole('button', { name: '৩D মডেলে দেখো' }).click();
+    await expect(page.locator('canvas[aria-label*="ত্রিমাত্রিক"]')).toBeVisible();
+  });
+
+  test('organic map finds the route from ethene to ethanoic acid', async ({ page }) => {
+    await page.goto('/ssc/11-fossil-resources/organic-conversions/');
+    await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
+    await page.getByRole('button', { name: 'পথ দেখাও' }).click();
+    await expect(page.locator('section[aria-label="পথ খোঁজো"] ol li')).toHaveCount(3);
+  });
 });
