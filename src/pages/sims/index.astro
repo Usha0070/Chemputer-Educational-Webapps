@@ -15,7 +15,7 @@ const types = SIM_TYPES.filter((t) => sims.some((s) => s.data.type === t));
 ---
 
 <Base
-  title="সব রসায়ন সিমুলেশন ও অ্যানিমেশন | All Chemistry Simulations, Animations and Virtual Labs"
+  title="সব রসায়ন সিমুলেশন ও অ্যানিমেশন | Chemistry Simulations for SSC"
   description="Chemputer Studio-এর সব রসায়ন সিমুলেশন, অ্যানিমেশন ও ভার্চুয়াল ল্যাব: অধ্যায় ও ধরন অনুযায়ী খুঁজে নাও। Free chemistry simulations for SSC (Class 9–10) in Bangla."
   ogImage={ogKey.sims}
   jsonLd={collectionGraph(
@@ -73,6 +73,7 @@ const types = SIM_TYPES.filter((t) => sims.some((s) => s.data.type === t));
     <p class="mt-5 text-sm text-muted" aria-live="polite" data-filter-count>
       {bn(sims.length)}টি সিমুলেশন দেখানো হচ্ছে
     </p>
+    <h2 class="sr-only">সিমুলেশনের তালিকা</h2>
     <div class="mt-3 grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3" data-sim-list>
       {sims.map((sim) => (
         <SimCard sim={sim} chapter={chapterOf.get(sim.data.chapter.id)!} />

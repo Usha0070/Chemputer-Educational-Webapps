@@ -20,8 +20,7 @@ const { chapter, simCount } = Astro.props;
   </span>
   <p class="label-en tint-text text-[10px]">Chapter {String(chapter.data.number).padStart(2, '0')}</p>
   <h3 class="mt-1 text-lg leading-snug font-bold text-ink">
-    <span class="text-muted">অধ্যায় {bnPad(chapter.data.number)} ·</span>
-    {chapter.data.titleBn}
+    <span class="text-muted">অধ্যায় {bnPad(chapter.data.number)} ·</span> {chapter.data.titleBn}
   </h3>
   <p class="mt-1 text-xs text-muted">
     {chapter.data.titleEn} · বই: {pagesLabel(chapter.data.pages)}

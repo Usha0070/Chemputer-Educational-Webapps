@@ -132,13 +132,13 @@ export default function FractionalDistillation() {
                   {i === 0 ? `${bn(25)}°` : `${bn(tempAt(i))}°`}
                 </text>
                 <line x1={COL.x + COL.w} x2={COL.x + COL.w + 26} y1={trayY(i)} y2={trayY(i)} stroke={FRACTION_COLOURS[i]} strokeWidth="5" />
-                <foreignObject x={COL.x + COL.w + 28} y={trayY(i) - 14} width="112" height="28">
+                <foreignObject x={COL.x + COL.w + 28} y={trayY(i) - 16} width="112" height="32">
                   <button
                     type="button"
                     onClick={() => open(f)}
                     aria-pressed={selected.id === f.id}
                     className={cx(
-                      'w-full truncate rounded-md border px-1.5 py-0.5 text-left text-[11px] font-semibold',
+                      'h-full w-full truncate rounded-md border px-1.5 text-left text-[11px] font-semibold',
                       selected.id === f.id ? 'border-gold bg-gold/20 text-ink' : 'border-line bg-surface text-muted',
                     )}
                   >

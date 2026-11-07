@@ -66,7 +66,7 @@ const issueUrl = `${SITE.repo}/issues/new?${new URLSearchParams({ title: `ভু
       </span>
       <div class="min-w-0">
         <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold text-muted">
-          <a href={chapterUrl(chapter)} class="tint-text hover:underline">
+          <a href={chapterUrl(chapter)} class="tint-text inline-flex min-h-[24px] items-center hover:underline">
             {chapterLabel(chapter)} · {chapter.data.titleBn}
           </a>
           <span aria-hidden="true">·</span>
@@ -91,7 +91,7 @@ const issueUrl = `${SITE.repo}/issues/new?${new URLSearchParams({ title: `ভু
       <div class="mt-12 max-w-3xl">
         <Mcq questions={questions} quizKey={sim.id} heading="MCQ অনুশীলন" headingId="mcq-heading" />
         <p class="mt-4 text-sm">
-          <a href={chapterMcqUrl(chapter)} class="font-semibold text-gold hover:underline">
+          <a href={chapterMcqUrl(chapter)} class="inline-flex min-h-[24px] items-center font-semibold text-gold hover:underline">
             {chapterLabel(chapter)}-এর সব MCQ একসাথে
           </a>
         </p>
@@ -101,7 +101,12 @@ const issueUrl = `${SITE.repo}/issues/new?${new URLSearchParams({ title: `ভু
     <p class="mt-10 flex flex-wrap items-center gap-2 text-sm text-muted">
       <Icon name="flag" class="h-4 w-4" />
       ভুল পেয়েছ?
-      <a href={issueUrl} target="_blank" rel="noopener" class="font-semibold text-gold hover:underline">
+      <a
+        href={issueUrl}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex min-h-[24px] items-center font-semibold text-gold hover:underline"
+      >
         আমাদের জানাও
       </a>
     </p>

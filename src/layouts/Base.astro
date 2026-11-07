@@ -25,7 +25,11 @@ interface Props {
 }
 
 const { title, description = SITE.description, ogImage = 'home', ogAlt, jsonLd, noindex = false, bodyData = {} } = Astro.props;
-const fullTitle = Astro.props.fullTitle ?? `${title} – ${SITE.brand}`;
+// The brand goes on short titles only: Google shows about 60 characters, cuts the rest, and already shows the site
+// name (from the WebSite structured data) above each result.
+const TITLE_MAX = 70;
+const branded = `${title} – ${SITE.brand}`;
+const fullTitle = Astro.props.fullTitle ?? (branded.length <= TITLE_MAX ? branded : title);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const image = ogImageUrl(ogImage);
 const imageAlt = ogAlt ?? `${title}: ${SITE.brand}`;

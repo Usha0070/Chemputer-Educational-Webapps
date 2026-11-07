@@ -12,7 +12,7 @@ const sims = await getSims();
 ---
 
 <Base
-  title="নবম-দশম শ্রেণির রসায়ন: সব অধ্যায় | SSC Chemistry Class 9–10 Chapters"
+  title="নবম-দশম শ্রেণির রসায়ন | SSC Chemistry Class 9–10 Chapters"
   description="নবম-দশম শ্রেণির (SSC) রসায়ন বইয়ের ১২টি অধ্যায়, প্রতিটির ইন্টারেক্টিভ রসায়ন সিমুলেশন ও অ্যানিমেশন এক জায়গায়। All 12 chapters of SSC chemistry with simulations in Bangla."
   ogImage={ogKey.ssc}
   jsonLd={collectionGraph(
@@ -36,7 +36,10 @@ const sims = await getSims();
       </p>
     </div>
   </section>
-  <section class="container-page">
+  <section class="container-page" aria-labelledby="chapters-heading">
+    <h2 id="chapters-heading" class="sr-only">
+      অধ্যায়ের তালিকা
+    </h2>
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {chapters.map((c) => (
         <ChapterCard chapter={c} simCount={simsIn(c, sims).length} />

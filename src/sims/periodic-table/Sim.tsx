@@ -197,7 +197,7 @@ function Details({ e }: { e: ElementInfo }) {
         )}
         <a
           href={`/ssc/03-structure-of-matter/electron-configuration-shortcut/?z=${e.z}`}
-          className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-gold hover:underline"
+          className="mt-3 inline-flex min-h-[24px] items-center gap-1.5 text-sm font-semibold text-gold hover:underline"
         >
           বিন্যাসটি ধাপে ধাপে দেখো <Icon name="arrowRight" className="h-4 w-4" />
         </a>

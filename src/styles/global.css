@@ -2,9 +2,9 @@
 
 /* Self-hosted fonts (Fontsource). Hind Siliguri: Bangla text. JetBrains Mono: formulas and numbers.
    Orbitron: the CHEMPUTER wordmark and letter-spaced English labels only. */
+/* Only two Bangla weights (about 70 KB each): medium (500) falls back to regular and semibold (600) to bold by the
+   browser's normal weight matching. Four weights cost ~170 KB more on every first visit, mostly over mobile data. */
 @import '@fontsource/hind-siliguri/400.css';
-@import '@fontsource/hind-siliguri/500.css';
-@import '@fontsource/hind-siliguri/600.css';
 @import '@fontsource/hind-siliguri/700.css';
 @import '@fontsource/jetbrains-mono/400.css';
 @import '@fontsource/jetbrains-mono/600.css';

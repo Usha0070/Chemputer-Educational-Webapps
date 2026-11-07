@@ -179,7 +179,11 @@ export default function OrganicConversions() {
             <ul className="text-sm">
               {CONVERSIONS.filter((c) => c.from === node).map((c) => (
                 <li key={c.to}>
-                  <button type="button" className="text-gold hover:underline" onClick={() => pickEdge(c)}>
+                  <button
+                    type="button"
+                    className="inline-flex min-h-[24px] items-center text-left text-gold hover:underline"
+                    onClick={() => pickEdge(c)}
+                  >
                     → {COMPOUNDS.find((x) => x.id === c.to)!.nameBn} ({c.typeBn})
                   </button>
                 </li>
