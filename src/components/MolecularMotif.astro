@@ -7,6 +7,8 @@ interface Props {
   variant?: 'full' | 'compact';
 }
 const { class: cls = '', variant = 'full' } = Astro.props;
+// each motif on a page needs its own gradient id (the home page draws two)
+const glowId = `motif-glow-${variant}-${Math.random().toString(36).slice(2, 8)}`;
 
 // Flat-top hexagon vertices
 const hex = (cx: number, cy: number, r: number) =>
@@ -31,12 +33,12 @@ const lit = new Set([0, 9, 23, 40, 57, 77]);
 
 <svg class={cls} viewBox="0 0 640 480" fill="none" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
   <defs>
-    <radialGradient id="motif-glow" cx="70%" cy="70%" r="60%">
+    <radialGradient id={glowId} cx="70%" cy="70%" r="60%">
       <stop offset="0%" stop-color="var(--glow)" stop-opacity=".22"></stop>
       <stop offset="100%" stop-color="var(--glow)" stop-opacity="0"></stop>
     </radialGradient>
   </defs>
-  <rect width="640" height="480" fill="url(#motif-glow)"></rect>
+  <rect width="640" height="480" fill={`url(#${glowId})`}></rect>
 
   {variant === 'full' && (
     <g class="motif-line" stroke-width="1" opacity=".22">

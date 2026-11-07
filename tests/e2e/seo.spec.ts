@@ -41,7 +41,10 @@ test('every page has a title, description, canonical, share image and valid stru
   ).toBe(false);
   for (const { url, html } of PAGES) {
     const title = html.match(/<title>([^<]+)<\/title>/)?.[1] ?? '';
-    expect(title, url).toContain('Chemputer Studio');
+    // short titles carry the brand; long ones drop it (Google shows the site name separately) and stay ≤ 100 characters
+    expect(title.length, `${url} title length`).toBeLessThanOrEqual(100);
+    if (title.length + ' – Chemputer Studio'.length <= 70) expect(title, url).toContain('Chemputer Studio');
+    expect(meta(html, 'property', 'og:site_name'), url).toBe('Chemputer Studio');
     expect((meta(html, 'name', 'description') ?? '').length, `${url} description`).toBeGreaterThan(50);
     expect(html, url).toContain(`<link rel="canonical" href="${SITE}${url}">`);
     const image = meta(html, 'property', 'og:image') ?? '';
@@ -59,7 +62,7 @@ test('simulation pages carry an English line and a full learning-resource record
   test.skip(test.info().project.name !== 'desktop', 'file checks run once');
   const page = PAGES.find((p) => p.url === '/ssc/09-acid-base-balance/titration/')!;
   expect(page.html).toMatch(/<p lang="en"[^>]*>Neutralisation and titration · virtual lab for SSC chemistry/);
-  expect(page.html).toMatch(/<title>প্রশমন ও টাইট্রেশন \| Neutralisation and titration virtual lab – Chemputer Studio<\/title>/);
+  expect(page.html).toMatch(/<title>প্রশমন ও টাইট্রেশন \| Neutralisation and titration virtual lab<\/title>/);
   const lr = jsonLd(page.html).find((d) => d['@type'] === 'LearningResource');
   expect(lr).toMatchObject({
     inLanguage: 'bn',

@@ -294,7 +294,7 @@
 .carousel-dot {
   display: grid;
   height: 24px;
-  min-width: 16px;
+  min-width: 24px; /* WCAG 2.2 target size: 24 × 24 */
   place-items: center;
   padding-inline: 2px;
 }

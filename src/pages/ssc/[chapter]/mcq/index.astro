@@ -29,7 +29,7 @@ const d = chapter.data;
 ---
 
 <Base
-  title={`অধ্যায় ${bn(d.number)}: ${d.titleBn} MCQ | SSC Chemistry Chapter ${d.number} MCQ with answers`}
+  title={`${d.titleBn} MCQ | SSC Chemistry Chapter ${d.number} MCQ with answers`}
   description={`নবম-দশম শ্রেণির রসায়ন, অধ্যায় ${bn(d.number)} (${d.titleBn}): ${bn(total)}টি বহুনির্বাচনি প্রশ্ন, উত্তর ও ব্যাখ্যাসহ। সাধারণ, বহুপদী সমাপ্তিসূচক ও উদ্দীপকভিত্তিক MCQ অনুশীলন করো।`}
   ogImage={ogKey.chapter(chapter)}
 >
@@ -59,7 +59,7 @@ const d = chapter.data;
         <section aria-labelledby={`set-${sim.id}`}>
           <h2 id={`set-${sim.id}`} class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xl font-bold">
             {sim.data.title}
-            <a href={simUrl(sim)} class="tint-text inline-flex items-center gap-1 text-sm font-semibold hover:underline">
+            <a href={simUrl(sim)} class="tint-text inline-flex min-h-[24px] items-center gap-1 text-sm font-semibold hover:underline">
               সিমুলেশন খোলো <Icon name="arrowRight" class="h-4 w-4" />
             </a>
           </h2>

@@ -224,7 +224,7 @@ export default function EmpiricalFormula() {
                     <span className="text-muted">%</span>
                     <button
                       type="button"
-                      className="btn-icon min-h-[40px] w-10"
+                      className="btn-icon min-h-[40px] w-10 shrink-0"
                       onClick={() => (setRows((rs) => rs.filter((_, j) => j !== i)), setEdited(true), setShown(1))}
                       disabled={rows.length <= 1}
                       aria-label="মৌলটি বাদ দাও"

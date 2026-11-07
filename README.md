@@ -100,6 +100,9 @@ added only in Vercel builds (`process.env.VERCEL`), so local and CI builds never
 - **Speed**:
   - The 3D background draws in a Web Worker (OffscreenCanvas), so it costs the page's main thread nothing.
   - Fonts are not preloaded; on a throttled phone a preload made the first paint later.
+  - Only two Bangla weights load (400, 700): `font-medium` falls back to regular and `font-semibold` to bold, saving
+    about 170 KB on every first visit.
+  - Long titles drop the " – Chemputer Studio" suffix (over 70 characters); Google shows the site name separately.
   - The home headline has a fixed line break on phones, so it doesn't jump when the Bangla font arrives.
 
 ## Old links

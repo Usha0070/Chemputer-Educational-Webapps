@@ -22,7 +22,9 @@ export function simTitle(sim: Sim): string {
   const kind = TYPE_EN[d.type];
   // References read best as their own name ("The pH scale and indicators"); calculators already say what they are.
   const redundant = d.type === 'reference' || new RegExp(`\\b(${kind}|calculator)\\b`, 'i').test(en);
-  return `${d.title} | ${en}${redundant ? '' : ` ${kind}`}`;
+  const base = `${d.title} | ${en}`;
+  // long names skip the kind word, so the English name is not cut off in results
+  return redundant || base.length > 55 ? base : `${base} ${kind}`;
 }
 
 /** One English line shown under a simulation's title: real text that English searches can match. */

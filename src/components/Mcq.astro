@@ -35,15 +35,13 @@ const ROMAN = ['i', 'ii', 'iii'];
           </p>
         )}
         <p class="text-[15px] leading-relaxed font-semibold text-ink sm:text-base">
-          <span class="mr-1 text-muted">{bn(i + 1)}.</span>
-          {item.q}
+          <span class="mr-1 text-muted">{bn(i + 1)}.</span> {item.q}
         </p>
         {item.statements && (
           <ol class="mt-2 space-y-1 ps-1 text-[15px]">
             {item.statements.map((s, k) => (
               <li>
-                <span class="mr-1 font-mono text-muted">{ROMAN[k]}.</span>
-                {s}
+                <span class="mr-1 font-mono text-muted">{ROMAN[k]}.</span> {s}
               </li>
             ))}
           </ol>
