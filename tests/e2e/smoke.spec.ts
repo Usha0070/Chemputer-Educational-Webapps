@@ -233,7 +233,8 @@ test.describe('simulation behaviour', () => {
     await expect(page.getByText('বিজারক:')).toBeVisible();
     await page.getByRole('button', { name: 'জারণ সংখ্যা নির্ণয়' }).click();
     await page.locator('input[spellcheck="false"]').fill('K2Cr2O7');
-    await expect(page.getByText('Cr = +৬')).toBeVisible();
+    // scoped to the simulation: the MCQ under it mentions Cr = +৬ too
+    await expect(page.locator('[data-sim-ready="true"]').getByText('Cr = +৬')).toBeVisible();
   });
 
   test('le chatelier shifts right when N2 is added', async ({ page }) => {
@@ -255,7 +256,10 @@ test.describe('simulation behaviour', () => {
     await expect(page.locator('[data-sim-ready="true"]')).toBeVisible();
     const svg = page.locator('section[aria-label="কোষ"] svg');
     await expect(svg).toContainText('1.10');
-    await page.getByRole('button', { name: /লবণ সেতু/ }).click();
+    await page
+      .locator('[data-sim-ready="true"]')
+      .getByRole('button', { name: /লবণ সেতু/ })
+      .click();
     await expect(svg).toContainText('0.00');
   });
 
@@ -336,7 +340,7 @@ test.describe('simulation behaviour', () => {
       .getByRole('group', { name: 'দ্বিবন্ধনের অবস্থান' })
       .getByRole('button', { name: /বাড়াও/ })
       .click();
-    await expect(page.getByText('but-2-ene')).toBeVisible();
+    await expect(page.locator('[data-sim-ready="true"]').getByText('but-2-ene')).toBeVisible();
     await page.getByRole('button', { name: '৩D মডেলে দেখো' }).click();
     await expect(page.locator('canvas[aria-label*="ত্রিমাত্রিক"]')).toBeVisible();
   });
