@@ -30,6 +30,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 const image = ogImageUrl(ogImage);
 const imageAlt = ogAlt ?? `${title}: ${SITE.brand}`;
 const bodyAttrs = Object.fromEntries(Object.entries(bodyData).map(([k, v]) => [`data-${k}`, v]));
+// Vercel Web Analytics (cookieless page views; switched on in the Vercel dashboard). Only in Vercel builds, so local and
+// CI builds never request the script.
+const analytics = process.env.VERCEL === '1';
 // Simulation pages: the sidebar starts as a slim rail and the 3D background is dimmed, so the experiment comes first.
 const isSim = 'sim-url' in bodyData;
 ---
@@ -75,6 +78,18 @@ const isSim = 'sim-url' in bodyData;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
     {jsonLd && <JsonLd data={jsonLd} />}
+    {analytics && (
+      <>
+        <script is:inline>
+          window.va =
+            window.va ||
+            function (...args) {
+              (window.vaq = window.vaq || []).push(args);
+            };
+        </script>
+        <script is:inline defer src="/_vercel/insights/script.js" />
+      </>
+    )}
     <script is:inline>
       // Apply the saved theme and sidebar width before first paint (dark + full sidebar are the defaults).
       try {

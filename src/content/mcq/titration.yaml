@@ -1,0 +1,27 @@
+# MCQ practice for the simulation "titration": board-style questions, original wording. Write the right option anywhere:
+# ordinary questions are shuffled at build time (stably); statement questions keep the i/ii/iii option order.
+questions:
+  - q: 'HCl + NaOH → NaCl + H₂O বিক্রিয়াটি কোন ধরনের?'
+    options: ['প্রশমন', 'দহন', 'বিয়োজন', 'পলিমারকরণ']
+    answer: 0
+    why: 'এসিড ও ক্ষার বিক্রিয়া করে লবণ ও পানি তৈরি করে; একে প্রশমন বিক্রিয়া বলে।'
+  - q: '২৫.০ mL ০.১ M HCl প্রশমিত করতে ০.১ M NaOH কতটুকু লাগবে?'
+    options: ['২৫.০ mL', '১২.৫ mL', '৫০.০ mL', '০.১ mL']
+    answer: 0
+    why: 'HCl ও NaOH ১ : ১ অনুপাতে বিক্রিয়া করে; ঘনমাত্রা সমান হলে আয়তনও সমান লাগে।'
+  - q: 'H₂SO₄ ও NaOH-এর প্রশমন বিক্রিয়ায় মোল অনুপাত (H₂SO₄ : NaOH) কত?'
+    options: ['১ : ২', '১ : ১', '২ : ১', '১ : ৩']
+    answer: 0
+    why: 'H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O। সালফিউরিক এসিড দুটি H⁺ দেয়, তাই দুটি NaOH লাগে।'
+  - q: 'টাইট্রেশনে প্রশমন বিন্দুর কাছে—'
+    statements:
+      - 'pH হঠাৎ অনেকটা বদলে যায়'
+      - 'নির্দেশকের রং বদলায়'
+      - 'বিউরেট থেকে দ্রুত বেশি করে ক্ষার ঢালা উচিত'
+    answer: 0
+    why: 'প্রশমন বিন্দুর কাছে এক ফোঁটাতেই pH অনেক বদলায়, তাই তখন ফোঁটা ফোঁটা করে যোগ করতে হয়। iii ভুল।'
+  - stem: '২০.০ mL অজানা ঘনমাত্রার HCl প্রশমিত করতে ০.২ M NaOH-এর ১০.০ mL লাগল।'
+    q: 'HCl-এর ঘনমাত্রা কত?'
+    options: ['০.১ M', '০.২ M', '০.৪ M', '০.০৫ M']
+    answer: 0
+    why: 'M₁V₁ = M₂V₂ → M₁ × ২০ = ০.২ × ১০ → M₁ = ০.১ M।'

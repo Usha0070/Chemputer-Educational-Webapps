@@ -1,0 +1,86 @@
+---
+// Board-style MCQ practice. Without JavaScript every question still shows its answer behind "উত্তর দেখো" (and the
+// answers are in the HTML for search engines). With src/scripts/mcq.ts the options become buttons: one try per
+// question, the right answer and the reason appear at once, and the best score is remembered on this device.
+import { bn } from '@/chem/format';
+import type { McqQuestion } from '@/lib/content';
+
+interface Props {
+  questions: McqQuestion[];
+  /** storage key for the best score (the simulation id) */
+  quizKey: string;
+  /** heading level and text; omit the heading when the page supplies its own */
+  heading?: string;
+  headingId?: string;
+}
+const { questions, quizKey, heading, headingId } = Astro.props;
+const LETTERS = ['ক', 'খ', 'গ', 'ঘ'];
+const ROMAN = ['i', 'ii', 'iii'];
+---
+
+<section class="mcq" data-mcq={quizKey} aria-labelledby={heading ? headingId : undefined} aria-label={heading ? undefined : 'MCQ অনুশীলন'}>
+  {heading && (
+    <h2 id={headingId} class="mb-1 text-xl font-bold">
+      {heading}
+    </h2>
+  )}
+  <p class="text-sm text-muted">{bn(questions.length)}টি প্রশ্ন · একটি উত্তর বেছে নাও, সাথে সাথে ব্যাখ্যা দেখো।</p>
+  <ol class="mt-4 space-y-4">
+    {questions.map((item, i) => (
+      <li class="mcq-q panel panel-pad" data-answer={item.answer}>
+        {item.stem && (
+          <p class="mb-3 rounded-xl border border-line bg-raised/60 px-3 py-2 text-[15px] leading-relaxed">
+            <span class="font-semibold text-gold">উদ্দীপক: </span>
+            {item.stem}
+          </p>
+        )}
+        <p class="text-[15px] leading-relaxed font-semibold text-ink sm:text-base">
+          <span class="mr-1 text-muted">{bn(i + 1)}.</span>
+          {item.q}
+        </p>
+        {item.statements && (
+          <ol class="mt-2 space-y-1 ps-1 text-[15px]">
+            {item.statements.map((s, k) => (
+              <li>
+                <span class="mr-1 font-mono text-muted">{ROMAN[k]}.</span>
+                {s}
+              </li>
+            ))}
+          </ol>
+        )}
+        {item.statements && <p class="mt-2 text-sm text-muted">নিচের কোনটি সঠিক?</p>}
+        <div class="mcq-options mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2" role="group" aria-label={`প্রশ্ন ${bn(i + 1)}-এর উত্তর`}>
+          {item.options.map((o, k) => (
+            <button type="button" class="mcq-option" data-option={k} disabled>
+              <span class="mcq-letter" aria-hidden="true">
+                {LETTERS[k]}
+              </span>
+              <span class="sr-only">{LETTERS[k]}) </span>
+              <span>{o}</span>
+            </button>
+          ))}
+        </div>
+        <details class="mcq-why mt-3">
+          <summary class="cursor-pointer text-sm font-semibold text-gold">উত্তর দেখো</summary>
+          <p class="mt-2 text-[15px] leading-relaxed" aria-live="polite">
+            <strong class="text-block-p">
+              সঠিক উত্তর: ({LETTERS[item.answer]}) {item.options[item.answer]}।
+            </strong>{' '}
+            {item.why}
+          </p>
+        </details>
+      </li>
+    ))}
+  </ol>
+  <div class="mcq-bar mt-4 flex flex-wrap items-center justify-between gap-3" hidden>
+    <p class="text-sm font-semibold" aria-live="polite" data-mcq-score></p>
+    <button type="button" class="btn-secondary px-4" data-mcq-reset>
+      আবার চেষ্টা করো
+    </button>
+  </div>
+</section>
+
+<script>
+  import { mountMcqs } from '@/scripts/mcq';
+  mountMcqs();
+</script>

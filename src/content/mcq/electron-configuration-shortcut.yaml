@@ -1,0 +1,26 @@
+# MCQ practice for the simulation "electron-configuration-shortcut": board-style questions, original wording. Write the right option anywhere:
+# ordinary questions are shuffled at build time (stably); statement questions keep the i/ii/iii option order.
+questions:
+  - q: 'আউফবাউ নীতি অনুযায়ী 4s অরবিটাল পূর্ণ হওয়ার পর কোন অরবিটালে ইলেকট্রন প্রবেশ করে?'
+    options: ['3d', '4p', '4d', '5s']
+    answer: 0
+    why: 'শক্তির ক্রম: 1s, 2s, 2p, 3s, 3p, 4s, 3d, 4p… 3d-এর শক্তি 4s-এর চেয়ে সামান্য বেশি কিন্তু 4p-এর চেয়ে কম।'
+  - q: 'Cr (পারমাণবিক সংখ্যা ২৪)-এর সঠিক ইলেকট্রন বিন্যাস কোনটি?'
+    options: ['[Ar] 3d⁵ 4s¹', '[Ar] 3d⁴ 4s²', '[Ar] 3d⁶', '[Ar] 4s² 4p⁴']
+    answer: 0
+    why: 'অর্ধপূর্ণ d⁵ উপস্তর বেশি স্থিতিশীল, তাই 4s থেকে একটি ইলেকট্রন 3d-তে যায়: [Ar] 3d⁵ 4s¹। এটি একটি ব্যতিক্রম।'
+  - q: 'একটি p উপস্তরে সর্বোচ্চ কয়টি ইলেকট্রন থাকতে পারে?'
+    options: ['৬', '২', '১০', '১৪']
+    answer: 0
+    why: 'p উপস্তরে ৩টি অরবিটাল, প্রতিটিতে সর্বোচ্চ ২টি ইলেকট্রন, মোট ৬টি।'
+  - q: 'Cu (পারমাণবিক সংখ্যা ২৯) সম্পর্কে—'
+    statements:
+      - 'এর ইলেকট্রন বিন্যাস [Ar] 3d¹⁰ 4s¹'
+      - 'এর শেষ ইলেকট্রন 4p অরবিটালে প্রবেশ করে'
+      - 'পূর্ণ d উপস্তর বেশি স্থিতিশীল বলে এই ব্যতিক্রম ঘটে'
+    answer: 1
+    why: 'Cu-এর শেষ ইলেকট্রন 3d-তে যায় (পূর্ণ d¹⁰), 4p-তে নয়। তাই ii ভুল।'
+  - q: 'Fe (পারমাণবিক সংখ্যা ২৬)-এর বিন্যাসে 3d উপস্তরে কয়টি ইলেকট্রন থাকে?'
+    options: ['৬', '৮', '২', '৪']
+    answer: 0
+    why: 'Fe: [Ar] 3d⁶ 4s²। Ar-এর ১৮টি, 4s-এ ২টি, বাকি ৬টি 3d-তে।'

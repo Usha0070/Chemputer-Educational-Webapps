@@ -1,0 +1,27 @@
+# MCQ practice for the simulation "equation-balancer": board-style questions, original wording. Write the right option anywhere:
+# ordinary questions are shuffled at build time (stably); statement questions keep the i/ii/iii option order.
+questions:
+  - q: 'H₂ + O₂ → H₂O সমীকরণটি সমতা করলে H₂O-এর সহগ কত হবে?'
+    options: ['২', '১', '৩', '৪']
+    answer: 0
+    why: '2H₂ + O₂ → 2H₂O। ডানে ২টি O পেতে H₂O-এর আগে ২, তখন H মেলাতে H₂-এর আগে ২।'
+  - q: 'N₂ + 3H₂ → 2NH₃ সমীকরণ অনুযায়ী ১ মোল N₂ থেকে কত মোল NH₃ তৈরি হয়?'
+    options: ['২ মোল', '১ মোল', '৩ মোল', '৬ মোল']
+    answer: 0
+    why: 'সহগের অনুপাত N₂ : NH₃ = ১ : ২, তাই ১ মোল N₂ থেকে ২ মোল NH₃।'
+  - q: 'সমীকরণ সমতা করার সময় কোনটি বদলানো যায় না?'
+    options: ['সংকেতের পাদাঙ্ক (নিচের ছোট সংখ্যা)', 'বিক্রিয়কের সহগ', 'উৎপাদের সহগ', 'সহগগুলোর অনুপাত']
+    answer: 0
+    why: 'পাদাঙ্ক বদলালে যৌগটাই বদলে যায় (যেমন H₂O থেকে H₂O₂)। সমতা করতে শুধু সহগ বদলানো যায়।'
+  - q: 'CH₄ + 2O₂ → CO₂ + 2H₂O সমীকরণে—'
+    statements:
+      - 'উভয় পাশে C পরমাণু ১টি করে'
+      - 'উভয় পাশে O পরমাণু ৪টি করে'
+      - 'উভয় পাশে H পরমাণু ৪টি করে'
+    answer: 3
+    why: 'বামে C ১, H ৪, O ৪; ডানে C ১, O ২ + ২ = ৪, H ৪। তিনটিই সঠিক, সমীকরণটি সমতাকৃত।'
+  - stem: 'লোহার মরিচা পড়ার একটি সরল রূপ: Fe + O₂ → Fe₂O₃।'
+    q: 'সমতাকৃত সমীকরণে Fe-এর সহগ কত?'
+    options: ['৪', '২', '৩', '১']
+    answer: 0
+    why: '4Fe + 3O₂ → 2Fe₂O₃। ডানে O ৬টি পেতে Fe₂O₃-এর আগে ২, তখন Fe ৪টি লাগে।'

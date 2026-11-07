@@ -1,0 +1,79 @@
+---
+// All MCQ practice for one chapter, grouped by simulation (each group shares its best score with the simulation page).
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import Icon from '@/components/Icon.astro';
+import Mcq from '@/components/Mcq.astro';
+import Base from '@/layouts/Base.astro';
+import { bn } from '@/chem/format';
+import { chapterHue, chapterLabel, chapterUrl, getChapters, getMcqs, getSims, simUrl, simsIn, type Chapter } from '@/lib/content';
+import { ogKey } from '@/lib/seo';
+
+export async function getStaticPaths() {
+  const [chapters, sims, mcqs] = await Promise.all([getChapters(), getSims(), getMcqs()]);
+  return chapters
+    .map((chapter) => ({ chapter, sets: simsIn(chapter, sims).filter((s) => mcqs.has(s.id)) }))
+    .filter(({ sets }) => sets.length > 0)
+    .map(({ chapter }) => ({ params: { chapter: chapter.id }, props: { chapter } }));
+}
+
+interface Props {
+  chapter: Chapter;
+}
+const { chapter } = Astro.props;
+const [sims, mcqs] = await Promise.all([getSims(), getMcqs()]);
+const sets = simsIn(chapter, sims)
+  .filter((s) => mcqs.has(s.id))
+  .map((s) => ({ sim: s, questions: mcqs.get(s.id)! }));
+const total = sets.reduce((n, x) => n + x.questions.length, 0);
+const d = chapter.data;
+---
+
+<Base
+  title={`অধ্যায় ${bn(d.number)}: ${d.titleBn} MCQ | SSC Chemistry Chapter ${d.number} MCQ with answers`}
+  description={`নবম-দশম শ্রেণির রসায়ন, অধ্যায় ${bn(d.number)} (${d.titleBn}): ${bn(total)}টি বহুনির্বাচনি প্রশ্ন, উত্তর ও ব্যাখ্যাসহ। সাধারণ, বহুপদী সমাপ্তিসূচক ও উদ্দীপকভিত্তিক MCQ অনুশীলন করো।`}
+  ogImage={ogKey.chapter(chapter)}
+>
+  <div class="container-page pt-8 sm:pt-12" style={`--c: ${chapterHue(chapter)}`}>
+    <Breadcrumbs
+      items={[
+        { label: 'হোম', href: '/' },
+        { label: 'নবম-দশম শ্রেণি', href: '/ssc/' },
+        { label: chapterLabel(chapter), href: chapterUrl(chapter) },
+        { label: 'MCQ' },
+      ]}
+    />
+    <p class="brand-bar label-en text-[10px]">Chapter {String(d.number).padStart(2, '0')} · MCQ practice</p>
+    <h1 class="mt-4 text-3xl font-bold sm:text-4xl">
+      <span class="text-muted">অধ্যায় {bn(d.number)}:</span> {d.titleBn} · MCQ
+    </h1>
+    <p lang="en" class="mt-2 text-sm font-medium text-muted">
+      SSC Chemistry Chapter {d.number} ({d.titleEn}): multiple-choice questions with answers and explanations.
+    </p>
+    <p class="mt-3 max-w-3xl text-base leading-relaxed text-ink/85">
+      এই অধ্যায়ের {bn(sets.length)}টি সিমুলেশনের সাথে মিলিয়ে মোট {bn(total)}টি প্রশ্ন। প্রতিটি প্রশ্নে একবার উত্তর দেওয়া যায়, তারপর সঠিক
+      উত্তর ও কারণ দেখাবে। কোনো প্রশ্ন কঠিন লাগলে আগে সিমুলেশনটি চালিয়ে দেখো।
+    </p>
+
+    <div class="mt-8 max-w-3xl space-y-12">
+      {sets.map(({ sim, questions }) => (
+        <section aria-labelledby={`set-${sim.id}`}>
+          <h2 id={`set-${sim.id}`} class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xl font-bold">
+            {sim.data.title}
+            <a href={simUrl(sim)} class="tint-text inline-flex items-center gap-1 text-sm font-semibold hover:underline">
+              সিমুলেশন খোলো <Icon name="arrowRight" class="h-4 w-4" />
+            </a>
+          </h2>
+          <div class="mt-3">
+            <Mcq questions={questions} quizKey={sim.id} />
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <p class="mt-12">
+      <a href={chapterUrl(chapter)} class="btn-secondary px-5">
+        <Icon name="arrowLeft" class="h-4 w-4" /> অধ্যায়ের পাতায় ফেরো
+      </a>
+    </p>
+  </div>
+</Base>

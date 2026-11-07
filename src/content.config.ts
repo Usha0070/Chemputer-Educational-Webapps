@@ -57,4 +57,46 @@ const sims = defineCollection({
   }),
 });
 
-export const collections = { chapters, sims };
+/** Options for a statement question (i, ii, iii), in the board-exam order. */
+export const STATEMENT_OPTIONS = ['i ও ii', 'i ও iii', 'ii ও iii', 'i, ii ও iii'];
+
+/** Stable shuffle of an ordinary question's options (seeded by its text), so the right answer is not always ক. */
+function shuffled(options: string[], answer: number, key: string): { options: string[]; answer: number } {
+  let h = 2166136261;
+  for (const ch of key) h = Math.imul(h ^ ch.codePointAt(0)!, 16777619) >>> 0;
+  const order = options.map((_, i) => i);
+  for (let i = order.length - 1; i > 0; i--) {
+    h = Math.imul(h ^ (h >>> 15), 2246822507) >>> 0;
+    const j = h % (i + 1);
+    [order[i], order[j]] = [order[j]!, order[i]!];
+  }
+  return { options: order.map((i) => options[i]!), answer: order.indexOf(answer) };
+}
+
+const question = z
+  .object({
+    /** উদ্দীপক: a short passage the question is about (passage-based MCQ) */
+    stem: z.string().min(10).optional(),
+    q: z.string().min(5),
+    /** three statements for a "নিচের কোনটি সঠিক?" question; options then default to STATEMENT_OPTIONS */
+    statements: z.array(z.string().min(2)).length(3).optional(),
+    options: z.array(z.string().min(1)).length(4).optional(),
+    /** index of the correct option, 0–3 (ক–ঘ) */
+    answer: z.number().int().min(0).max(3),
+    /** why the answer is right (shown after answering) */
+    why: z.string().min(10),
+  })
+  .refine((x) => x.options || x.statements, 'options are required unless the question has statements')
+  .refine((x) => !x.options || new Set(x.options).size === 4, 'the four options must all differ')
+  // Statement questions keep the fixed i/ii/iii order; ordinary questions are shuffled (write the right one anywhere).
+  .transform((x) =>
+    x.statements ? { ...x, options: STATEMENT_OPTIONS } : { ...x, ...shuffled(x.options!, x.answer, `${x.stem ?? ''}${x.q}`) },
+  );
+
+// mcq: board-style practice questions for one simulation (src/content/mcq/<sim-slug>.yaml). Original wording.
+const mcq = defineCollection({
+  loader: glob({ pattern: '*.yaml', base: './src/content/mcq' }),
+  schema: z.object({ questions: z.array(question).min(3).max(12) }),
+});
+
+export const collections = { chapters, sims, mcq };

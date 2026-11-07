@@ -1,0 +1,26 @@
+# MCQ practice for the simulation "redox": board-style questions, original wording. Write the right option anywhere:
+# ordinary questions are shuffled at build time (stably); statement questions keep the i/ii/iii option order.
+questions:
+  - q: 'ইলেকট্রনীয় মতবাদ অনুযায়ী জারণ কী?'
+    options: ['ইলেকট্রন ত্যাগ', 'ইলেকট্রন গ্রহণ', 'প্রোটন গ্রহণ', 'নিউট্রন ত্যাগ']
+    answer: 0
+    why: 'জারণে ইলেকট্রন ত্যাগ হয় এবং জারণ সংখ্যা বাড়ে; বিজারণে ইলেকট্রন গ্রহণ হয় এবং জারণ সংখ্যা কমে।'
+  - q: 'Zn + CuSO₄ → ZnSO₄ + Cu বিক্রিয়ায় জারক কোনটি?'
+    options: ['CuSO₄ (Cu²⁺)', 'Zn', 'ZnSO₄', 'Cu']
+    answer: 0
+    why: 'Cu²⁺ জিংক থেকে ২টি ইলেকট্রন নিয়ে নিজে বিজারিত হয়, অর্থাৎ জিংককে জারিত করে: তাই Cu²⁺ জারক।'
+  - q: 'H₂SO₄-এ সালফারের জারণ সংখ্যা কত?'
+    options: ['+৬', '+৪', '−২', '+২']
+    answer: 0
+    why: '২(+১) + S + ৪(−২) = ০, তাই S = +৬।'
+  - q: '2Mg + O₂ → 2MgO বিক্রিয়ায়—'
+    statements:
+      - 'Mg জারিত হয়'
+      - 'O₂ বিজারিত হয়'
+      - 'Mg-এর জারণ সংখ্যা +২ থেকে ০ হয়'
+    answer: 0
+    why: 'Mg-এর জারণ সংখ্যা ০ থেকে +২ হয়, উল্টোটা নয়। iii ভুল।'
+  - q: 'K₂Cr₂O₇-এ ক্রোমিয়ামের জারণ সংখ্যা কত?'
+    options: ['+৬', '+৭', '+৩', '+১২']
+    answer: 0
+    why: '২(+১) + ২Cr + ৭(−২) = ০ → ২Cr = +১২ → Cr = +৬।'

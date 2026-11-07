@@ -1,0 +1,27 @@
+# MCQ practice for the simulation "empirical-formula": board-style questions, original wording. Write the right option anywhere:
+# ordinary questions are shuffled at build time (stably); statement questions keep the i/ii/iii option order.
+questions:
+  - q: 'গ্লুকোজের (C₆H₁₂O₆) স্থূল সংকেত কোনটি?'
+    options: ['CH₂O', 'C₆H₁₂O₆', 'C₂H₄O₂', 'C₃H₆O₃']
+    answer: 0
+    why: '৬ : ১২ : ৬-কে ৬ দিয়ে ভাগ করলে সরলতম অনুপাত ১ : ২ : ১, অর্থাৎ CH₂O।'
+  - q: 'একটি যৌগের স্থূল সংকেত CH₂ এবং আণবিক ভর ২৮। আণবিক সংকেত কোনটি? (C = ১২, H = ১)'
+    options: ['C₂H₄', 'CH₂', 'C₃H₆', 'C₄H₈']
+    answer: 0
+    why: 'CH₂-এর ভর ১৪। ২৮ ÷ ১৪ = ২, তাই আণবিক সংকেত (CH₂)₂ = C₂H₄।'
+  - q: 'H₂O-তে হাইড্রোজেনের শতকরা পরিমাণ প্রায় কত? (H = ১, O = ১৬)'
+    options: ['১১.১%', '৫.৬%', '৮৮.৯%', '৩৩.৩%']
+    answer: 0
+    why: 'H-এর ভর ২, মোট ১৮। (২ ÷ ১৮) × ১০০ ≈ ১১.১%।'
+  - q: 'স্থূল ও আণবিক সংকেত সম্পর্কে—'
+    statements:
+      - 'আণবিক সংকেত সবসময় স্থূল সংকেতের চেয়ে বড়'
+      - 'স্থূল সংকেত পরমাণুগুলোর সরলতম পূর্ণসংখ্যার অনুপাত দেখায়'
+      - 'ভিন্ন যৌগের স্থূল সংকেত একই হতে পারে'
+    answer: 2
+    why: 'H₂O বা CO₂-এর ক্ষেত্রে আণবিক ও স্থূল সংকেত একই; তাই i ভুল। C₂H₂ ও C₆H₆ দুটিরই স্থূল সংকেত CH।'
+  - stem: 'একটি হাইড্রোকার্বনে কার্বন ৮০% ও হাইড্রোজেন ২০% আছে। (C = ১২, H = ১)'
+    q: 'যৌগটির স্থূল সংকেত কোনটি?'
+    options: ['CH₃', 'CH₂', 'CH₄', 'C₂H₃']
+    answer: 0
+    why: 'C: ৮০ ÷ ১২ ≈ ৬.৬৭, H: ২০ ÷ ১ = ২০। ছোটটি দিয়ে ভাগ করলে ১ : ৩, তাই CH₃ (আণবিক সংকেত হতে পারে C₂H₆)।'

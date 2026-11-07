@@ -4,10 +4,23 @@
 import { render } from 'astro:content';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import Carousel from '@/components/Carousel.astro';
+import Mcq from '@/components/Mcq.astro';
 import Icon from '@/components/Icon.astro';
 import SimCard from '@/components/SimCard.astro';
 import Base from '@/layouts/Base.astro';
-import { TYPE_LABEL, chapterHue, chapterLabel, chapterUrl, getChapters, getSims, pagesLabel, simUrl, type Sim } from '@/lib/content';
+import {
+  TYPE_LABEL,
+  chapterHue,
+  chapterLabel,
+  chapterMcqUrl,
+  chapterUrl,
+  getChapters,
+  getMcqs,
+  getSims,
+  pagesLabel,
+  simUrl,
+  type Sim,
+} from '@/lib/content';
 import { ogKey, simGraph, simTagline, simTitle } from '@/lib/seo';
 import { SITE } from '@/lib/site';
 
@@ -15,7 +28,8 @@ interface Props {
   sim: Sim;
 }
 const { sim } = Astro.props;
-const [chapters, sims] = await Promise.all([getChapters(), getSims()]);
+const [chapters, sims, mcqs] = await Promise.all([getChapters(), getSims(), getMcqs()]);
+const questions = mcqs.get(sim.id);
 const index = sims.findIndex((s) => s.id === sim.id);
 const prev = sims[index - 1];
 const next = sims[index + 1];
@@ -72,6 +86,17 @@ const issueUrl = `${SITE.repo}/issues/new?${new URLSearchParams({ title: `ভু
     <article class="sim-article" data-sim-page={sim.id}>
       <Content />
     </article>
+
+    {questions && (
+      <div class="mt-12 max-w-3xl">
+        <Mcq questions={questions} quizKey={sim.id} heading="MCQ অনুশীলন" headingId="mcq-heading" />
+        <p class="mt-4 text-sm">
+          <a href={chapterMcqUrl(chapter)} class="font-semibold text-gold hover:underline">
+            {chapterLabel(chapter)}-এর সব MCQ একসাথে
+          </a>
+        </p>
+      </div>
+    )}
 
     <p class="mt-10 flex flex-wrap items-center gap-2 text-sm text-muted">
       <Icon name="flag" class="h-4 w-4" />

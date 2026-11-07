@@ -4,12 +4,12 @@
 // Below that the same element is a slide-in drawer opened from the header's menu button (src/scripts/sidebar.ts).
 // Chapters are native <details>, so opening them works without JavaScript.
 import { bn, bnPad } from '@/chem/format';
-import { chapterHue, chapterUrl, getChapters, getSims, simUrl, simsIn } from '@/lib/content';
+import { chapterHue, chapterMcqUrl, chapterUrl, getChapters, getMcqs, getSims, simUrl, simsIn } from '@/lib/content';
 import BrandMark from './BrandMark.astro';
 import Icon from './Icon.astro';
 
 const path = Astro.url.pathname;
-const [chapters, sims] = await Promise.all([getChapters(), getSims()]);
+const [chapters, sims, mcqs] = await Promise.all([getChapters(), getSims(), getMcqs()]);
 const currentSim = sims.find((s) => simUrl(s) === path);
 const currentChapter = currentSim?.data.chapter.id ?? chapters.find((c) => path.startsWith(chapterUrl(c)))?.id;
 const links = [
@@ -95,6 +95,13 @@ const here = (href: string) => (path === href ? 'page' : undefined);
                     </a>
                   </li>
                 ))}
+                {list.some((s) => mcqs.has(s.id)) && (
+                  <li>
+                    <a href={chapterMcqUrl(c)} class="sb-link" aria-current={here(chapterMcqUrl(c))}>
+                      MCQ অনুশীলন
+                    </a>
+                  </li>
+                )}
                 {list.length === 0 && <li class="px-3 py-1.5 text-xs text-muted">সিমুলেশন শীঘ্রই আসছে</li>}
               </ul>
             </details>

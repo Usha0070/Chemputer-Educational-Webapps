@@ -59,3 +59,24 @@ export async function getChapterOf(sim: Sim): Promise<Chapter> {
 export function simsIn(chapter: Chapter, sims: Sim[]): Sim[] {
   return sims.filter((s) => s.data.chapter.id === chapter.id);
 }
+
+// ── MCQ practice ───────────────────────────────────────────────────────────
+export type McqSet = CollectionEntry<'mcq'>;
+export type McqQuestion = McqSet['data']['questions'][number];
+
+let mcqChecked: Promise<Map<string, McqQuestion[]>> | undefined;
+
+/** Questions per simulation id. Throws if a question file has no matching simulation (a typo would hide it). */
+export function getMcqs(): Promise<Map<string, McqQuestion[]>> {
+  mcqChecked ??= (async () => {
+    const [sets, sims] = await Promise.all([getCollection('mcq'), getCollection('sims')]);
+    const ids = new Set(sims.map((s) => s.id));
+    for (const set of sets) {
+      if (!ids.has(set.id)) throw new Error(`MCQ file "${set.id}.yaml" has no simulation "${set.id}".`);
+    }
+    return new Map(sets.map((s) => [s.id, s.data.questions]));
+  })();
+  return mcqChecked;
+}
+
+export const chapterMcqUrl = (c: Chapter): string => `${chapterUrl(c)}mcq/`;

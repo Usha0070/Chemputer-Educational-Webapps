@@ -1,12 +1,14 @@
 // Sitemap <lastmod> dates. A simulation page changes when its MDX or its src/sims/<slug>/ code changes (last git
 // commit touching them). Without that history it falls back to the `added` date: no git, or a shallow clone
 // (Vercel, CI) where a file untouched in the fetched commits only shows the cut-off commit, which is not its date.
-// Chapter pages take their newest simulation (or the curriculum file); home, /ssc/ and /sims/ the newest of all.
+// Chapter pages take their newest simulation (or the curriculum file); a chapter's MCQ page its newest question file;
+// home, /ssc/ and /sims/ the newest of all.
 // No date is ever later than today.
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 
 const SIMS = 'src/content/sims';
+const MCQ = 'src/content/mcq';
 const CURRICULUM = 'src/content/curriculum/ssc.yaml';
 
 const git = (args) => execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
@@ -38,6 +40,7 @@ export function lastmodResolver() {
   const clamp = (d) => (d > today ? today : d);
   const byPath = new Map();
   const byChapter = new Map();
+  const mcqByChapter = new Map();
   let newest = null;
 
   for (const file of readdirSync(SIMS).filter((f) => f.endsWith('.mdx'))) {
@@ -47,7 +50,11 @@ export function lastmodResolver() {
     if ((field('status') ?? 'live') !== 'live') continue;
     const chapter = field('chapter');
     const added = field('added') ? new Date(field('added')) : null;
-    const date = clamp(gitDate([`${SIMS}/${file}`, `src/sims/${slug}`]) ?? added ?? today);
+    const mcq = `${MCQ}/${slug}.yaml`;
+    const hasMcq = existsSync(mcq);
+    // the simulation page also shows its MCQs, so they count as its content
+    const date = clamp(gitDate([`${SIMS}/${file}`, `src/sims/${slug}`, ...(hasMcq ? [mcq] : [])]) ?? added ?? today);
+    if (hasMcq) mcqByChapter.set(chapter, later(mcqByChapter.get(chapter), clamp(gitDate([mcq]) ?? today)));
     byPath.set(field('path') ?? `/ssc/${chapter}/${slug}/`, date);
     byChapter.set(chapter, later(byChapter.get(chapter), date));
     newest = later(newest, date);
@@ -55,6 +62,7 @@ export function lastmodResolver() {
   const curriculum = clamp(gitDate([CURRICULUM]) ?? today);
   for (const [, id] of readFileSync(CURRICULUM, 'utf8').matchAll(/^- id:\s*(\S+)/gm)) {
     byPath.set(`/ssc/${id}/`, later(byChapter.get(id), curriculum));
+    if (mcqByChapter.has(id)) byPath.set(`/ssc/${id}/mcq/`, mcqByChapter.get(id));
   }
   newest = later(newest, curriculum);
   for (const p of ['/', '/ssc/', '/sims/']) byPath.set(p, newest);

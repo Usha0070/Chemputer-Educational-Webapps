@@ -1,0 +1,27 @@
+# MCQ practice for the simulation "formula-writing": board-style questions, original wording. Write the right option anywhere:
+# ordinary questions are shuffled at build time (stably); statement questions keep the i/ii/iii option order.
+questions:
+  - q: 'অ্যালুমিনিয়াম সালফেটের সংকেত কোনটি?'
+    options: ['Al₂(SO₄)₃', 'Al₃(SO₄)₂', 'AlSO₄', 'Al₂SO₄']
+    answer: 0
+    why: 'Al³⁺ ও SO₄²⁻: যোজনী আড়াআড়ি গুণ করলে Al দুটি, SO₄ তিনটি; মোট আধান 2×(+3) + 3×(−2) = 0।'
+  - q: 'ক্যালসিয়াম ফসফেটের সংকেত কোনটি?'
+    options: ['Ca₃(PO₄)₂', 'Ca₂(PO₄)₃', 'CaPO₄', 'Ca₃PO₄']
+    answer: 0
+    why: 'Ca²⁺ ও PO₄³⁻: আড়াআড়ি গুণ করলে Ca তিনটি, PO₄ দুটি; 3×(+2) + 2×(−3) = 0।'
+  - q: 'অ্যামোনিয়াম যৌগমূলকের সংকেত ও যোজনী কোনটি?'
+    options: ['NH₄⁺, যোজনী ১', 'NH₃, যোজনী ৩', 'NH₄⁻, যোজনী ১', 'NH₂⁺, যোজনী ২']
+    answer: 0
+    why: 'অ্যামোনিয়াম আয়ন NH₄⁺, একটি ধনাত্মক আধান, তাই যোজনী ১। NH₃ হলো অ্যামোনিয়া অণু, যৌগমূলক নয়।'
+  - q: 'যৌগমূলক সম্পর্কে—'
+    statements:
+      - 'SO₄²⁻-এর যোজনী ২'
+      - 'CO₃²⁻-এর যোজনী ৩'
+      - 'NO₃⁻-এর যোজনী ১'
+    answer: 1
+    why: 'কার্বনেট আয়ন CO₃²⁻-এর আধান −২, তাই যোজনী ২, ৩ নয়। ii ভুল।'
+  - stem: 'X একটি ধাতু যার যোজনী ৩, আর Y একটি অধাতু যার যোজনী ২।'
+    q: 'X ও Y দিয়ে গঠিত যৌগের সংকেত কোনটি?'
+    options: ['X₂Y₃', 'X₃Y₂', 'XY', 'X₂Y']
+    answer: 0
+    why: 'যোজনী আড়াআড়ি বসালে X-এর নিচে ২, Y-এর নিচে ৩: X₂Y₃ (যেমন Al₂O₃)।'

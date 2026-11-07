@@ -44,6 +44,7 @@ src/
   content/
     curriculum/ssc.yaml  chapters, book pages, topics and learning outcomes
     sims/<slug>.mdx      one page per simulation: frontmatter + the explanation sections
+    mcq/<slug>.yaml      board-style MCQ practice for that simulation (validated: 4 options, answer, explanation)
   pages/                 routes: /, /ssc/, /ssc/<chapter>/, /ssc/<chapter>/<sim>/, /sims/
   components/, layouts/  site chrome (header, sidebar/drawer, footer, cards, carousel, brand motif)
   scripts/               small page scripts: theme, progress, sidebar, carousel, 3D background (+ worker), ambient sound
@@ -69,9 +70,17 @@ npm run new:sim -- --chapter 7 --slug reaction-rate --type simulation --title "�
 2. Put the chemistry in `src/chem/` with Vitest tests (golden values from the syllabus), and build the interaction with the UI kit.
 3. Write the MDX sections: কী দেখলে?, নিজে চেষ্টা করো, পরীক্ষায় যেভাবে আসে, সাধারণ ভুল. Use original wording, never text copied from the book.
 4. Set `status: live`. The chapter hub, `/sims/`, the home page, the sitemap and the smoke tests pick it up automatically.
-5. Run `npm run og` to make its share image (`public/og/<slug>.jpg`) and commit it. The SEO test fails if a page has none.
+5. Write 5 MCQs in `src/content/mcq/<slug>.yaml` (board style: simple, three-statement "নিচের কোনটি সঠিক?", and
+   উদ্দীপক-based; each with a short `why`). They appear under the simulation and on the chapter's MCQ page.
+   Put the right option anywhere: ordinary questions are shuffled at build time.
+6. Run `npm run og` to make its share image (`public/og/<slug>.jpg`) and commit it. The SEO test fails if a page has none.
 
 The build fails if a simulation names a chapter or topic that is not in the curriculum file.
+
+## Usage statistics
+
+Vercel Web Analytics: cookieless page views, switched on in the Vercel dashboard (Project → Analytics). The script is
+added only in Vercel builds (`process.env.VERCEL`), so local and CI builds never request it.
 
 ## Search and sharing (SEO)
 

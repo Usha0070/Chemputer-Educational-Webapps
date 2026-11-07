@@ -310,6 +310,13 @@ Every simulation page follows the same order:
 - **Mobile first:** 360 px baseline, 44 px touch targets, landscape fullscreen for simulations.
 - **Presentation mode (`?present=1`):** large text with no site chrome, for live classes and YouTube recordings. **Embed mode (`?embed=1`)** to place a simulation inside slides or other sites.
 - **Progress without accounts:** "দেখা হয়েছে" ticks, bookmarks and "continue where you left off", stored on the device.
+- **MCQ practice:** every simulation ends with about 5 board-style questions (`src/content/mcq/<slug>.yaml`):
+  - kinds: simple, three-statement ("নিচের কোনটি সঠিক?") and উদ্দীপক-based
+  - one try per question; the right answer and a short reason appear at once
+  - best score remembered on the device
+  - each chapter also has `/ssc/<chapter>/mcq/` with all its questions (good for "… MCQ" searches)
+  - without JavaScript the answers sit behind "উত্তর দেখো"
+- **Usage statistics:** Vercel Web Analytics (cookieless page views), only in Vercel builds.
 - **Offline (PWA):** visited chapters keep working without data; installable to the home screen.
 - **Accessibility:** WCAG 2.2 AA, full keyboard use, reduced-motion support, and screen-reader descriptions of what the simulation is showing.
 - **Language:** all UI strings in one Bangla file, so an **English-version** site (NCTB publishes English-version books) can be added later at `/en/…`.
@@ -352,7 +359,7 @@ npm run new:sim -- --level ssc --chapter 7 --slug reaction-rate
 1. The script creates `src/sims/reaction-rate/Sim.tsx` (SimShell stub) and `src/content/sims/reaction-rate.mdx` (frontmatter filled in).
 2. Build the interaction with the UI kit and engine. Add engine tests if new chemistry logic is needed.
 3. Write the explanation sections in the MDX file.
-4. Run `npm run og` to make its share image, and commit it with the page.
+4. Write its MCQs (`src/content/mcq/<slug>.yaml`), then run `npm run og` to make its share image, and commit both with the page.
 5. Open a pull request, then check the Vercel preview on a phone.
 6. Merge. The simulation appears on the chapter hub, in `/sims/`, in search, in the sitemap and on the home page "নতুন" list.
 
