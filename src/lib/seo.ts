@@ -79,7 +79,8 @@ export function siteGraph(): object[] {
       '@id': PERSON_ID,
       name: SITE.authorEn,
       alternateName: SITE.author,
-      sameAs: [SITE.facebook, SITE.youtube],
+      url: SITE.authorUrl,
+      sameAs: [SITE.authorUrl, SITE.facebook, SITE.youtube],
     },
   ];
 }

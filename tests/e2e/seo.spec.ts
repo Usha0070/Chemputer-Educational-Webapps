@@ -106,6 +106,15 @@ test('icons, manifest and robots are served', async ({ request }) => {
   expect(manifest.icons.length).toBeGreaterThanOrEqual(2);
 });
 
+test('the footer name links to the author site, which the Person record also names', async ({ page }) => {
+  await page.goto('/');
+  const link = page.locator('footer a[rel~="author"]');
+  await expect(link).toHaveText('ইউশা খান');
+  await expect(link).toHaveAttribute('href', 'https://mdushakhan.vercel.app/');
+  const person = jsonLd(await page.content()).find((d) => d['@type'] === 'Person');
+  expect(person.url).toBe('https://mdushakhan.vercel.app/');
+});
+
 test('Google Search Console ownership stays verifiable (file and meta tag)', async ({ request }) => {
   const file = await request.get('/google710df23056d5f7f3.html');
   expect(file.status()).toBe(200);

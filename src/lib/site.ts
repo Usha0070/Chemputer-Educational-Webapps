@@ -8,6 +8,8 @@ export const SITE = {
   url: 'https://chemputer-educational-webapps.vercel.app',
   author: 'ইউশা খান',
   authorEn: 'Md. Usha Khan',
+  /** The author's own site; the footer name links here. */
+  authorUrl: 'https://mdushakhan.vercel.app/',
   youtube: 'https://www.youtube.com/@ChemputerStudio',
   facebook: 'https://www.facebook.com/usha.khan.50596',
   repo: 'https://github.com/Usha0070/Chemputer-Educational-Webapps',

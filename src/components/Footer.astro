@@ -35,7 +35,15 @@ import Icon from './Icon.astro';
         </a>
       </div>
       <p>
-        © {SITE.year} {SITE.brand} · তৈরি করেছেন <span class="font-semibold text-ink">{SITE.author}</span>
+        © {SITE.year} {SITE.brand} · তৈরি করেছেন{' '}
+        <a
+          class="inline-flex min-h-[24px] items-center font-semibold text-ink underline decoration-[color:var(--gold)] decoration-1 underline-offset-4 hover:text-gold"
+          href={SITE.authorUrl}
+          target="_blank"
+          rel="author noopener"
+        >
+          {SITE.author}
+        </a>
       </p>
     </div>
   </div>
