@@ -97,8 +97,8 @@ Simulation `type` values: `animation` (guided, step by step) · `simulation` (fr
 ### অধ্যায় ১ · রসায়নের ধারণা (book p. 1)
 | Simulation | Type | Priority |
 |---|---|---|
-| ল্যাবরেটরি নিরাপত্তা: hazard symbols explorer, what each means and how to handle it | reference | ★ |
-| বৈজ্ঞানিক অনুসন্ধান: a virtual investigation (hypothesis → change one variable → observe → conclude), e.g. temperature vs dissolving | lab | ★★ |
+| ল্যাবরেটরি নিরাপত্তা: hazard symbols explorer, what each means and how to handle it, plus a matching game and a safe/unsafe sort | reference | ★ ✅ |
+| বৈজ্ঞানিক অনুসন্ধান: a virtual investigation (hypothesis → change one variable → observe → conclude), e.g. temperature vs dissolving | lab | ★★ ✅ |
 
 ### অধ্যায় ২ · পদার্থের অবস্থা (p. 17)
 | Simulation | Type | Priority |
@@ -204,8 +204,8 @@ Simulation `type` values: `animation` (guided, step by step) · `simulation` (fr
 ### অধ্যায় ১২ · আমাদের জীবনে রসায়ন (p. 287)
 | Simulation | Type | Priority |
 |---|---|---|
-| সাবান: saponification, and how soap micelles lift grease | animation | ★★ |
-| বেকিং পাউডার: NaHCO₃ + acid → CO₂ and the dough rises | lab | ★★ |
+| সাবান: saponification, and how soap micelles lift grease; hard-water lather test | animation | ★★ ✅ |
+| বেকিং পাউডার: NaHCO₃ + acid → CO₂ and the dough rises; heat alone vs baking powder; limewater test | lab | ★★ ✅ |
 | ব্লিচিং পাউডার: bleaching action | lab | ★ |
 | মাটির pH নিয়ন্ত্রণ: lime for acidic soil (reuses the pH scale) | simulation | ★ |
 | খাদ্য সংরক্ষণ: methods and why they work | reference | ★ |

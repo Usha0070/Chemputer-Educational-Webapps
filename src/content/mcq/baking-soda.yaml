@@ -1,0 +1,27 @@
+# MCQ practice for the simulation "baking-soda": board-style questions, original wording. Write the right option anywhere:
+# ordinary questions are shuffled at build time (stably); statement questions keep the i/ii/iii option order.
+questions:
+  - q: 'বেকিং সোডার রাসায়নিক সংকেত কোনটি?'
+    options: ['NaHCO₃', 'Na₂CO₃', 'NaOH', 'CaCO₃']
+    answer: 0
+    why: 'বেকিং সোডা হলো সোডিয়াম হাইড্রোজেন কার্বনেট, NaHCO₃। Na₂CO₃ হলো কাপড় কাচার সোডা।'
+  - q: 'কেক ফোলার জন্য দায়ী গ্যাস কোনটি?'
+    options: ['কার্বন ডাইঅক্সাইড', 'অক্সিজেন', 'হাইড্রোজেন', 'নাইট্রোজেন']
+    answer: 0
+    why: 'বেকিং সোডা এসিড বা তাপে CO₂ তৈরি করে; খামিরের ভেতরে CO₂-এর বুদবুদ আটকে কেক ফোলে।'
+  - q: 'CO₂ চুনের পানিতে চালালে চুনের পানি ঘোলা হয় কেন?'
+    options: ['অদ্রবণীয় CaCO₃ তৈরি হয় বলে', 'Ca(OH)₂ বাষ্প হয়ে যায় বলে', 'পানি জমে বরফ হয় বলে', 'CO₂ পানিতে রং ছড়ায় বলে']
+    answer: 0
+    why: 'Ca(OH)₂ + CO₂ → CaCO₃ + H₂O; অদ্রবণীয় ক্যালসিয়াম কার্বনেটের সূক্ষ্ম কণা পানি ঘোলা করে।'
+  - q: 'শুধু বেকিং সোডা গরম করলে—'
+    statements:
+      - '2NaHCO₃ → Na₂CO₃ + H₂O + CO₂ বিক্রিয়া ঘটে'
+      - 'এক মোল সোডা থেকে এক মোল CO₂ পাওয়া যায়'
+      - 'খাবারে তেতো স্বাদের Na₂CO₃ থেকে যায়'
+    answer: 1
+    why: 'তাপে দুই মোল সোডা থেকে মাত্র এক মোল CO₂ হয়, তাই ii ভুল।'
+  - stem: '৮.৪ g বেকিং সোডা (NaHCO₃ = ৮৪ g/mol) পর্যাপ্ত এসিডের সাথে সম্পূর্ণ বিক্রিয়া করল: NaHCO₃ + H⁺ → Na⁺ + H₂O + CO₂।'
+    q: 'প্রমাণ অবস্থায় কত লিটার CO₂ উৎপন্ন হবে?'
+    options: ['২.২৪ L', '১.১২ L', '২২.৪ L', '৪.৪৮ L']
+    answer: 0
+    why: '৮.৪ ÷ ৮৪ = ০.১ মোল সোডা → ০.১ মোল CO₂ → ০.১ × ২২.৪ = ২.২৪ L।'

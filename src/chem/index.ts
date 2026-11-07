@@ -21,3 +21,5 @@ export * from './matter';
 export * from './acids';
 export * from './metals';
 export * from './organic';
+export * from './science';
+export * from './household';
