@@ -375,3 +375,70 @@ html[data-bg='dim'] .bg3d[data-live='true'] {
 [data-sound-toggle][aria-pressed='true'] .sound-on {
   display: inline;
 }
+
+/* ── MCQ practice ─────────────────────────────────────────────────────── */
+.mcq-option {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line);
+  background: color-mix(in oklab, var(--raised) 70%, transparent);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  font-size: 15px;
+  color: var(--ink);
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+.mcq[data-ready] .mcq-option:not(:disabled):hover {
+  border-color: color-mix(in oklab, var(--accent) 60%, transparent);
+  background: color-mix(in oklab, var(--accent) 10%, transparent);
+}
+/* before the script runs the options are plain text (answers sit behind "উত্তর দেখো") */
+.mcq:not([data-ready]) .mcq-option {
+  cursor: default;
+}
+.mcq[data-ready] .mcq-option:disabled {
+  cursor: default;
+}
+.mcq-letter {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-weight: 700;
+  color: var(--muted);
+}
+.mcq-option[data-state='right'] {
+  border-color: var(--block-p);
+  background: color-mix(in oklab, var(--block-p) 14%, transparent);
+}
+.mcq-option[data-state='right'] .mcq-letter {
+  border-color: var(--block-p);
+  background: var(--block-p);
+  color: var(--bg);
+}
+.mcq-option[data-state='wrong'] {
+  border-color: var(--danger);
+  background: color-mix(in oklab, var(--danger) 12%, transparent);
+}
+.mcq-option[data-state='wrong'] .mcq-letter {
+  border-color: var(--danger);
+  background: var(--danger);
+  color: var(--bg);
+}
+.mcq[data-ready] .mcq-why > summary {
+  display: none;
+}
+.mcq-q[data-result='right'] {
+  border-color: color-mix(in oklab, var(--block-p) 50%, var(--line));
+}
+.mcq-q[data-result='wrong'] {
+  border-color: color-mix(in oklab, var(--danger) 50%, var(--line));
+}

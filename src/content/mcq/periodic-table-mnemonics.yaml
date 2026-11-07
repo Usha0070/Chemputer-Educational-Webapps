@@ -1,0 +1,26 @@
+# MCQ practice for the simulation "periodic-table-mnemonics": board-style questions, original wording. Write the right option anywhere:
+# ordinary questions are shuffled at build time (stably); statement questions keep the i/ii/iii option order.
+questions:
+  - q: 'নিচের কোনটি ক্ষার ধাতু (গ্রুপ ১)?'
+    options: ['K', 'Ca', 'Al', 'Ne']
+    answer: 0
+    why: 'গ্রুপ ১: Li, Na, K, Rb, Cs, Fr (হাইড্রোজেন বাদে)। Ca গ্রুপ ২, Al গ্রুপ ১৩, Ne গ্রুপ ১৮।'
+  - q: 'গ্রুপ ২-এর মৌলগুলোকে কী বলা হয়?'
+    options: ['মৃৎক্ষার ধাতু', 'ক্ষার ধাতু', 'হ্যালোজেন', 'মুদ্রা ধাতু']
+    answer: 0
+    why: 'Be, Mg, Ca, Sr, Ba, Ra মৃৎক্ষার ধাতু; এদের অক্সাইড মাটিতে পাওয়া যায় এবং ক্ষারীয়।'
+  - q: 'নিচের কোনটি হ্যালোজেন নয়?'
+    options: ['S', 'F', 'Br', 'I']
+    answer: 0
+    why: 'সালফার গ্রুপ ১৬-এর মৌল। F, Br ও I গ্রুপ ১৭-এর হ্যালোজেন।'
+  - q: 'গ্রুপ ১৮-এ রয়েছে—'
+    statements:
+      - 'N, O, F'
+      - 'He, Ne, Ar'
+      - 'Kr, Xe, Rn'
+    answer: 2
+    why: 'গ্রুপ ১৮: He, Ne, Ar, Kr, Xe, Rn। N, O ও F যথাক্রমে গ্রুপ ১৫, ১৬ ও ১৭-এর মৌল।'
+  - q: 'Cu, Ag ও Au পর্যায় সারণির কোন গ্রুপের মৌল?'
+    options: ['১১', '১', '২', '১২']
+    answer: 0
+    why: 'কপার, সিলভার ও গোল্ড গ্রুপ ১১-এর মৌল; পুরোনো দিনে মুদ্রা তৈরিতে ব্যবহৃত হতো বলে এদের মুদ্রা ধাতু বলে।'

@@ -1,0 +1,26 @@
+# MCQ practice for the simulation "hydrocarbon-builder": board-style questions, original wording. Write the right option anywhere:
+# ordinary questions are shuffled at build time (stably); statement questions keep the i/ii/iii option order.
+questions:
+  - q: 'অ্যালকিনের সাধারণ সংকেত কোনটি?'
+    options: ['CₙH₂ₙ', 'CₙH₂ₙ₊₂', 'CₙH₂ₙ₋₂', 'CₙHₙ']
+    answer: 0
+    why: 'একটি দ্বিবন্ধন থাকায় অ্যালকেনের (CₙH₂ₙ₊₂) চেয়ে ২টি H কম: CₙH₂ₙ। যেমন ইথিন C₂H₄।'
+  - q: 'CH₃–CH=CH–CH₃ যৌগটির IUPAC নাম কী?'
+    options: ['বিউট-২-ইন (but-2-ene)', 'বিউট-১-ইন (but-1-ene)', 'বিউটেন (butane)', 'প্রোপিন (propene)']
+    answer: 0
+    why: 'চার কার্বনের শিকল (বিউট-), দ্বিবন্ধন দ্বিতীয় ও তৃতীয় কার্বনের মধ্যে, তাই বিউট-২-ইন।'
+  - q: 'ইথাইনে (C₂H₂) দুটি কার্বন পরমাণুর মধ্যে কোন বন্ধন থাকে?'
+    options: ['ত্রিবন্ধন', 'দ্বিবন্ধন', 'একক বন্ধন', 'আয়নিক বন্ধন']
+    answer: 0
+    why: 'ইথাইন অ্যালকাইন শ্রেণির (CₙH₂ₙ₋₂): H–C≡C–H।'
+  - q: 'C₄H₁₀ সম্পর্কে—'
+    statements:
+      - 'এটি একটি অ্যালকেন'
+      - 'এর দুটি গাঠনিক সমাণু আছে'
+      - 'এটি ব্রোমিন পানির লাল-বাদামি রং দ্রুত মুছে দেয়'
+    answer: 0
+    why: 'বিউটেন সম্পৃক্ত, তাই ব্রোমিন পানির রং মোছে না; রং মোছে অসম্পৃক্ত অ্যালকিন ও অ্যালকাইন। iii ভুল।'
+  - q: 'নিচের কোনটি সম্পৃক্ত হাইড্রোকার্বন?'
+    options: ['C₃H₈', 'C₃H₆', 'C₂H₂', 'C₂H₄']
+    answer: 0
+    why: 'C₃H₈ (প্রোপেন) CₙH₂ₙ₊₂ সংকেত মানে; সব বন্ধন একক।'

@@ -5,7 +5,19 @@ import MolecularMotif from '@/components/MolecularMotif.astro';
 import SimCard from '@/components/SimCard.astro';
 import Base from '@/layouts/Base.astro';
 import { bn, bnPad } from '@/chem/format';
-import { chapterHue, chapterLabel, chapterUrl, getChapters, getSims, pagesLabel, simUrl, simsIn, type Chapter } from '@/lib/content';
+import {
+  chapterHue,
+  chapterLabel,
+  chapterMcqUrl,
+  chapterUrl,
+  getChapters,
+  getMcqs,
+  getSims,
+  pagesLabel,
+  simUrl,
+  simsIn,
+  type Chapter,
+} from '@/lib/content';
 import { collectionGraph, ogKey } from '@/lib/seo';
 
 export async function getStaticPaths() {
@@ -23,6 +35,8 @@ interface Props {
 }
 const { chapter, prev, next } = Astro.props;
 const sims = simsIn(chapter, await getSims());
+const mcqs = await getMcqs();
+const mcqCount = sims.reduce((n, s) => n + (mcqs.get(s.id)?.length ?? 0), 0);
 const d = chapter.data;
 ---
 
@@ -59,9 +73,16 @@ const d = chapter.data;
 
   <div class="container-page grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]" style={`--c: ${chapterHue(chapter)}`}>
     <section aria-labelledby="sims-heading">
-      <h2 id="sims-heading" class="mb-4 text-xl font-bold">
-        সিমুলেশন
-      </h2>
+      <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h2 id="sims-heading" class="text-xl font-bold">
+          সিমুলেশন
+        </h2>
+        {mcqCount > 0 && (
+          <a href={chapterMcqUrl(chapter)} class="btn-secondary min-h-[40px] px-4">
+            <Icon name="target" class="tint-text h-4 w-4" /> MCQ অনুশীলন ({bn(mcqCount)}টি প্রশ্ন)
+          </a>
+        )}
+      </div>
       {sims.length > 0 ? (
         <div class="grid gap-4 sm:grid-cols-2">
           {sims.map((sim) => (

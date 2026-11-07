@@ -7,7 +7,8 @@ const mobileOnly = (name: string) => test.skip(name !== 'mobile', 'the drawer is
 function watchErrors(page: Page): string[] {
   const errors: string[] = [];
   page.on('console', (msg) => {
-    if (msg.type() === 'error') errors.push(msg.text());
+    // the analytics endpoint is Vercel infrastructure (404 until analytics is switched on), not the page
+    if (msg.type() === 'error' && !msg.location().url.includes('/_vercel/')) errors.push(msg.text());
   });
   page.on('pageerror', (err) => errors.push(err.message));
   return errors;

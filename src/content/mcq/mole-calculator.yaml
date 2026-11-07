@@ -1,0 +1,27 @@
+# MCQ practice for the simulation "mole-calculator": board-style questions, original wording. Write the right option anywhere:
+# ordinary questions are shuffled at build time (stably); statement questions keep the i/ii/iii option order.
+questions:
+  - q: '১ মোল কোনো পদার্থে কয়টি কণা (অণু, পরমাণু বা আয়ন) থাকে?'
+    options: ['6.022 × 10²³', '6.022 × 10²²', '3.011 × 10²³', '22.4']
+    answer: 0
+    why: '১ মোল মানে অ্যাভোগেড্রো সংখ্যক কণা: 6.022 × 10²³টি। ২২.৪ হলো STP-তে ১ মোল গ্যাসের আয়তন (লিটার)।'
+  - q: '৩৬ g পানিতে (H₂O) কত মোল পানি আছে? (H = ১, O = ১৬)'
+    options: ['২ মোল', '১ মোল', '১৮ মোল', '৩৬ মোল']
+    answer: 0
+    why: 'H₂O-এর মোলার ভর = ২ + ১৬ = ১৮ g/mol। মোল = ৩৬ ÷ ১৮ = ২।'
+  - q: 'আদর্শ তাপমাত্রা ও চাপে (STP) ১ মোল যেকোনো গ্যাসের আয়তন কত?'
+    options: ['22.4 L', '11.2 L', '1 L', '6.022 L']
+    answer: 0
+    why: 'STP-তে (০ °সে, ১ atm) যেকোনো গ্যাসের ১ মোলের আয়তন প্রায় ২২.৪ লিটার; একে মোলার আয়তন বলে।'
+  - q: '৪৪ g CO₂ সম্পর্কে (C = ১২, O = ১৬)—'
+    statements:
+      - 'এটি ১ মোল CO₂'
+      - 'STP-তে এর আয়তন 11.2 L'
+      - 'এতে 6.022 × 10²³টি CO₂ অণু আছে'
+    answer: 1
+    why: 'CO₂-এর মোলার ভর ৪৪ g/mol, তাই ৪৪ g = ১ মোল, যার STP-তে আয়তন ২২.৪ L, ১১.২ L নয়। ii ভুল।'
+  - stem: 'একটি পাত্রে STP-তে ১১.২ L অক্সিজেন গ্যাস (O₂) আছে। (O = ১৬)'
+    q: 'পাত্রের অক্সিজেনের ভর কত?'
+    options: ['১৬ g', '৩২ g', '৮ g', '৬৪ g']
+    answer: 0
+    why: '১১.২ L = ০.৫ মোল। O₂-এর মোলার ভর ৩২ g/mol, তাই ভর = ০.৫ × ৩২ = ১৬ g।'
